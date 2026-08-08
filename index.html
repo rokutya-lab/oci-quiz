@@ -135,6 +135,14 @@
 </div>
 
 <script>
+const MY_PASSWORD = "1219"; // ← 「pass」の部分をご自身の好きなパスワードに変更してください
+
+let inputPass = prompt("パスワードを入力してください:");
+if (inputPass !== MY_PASSWORD) {
+  alert("パスワードが正しくありません。");
+  document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px;'>アクセス権限がありません。</h2>";
+  throw new Error("Unauthorized");
+}
 const rawQuestions = [
   {
     id: 1,
