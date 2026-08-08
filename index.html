@@ -3,67 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCI Architect Associate 対策アプリ</title>
+  <title>OCI Architect Associate | Ultimate Exam Studio</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Noto Sans JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; }
+    /* カスタムスクロールバー */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
 
-  <!-- ヘッダー -->
-  <header class="bg-slate-800 text-white shadow-md">
-    <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-      <h1 class="text-xl font-bold tracking-wide">OCI Architect Associate 対策</h1>
+  <!-- 🔒 簡易パスワード保護オーバーレイ -->
+  <div id="auth-overlay" class="fixed inset-0 bg-[#070a12]/95 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900/80 border border-slate-800 p-8 rounded-3xl shadow-2xl shadow-indigo-500/10 max-w-sm w-full text-center space-y-6 relative overflow-hidden">
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="w-16 h-16 bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-indigo-500/30">
+        🔐
+      </div>
+      <div>
+        <h2 class="text-xl font-extrabold text-white tracking-tight">OCI Quiz Studio</h2>
+        <p class="text-xs text-slate-400 mt-1">パスワードを入力してアクセスを解除</p>
+      </div>
+      <form onsubmit="event.preventDefault(); checkPassword();" class="space-y-4">
+        <input type="password" id="auth-pass" placeholder="Password" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-95 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30 active:scale-[0.98]">
+          Unlock Studio
+        </button>
+      </form>
+      <p id="auth-error" class="text-xs text-rose-400 font-semibold hidden">⚠️ パスワードが正しくありません。</p>
+    </div>
+  </div>
+
+  <!-- 🚀 ヘッダー -->
+  <header class="bg-[#0b0f19]/80 border-b border-slate-800/80 sticky top-0 z-40 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="relative group">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-red-500 via-amber-500 to-indigo-500 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+          <div class="relative w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-xs border border-slate-800">
+            OCI
+          </div>
+        </div>
+        <div>
+          <h1 class="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+            Architect Associate 対策
+          </h1>
+          <p class="text-[10px] font-medium text-indigo-400/90 tracking-wider uppercase">Pro Exam Toolkit</p>
+        </div>
+      </div>
+
       <!-- ナビゲーションタブ -->
-      <nav class="flex gap-2 bg-slate-700 p-1 rounded-lg text-sm">
-        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-4 py-1.5 rounded-md transition font-medium bg-indigo-600 text-white shadow">問題演習</button>
-        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-4 py-1.5 rounded-md transition font-medium text-slate-300 hover:text-white">用語一覧</button>
-        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-1.5 rounded-md transition font-medium text-slate-300 hover:text-white">用語クイズ</button>
+      <nav class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800/80 text-xs shadow-inner">
+        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30">
+          📝 問題演習
+        </button>
+        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          📖 用語辞書
+        </button>
+        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          ⚡ 一問一答
+        </button>
       </nav>
     </div>
   </header>
 
-  <!-- メインコンテンツ領域 -->
-  <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-1">
+  <!-- 💻 メイン領域 -->
+  <main class="max-w-5xl mx-auto w-full px-4 py-8 flex-1">
 
     <!-- ================= 1. 問題演習タブ ================= -->
     <section id="tab-quiz" class="space-y-6">
-      <!-- 問題カード -->
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
-          <span id="q-number" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">問題 1 / 15</span>
-          <span id="q-req-count" class="text-xs font-medium text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">1つ選択</span>
+      
+      <!-- 進捗プログレスバー -->
+      <div class="w-full bg-slate-900/80 rounded-full h-2 border border-slate-800/80 overflow-hidden">
+        <div id="quiz-progress" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full w-0 transition-all duration-500 ease-out"></div>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- ヘッダー情報 -->
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
+          <div class="flex items-center gap-2.5">
+            <span id="q-number" class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
+              QUESTION 1 / 15
+            </span>
+            <span id="q-req-count" class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1.5 rounded-full">
+              1つ選択
+            </span>
+          </div>
         </div>
-        <p id="q-text" class="text-base font-medium text-gray-900 leading-relaxed mb-6">問題文がここに表示されます。</p>
+
+        <!-- 問題文 -->
+        <p id="q-text" class="text-base sm:text-lg font-semibold text-slate-100 leading-relaxed mb-8 tracking-wide">
+          問題文がここに表示されます。
+        </p>
 
         <!-- 選択肢リスト -->
-        <div id="options-container" class="space-y-3"></div>
+        <div id="options-container" class="space-y-3.5"></div>
 
-        <!-- アクションエリア -->
-        <div class="mt-6 pt-4 border-t border-gray-100 flex flex-wrap justify-between items-center gap-3">
-          <button id="submit-btn" onclick="checkAnswer()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg shadow transition">回答する</button>
-          <div class="flex gap-2">
-            <button id="prev-btn" onclick="prevQuestion()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm transition">前へ</button>
-            <button id="next-btn" onclick="nextQuestion()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm transition">次へ</button>
+        <!-- コントロールボタン -->
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap justify-between items-center gap-4">
+          <button id="submit-btn" onclick="checkAnswer()" class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]">
+            回答を送信する
+          </button>
+          <div class="flex gap-2.5">
+            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
+              ← 前へ
+            </button>
+            <button id="next-btn" onclick="nextQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
+              次へ →
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- 解説表示エリア -->
-      <div id="explanation-card" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-inner">
-        <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
-          <span>💡</span> 解説
-        </h3>
-        <p id="overall-exp" class="text-sm text-slate-700 mb-4 leading-relaxed"></p>
-        <div id="option-explanations" class="space-y-2 text-sm border-t border-slate-200 pt-3"></div>
+      <!-- 解説カード -->
+      <div id="explanation-card" class="hidden bg-slate-900/60 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div class="flex items-center gap-2.5 text-indigo-400 font-extrabold text-base mb-4">
+          <div class="w-8 h-8 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center justify-center text-lg">💡</div>
+          <span>解答・解説</span>
+        </div>
+        <p id="overall-exp" class="text-sm text-slate-300 leading-relaxed mb-6 bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 font-medium"></p>
+        <div id="option-explanations" class="space-y-3 text-xs border-t border-slate-800/80 pt-5"></div>
       </div>
     </section>
 
     <!-- ================= 2. 用語一覧タブ ================= -->
-    <section id="tab-dict" class="hidden space-y-4">
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h2 class="text-lg font-bold text-gray-900">専門用語辞書</h2>
-          <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="用語や説明文で検索..." class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <section id="tab-dict" class="hidden space-y-6">
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-4 border-b border-slate-800/80">
+          <div>
+            <h2 class="text-xl font-extrabold text-white tracking-tight">OCI 専門用語集</h2>
+            <p class="text-xs text-slate-400 mt-1">試験に出題される必須キーワードの完全マスターガイド</p>
+          </div>
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="キーワードで検索..." class="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-slate-800 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+            <span class="absolute left-3.5 top-3.5 text-slate-500 text-xs">🔍</span>
+          </div>
         </div>
         <div id="dict-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
@@ -71,18 +154,26 @@
 
     <!-- ================= 3. 用語クイズタブ ================= -->
     <section id="tab-termquiz" class="hidden space-y-6">
-      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
-          <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">用語一問一答</span>
-          <span class="text-xs font-medium text-gray-500">正しい説明を選んでください</span>
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
+          <span class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
+            SPEED QUIZ
+          </span>
+          <span class="text-xs text-slate-400 font-medium">該当する正確な説明を選択してください</span>
         </div>
-        <h3 id="term-quiz-title" class="text-xl font-bold text-indigo-900 mb-6"></h3>
+        
+        <div class="text-center my-8 bg-slate-950/40 border border-slate-800/60 p-6 rounded-2xl">
+          <span class="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest">Target Term</span>
+          <h3 id="term-quiz-title" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300 mt-1 tracking-tight"></h3>
+        </div>
 
-        <div id="term-quiz-options" class="space-y-3"></div>
+        <div id="term-quiz-options" class="space-y-3.5"></div>
 
-        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center">
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex justify-between items-center">
           <div id="term-quiz-result" class="text-sm font-bold"></div>
-          <button onclick="generateTermQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-2 rounded-lg shadow transition">次の用語へ</button>
+          <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98]">
+            次の問題へ →
+          </button>
         </div>
       </div>
     </section>
@@ -90,15 +181,25 @@
   </main>
 
   <!-- フッター -->
-  <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500">
-    OCI Architect Associate Study Tool
+  <footer class="bg-[#070a12] border-t border-slate-800/80 py-5 text-center text-xs text-slate-500 font-medium">
+    OCI Architect Associate Certification Practice Studio
   </footer>
 
-  <!-- アプリケーション・ロジック -->
+  <!-- ⚙️ スクリプト -->
   <script>
-    // --------------------------------------------------
-    // 1. 問題データ (15問)
-    // --------------------------------------------------
+    // 🔐 簡易パスワード保護
+    const SECRET_PASS = "1219";
+    function checkPassword() {
+      const inputPass = document.getElementById('auth-pass').value;
+      if (inputPass === SECRET_PASS) {
+        document.getElementById('auth-overlay').classList.add('hidden');
+        sessionStorage.setItem('authenticated', 'true');
+      } else {
+        document.getElementById('auth-error').classList.remove('hidden');
+      }
+    }
+
+    // 📚 問題データ (15問)
     const rawQuestions = [
       {
         id: 1, reqCount: 1,
@@ -107,7 +208,7 @@
           { id: "A", text: "スケールイン（縮小）処理のみを一時停止し、データの整合性を保護するため。", exp: "【誤】クールダウンはスケールアウト・スケールインの両方に適用されます。" },
           { id: "B", text: "メトリック収集の頻度を下げ、管理コストを削減するため。", exp: "【誤】メトリック収集頻度の制御ではありません。" },
           { id: "C", text: "前回のスケーリング動作によるメトリックの反映を待ち、過度な連続スケーリングを防ぐため。", exp: "【正】追加したリソースの起動・安定を待たずに再スケーリングされる過剰動作を防ぎます。" },
-          { id: "D", text: "ヘルスチェックの失敗検出精度を上げるため。", exp: "【误】ヘルスチェック間隔の調整とは無関係です。" }
+          { id: "D", text: "ヘルスチェックの失敗検出精度を上げるため。", exp: "【誤】ヘルスチェック間隔の調整とは無関係です。" }
         ],
         correct: ["C"],
         exp: "【総合解説】クールダウン期間はシステムが新しい状態に安定する時間を確保するための待機時間です。"
@@ -284,41 +385,30 @@
       }
     ];
 
-    // --------------------------------------------------
-    // 2. 専門用語データ (全30用語)
-    // --------------------------------------------------
+    // 📖 用語データ (30用語)
     const termDictionary = [
-      // 基本・インフラ構成
       { term: "AD（アベイラビリティ・ドメイン）", desc: "リージョン内に存在する、互いに独立した1つ以上のデータセンター。電源やネットワークが完全に隔離されており、障害耐性を高める配置に使用する。" },
       { term: "FD（障害ドメイン）", desc: "1つのAD内に存在するハードウェアや電源のグループ（各ADに3つ配置）。同一AD内での機器故障の影響を分散させるために利用する。" },
       { term: "VCN（仮想クラウド・ネットワーク）", desc: "OCI上に構築する自分専用のカスタマイズ可能な仮想ネットワーク。サブネット、ルート表、セキュリティ・リストなどで構成される。" },
       { term: "コンパートメント", desc: "OCIのリソースを論理的に整理・隔離するための領域。アクセス制御（IAMポリシー）や課金管理の単位として使用される。" },
       { term: "IAM（Identity and Access Management）", desc: "ユーザー、グループ、動的グループに対して「誰が・どのリソースに・どのような操作を行えるか」をポリシーで制御する認証・認可機能。" },
       { term: "動的グループ（Dynamic Group）", desc: "OCIリソース（コンピュートやFunctionsなど）を自動でまとめるグループ。IAMポリシーを適用することで、リソース自体に他サービスへのアクセス権限を付与できる。" },
-
-      // ネットワーク・ゲートウェイ
       { term: "インターネット・ゲートウェイ（IGW）", desc: "VCNのパブリック・サブネットとインターネットとの間で双方向の通信を可能にするゲートウェイ。" },
       { term: "NAT ゲートウェイ", desc: "プライベート・サブネット内のインスタンスが、インターネット側へ一方通行で通信（アウトバウンド）できるようにするゲートウェイ。" },
       { term: "サービス・ゲートウェイ", desc: "VCN内のプライベート・サブネットから、インターネットを経由せずにOCIの各種サービス（LoggingやObject Storageなど）へ安全にアクセスするための通信口。" },
       { term: "DRG（動的ルーティング・ゲートウェイ）", desc: "VCNと外部ネットワーク（オンプレミス、他リージョンのVCN、Azureなど）を専用線やVPNで相互接続するための仮想ルーター。" },
       { term: "LPG（ローカル・ピアリング・ゲートウェイ）", desc: "同一リージョン内にある2つのVCN同士を、インターネットを経由させずに直接通信させるためのゲートウェイ。" },
       { term: "RPC（リモート・ピアリング・コネクション）", desc: "異なるリージョン間にあるVCN同士を、DRGを介して接続・通信させるためのコンポーネント。" },
-
-      // ストレージ・データベース
       { term: "ブロック・ボリューム", desc: "コンピュート・インスタンスに接続して使用する永続的な高パフォーマンス・ブロック・ストレージ（SANと同等）。VPUで性能を調整可能。" },
       { term: "オブジェクト・ストレージ", desc: "非構造化データ（画像、バックアップ、ログなど）を無制限に保存できる拡張性に優れたストレージ（Standard/Archive/Infrequencyアクセス層がある）。" },
       { term: "ファイル・ストレージ（FSS）", desc: "NFSv3プロトコルをサポートし、複数のコンピュート・インスタンスから同時にマウントして共有できるファイルシステム。" },
       { term: "Autonomous Database（ADB）", desc: "チューニング、パッチ適用、バックアップなどの運用管理がAI・機械学習により完全に自動化された自律型データベース（ATP/ADW）。" },
       { term: "RCV（Autonomous Recovery Service）", desc: "Oracle Database向けの全自動リカバリサービス。ZDLRA技術をベースとし、RPOを1秒未満に抑えるリアルタイム保護を提供する。" },
-
-      // セキュリティ・ガバナンス
       { term: "セキュリティ・リスト", desc: "サブネットレベルで適用される仮想ファイアウォール。インバウンド／アウトバウンドのルールをステートフル／ステートレスで指定する。" },
       { term: "NSG（ネットワーク・セキュリティ・グループ）", desc: "特定のVNIC（仮想NIC）単位で適用できる仮想ファイアウォール。VCN設計を変えずに柔軟なアクセス制御が可能。" },
       { term: "WAF（Web Application Firewall）", desc: "Webアプリケーションの手前に配置し、SQLインジェクションやXSSなどの悪意あるリクエストを検知・遮断するセキュリティ機能。" },
       { term: "OCI Vault", desc: "暗号化キー（マスター・キー）やデータ接続の認証情報（シークレット）を安全に中央管理・保管するサービス。" },
       { term: "ZPR（Zero Trust Packet Routing）", desc: "ネットワークIPアドレスではなく「セキュリティ属性（タグ）」に基づいて通信の許可・不許可を制御するOCIのゼロトラストセキュリティ機能。" },
-
-      // 運用・自動化・その他
       { term: "ジオロケーション・ステアリング", desc: "OCI DNSの機能。アクセス元のユーザーの地理的ロケーションに基づいて、最も近いデータセンターのIPアドレスへ誘導するポリシー。" },
       { term: "認証トークン（Auth Token）", desc: "Docker CLIなどの外部ツールからOCI Container Registry（OCIR）へアクセス・ログインする際にパスワードとして使用する文字列。" },
       { term: "Resource Manager", desc: "TerraformをベースとしたOCIのマネージドサービス。Infrastructure as Code (IaC) によりインフラ構築・変更を自動化する。" },
@@ -329,23 +419,19 @@
       { term: "MQL（Monitoring Query Language）", desc: "OCI Monitoringでメトリックデータを検索・集計・アラーム定義するために使用する専用のクエリ言語。" }
     ];
 
-    // --------------------------------------------------
-    // アプリケーション状態管理
-    // --------------------------------------------------
     let currentIndex = 0;
-    let selectedAnswers = {}; // { qId: ["A", "B"] }
-    let answeredState = {};   // { qId: true/false }
+    let selectedAnswers = {};
+    let answeredState = {};
 
-    // --------------------------------------------------
-    // 初期化処理
-    // --------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('authenticated') === 'true') {
+        document.getElementById('auth-overlay').classList.add('hidden');
+      }
       renderQuestion();
       renderDictionary();
       generateTermQuiz();
     });
 
-    // タブ切り替え
     function switchTab(tabName) {
       document.getElementById('tab-quiz').classList.add('hidden');
       document.getElementById('tab-dict').classList.add('hidden');
@@ -356,39 +442,37 @@
       const btnTermQuiz = document.getElementById('tab-termquiz-btn');
 
       [btnQuiz, btnDict, btnTermQuiz].forEach(btn => {
-        btn.className = "px-4 py-1.5 rounded-md transition font-medium text-slate-300 hover:text-white";
+        btn.className = "px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
       });
 
       if (tabName === 'quiz') {
         document.getElementById('tab-quiz').classList.remove('hidden');
-        btnQuiz.className = "px-4 py-1.5 rounded-md transition font-medium bg-indigo-600 text-white shadow";
+        btnQuiz.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       } else if (tabName === 'dict') {
         document.getElementById('tab-dict').classList.remove('hidden');
-        btnDict.className = "px-4 py-1.5 rounded-md transition font-medium bg-indigo-600 text-white shadow";
+        btnDict.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       } else if (tabName === 'termquiz') {
         document.getElementById('tab-termquiz').classList.remove('hidden');
-        btnTermQuiz.className = "px-4 py-1.5 rounded-md transition font-medium bg-indigo-600 text-white shadow";
+        btnTermQuiz.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       }
     }
 
-    // --------------------------------------------------
-    // 1. 問題演習ロジック
-    // --------------------------------------------------
     function renderQuestion() {
       const q = rawQuestions[currentIndex];
       
-      // UI要素の更新
-      document.getElementById('q-number').innerText = `問題 ${currentIndex + 1} / ${rawQuestions.length}`;
+      // プログレスバーの更新
+      const progressPercent = ((currentIndex + 1) / rawQuestions.length) * 100;
+      document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+
+      document.getElementById('q-number').innerText = `QUESTION ${currentIndex + 1} / ${rawQuestions.length}`;
       document.getElementById('q-req-count').innerText = `${q.reqCount}つ選択`;
       document.getElementById('q-text').innerText = q.text;
 
-      // 前へ・次へボタンの有効化/無効化
       document.getElementById('prev-btn').disabled = currentIndex === 0;
-      document.getElementById('prev-btn').classList.toggle('opacity-50', currentIndex === 0);
+      document.getElementById('prev-btn').classList.toggle('opacity-30', currentIndex === 0);
       document.getElementById('next-btn').disabled = currentIndex === rawQuestions.length - 1;
-      document.getElementById('next-btn').classList.toggle('opacity-50', currentIndex === rawQuestions.length - 1);
+      document.getElementById('next-btn').classList.toggle('opacity-30', currentIndex === rawQuestions.length - 1);
 
-      // 選択肢の描画
       const container = document.getElementById('options-container');
       container.innerHTML = '';
 
@@ -399,59 +483,56 @@
         const isChecked = currentSelected.includes(opt.id);
         const optEl = document.createElement('label');
         
-        let borderStyle = "border-gray-200 hover:border-indigo-300 bg-white";
+        let borderStyle = "border-slate-800/80 bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 text-slate-300";
         if (isChecked) {
-          borderStyle = "border-indigo-500 bg-indigo-50/50 ring-1 ring-indigo-500";
+          borderStyle = "border-indigo-500/80 bg-indigo-500/10 text-white font-semibold ring-2 ring-indigo-500/20 shadow-lg shadow-indigo-500/10";
         }
 
-        // 回答後の色付け
         if (isAnswered) {
           const isCorrectOpt = q.correct.includes(opt.id);
           if (isCorrectOpt) {
-            borderStyle = "border-emerald-500 bg-emerald-50 text-emerald-900 font-medium";
+            borderStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-200 font-semibold ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/10";
           } else if (isChecked && !isCorrectOpt) {
-            borderStyle = "border-rose-500 bg-rose-50 text-rose-900";
+            borderStyle = "border-rose-500 bg-rose-500/10 text-rose-300 ring-2 ring-rose-500/20";
           }
         }
 
-        optEl.className = `flex items-start gap-3 p-3.5 rounded-lg border text-sm cursor-pointer transition ${borderStyle}`;
+        optEl.className = `flex items-start gap-4 p-4.5 rounded-2xl border text-sm cursor-pointer transition-all duration-200 ${borderStyle}`;
         
         const inputType = q.reqCount === 1 ? 'radio' : 'checkbox';
         optEl.innerHTML = `
           <input type="${inputType}" name="q-option" value="${opt.id}" ${isChecked ? 'checked' : ''} ${isAnswered ? 'disabled' : ''} 
-            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-600 focus:ring-indigo-500 rounded">
-          <span class="flex-1"><strong class="mr-1">${opt.id}.</strong> ${opt.text}</span>
+            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-500 focus:ring-indigo-500/30 rounded border-slate-700 bg-slate-950">
+          <span class="flex-1 leading-relaxed"><strong class="mr-2 text-indigo-400 font-bold">${opt.id}.</strong>${opt.text}</span>
         `;
         container.appendChild(optEl);
       });
 
-      // 解説カードの制御
       const expCard = document.getElementById('explanation-card');
       const submitBtn = document.getElementById('submit-btn');
 
       if (isAnswered) {
         expCard.classList.remove('hidden');
-        submitBtn.innerText = "回答済み";
+        submitBtn.innerText = "✓ 回答済み";
         submitBtn.disabled = true;
-        submitBtn.className = "bg-gray-400 text-white font-medium px-6 py-2.5 rounded-lg cursor-not-allowed";
+        submitBtn.className = "bg-slate-800/50 text-slate-500 font-bold px-8 py-3.5 rounded-2xl text-sm cursor-not-allowed border border-slate-800/80";
 
-        // 解説のセット
         document.getElementById('overall-exp').innerText = q.exp;
         const optExpContainer = document.getElementById('option-explanations');
         optExpContainer.innerHTML = '';
         q.options.forEach(opt => {
           const p = document.createElement('p');
           const isCorrect = q.correct.includes(opt.id);
-          p.className = isCorrect ? "text-emerald-700" : "text-gray-600";
-          p.innerHTML = `<strong>${opt.id}:</strong> ${opt.exp}`;
+          p.className = isCorrect ? "text-emerald-400 font-medium bg-emerald-500/5 p-2.5 rounded-xl border border-emerald-500/20" : "text-slate-400 p-1";
+          p.innerHTML = `<strong class="text-indigo-300">${opt.id}:</strong> ${opt.exp}`;
           optExpContainer.appendChild(p);
         });
 
       } else {
         expCard.classList.add('hidden');
-        submitBtn.innerText = "回答する";
+        submitBtn.innerText = "回答を送信する";
         submitBtn.disabled = false;
-        submitBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg shadow transition";
+        submitBtn.className = "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]";
       }
     }
 
@@ -468,7 +549,6 @@
           if (current.length < q.reqCount) {
             current.push(optId);
           } else {
-            // 上限に達している場合は古い選択を1つ解除して入れ替え
             current.shift();
             current.push(optId);
           }
@@ -510,9 +590,6 @@
       }
     }
 
-    // --------------------------------------------------
-    // 2. 用語一覧辞書ロジック
-    // --------------------------------------------------
     function renderDictionary() {
       const searchText = document.getElementById('dict-search').value.toLowerCase();
       const container = document.getElementById('dict-list');
@@ -524,34 +601,32 @@
       );
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-sm text-gray-500 col-span-2">該当する用語が見つかりませんでした。</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 py-4">該当する用語が見つかりませんでした。</p>`;
         return;
       }
 
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = "p-4 border border-gray-100 rounded-lg bg-slate-50/50 hover:bg-slate-50 transition";
+        card.className = "p-5 border border-slate-800/80 rounded-2xl bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 transition duration-200 space-y-2";
         card.innerHTML = `
-          <h4 class="font-bold text-indigo-900 text-sm mb-1">${item.term}</h4>
-          <p class="text-xs text-gray-600 leading-relaxed">${item.desc}</p>
+          <h4 class="font-extrabold text-indigo-300 text-sm tracking-wide flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+            ${item.term}
+          </h4>
+          <p class="text-xs text-slate-400 leading-relaxed font-normal">${item.desc}</p>
         `;
         container.appendChild(card);
       });
     }
 
-    // --------------------------------------------------
-    // 3. 用語一問一答クイズロジック
-    // --------------------------------------------------
     let currentTermQuiz = null;
 
     function generateTermQuiz() {
       document.getElementById('term-quiz-result').innerText = '';
       
-      // 正解となる用語をランダムに選定
       const correctIndex = Math.floor(Math.random() * termDictionary.length);
       const targetTerm = termDictionary[correctIndex];
 
-      // ダミーの選択肢（別用語の説明）を3つ選定
       let dummyIndices = [];
       while (dummyIndices.length < 3) {
         let rand = Math.floor(Math.random() * termDictionary.length);
@@ -560,7 +635,6 @@
         }
       }
 
-      // 4つの説明文選択肢を作成してシャッフル
       let choices = [
         { desc: targetTerm.desc, isCorrect: true },
         ...dummyIndices.map(idx => ({ desc: termDictionary[idx].desc, isCorrect: false }))
@@ -572,15 +646,14 @@
         choices: choices
       };
 
-      // UI描画
       document.getElementById('term-quiz-title').innerText = targetTerm.term;
       const optionsContainer = document.getElementById('term-quiz-options');
       optionsContainer.innerHTML = '';
 
       choices.forEach((choice, i) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-3.5 border border-gray-200 rounded-lg text-xs leading-relaxed hover:border-indigo-400 hover:bg-indigo-50/30 transition bg-white";
-        btn.innerHTML = `<span class="font-bold mr-1 text-indigo-600">${i + 1}.</span> ${choice.desc}`;
+        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300";
+        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400 font-mono">[${i + 1}]</span>${choice.desc}`;
         btn.onclick = () => answerTermQuiz(choice.isCorrect, btn);
         optionsContainer.appendChild(btn);
       });
@@ -590,22 +663,20 @@
       const resultEl = document.getElementById('term-quiz-result');
       const allButtons = document.getElementById('term-quiz-options').querySelectorAll('button');
 
-      // 全ボタン無効化
       allButtons.forEach(btn => btn.disabled = true);
 
       if (isCorrect) {
-        btnElement.className = "w-full text-left p-3.5 border border-emerald-500 bg-emerald-50 text-emerald-900 rounded-lg text-xs leading-relaxed font-medium";
-        resultEl.innerText = "⭕ 正解です！";
-        resultEl.className = "text-sm font-bold text-emerald-600";
+        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
+        resultEl.innerText = "⭕ 正解です！完璧な知識です。";
+        resultEl.className = "text-sm font-bold text-emerald-400";
       } else {
-        btnElement.className = "w-full text-left p-3.5 border border-rose-500 bg-rose-50 text-rose-900 rounded-lg text-xs leading-relaxed";
+        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed";
         resultEl.innerText = "❌ 残念！不正解です。";
-        resultEl.className = "text-sm font-bold text-rose-600";
+        resultEl.className = "text-sm font-bold text-rose-400";
 
-        // 正解の選択肢を緑で表示
         currentTermQuiz.choices.forEach((c, idx) => {
           if (c.isCorrect) {
-            allButtons[idx].className = "w-full text-left p-3.5 border border-emerald-500 bg-emerald-50 text-emerald-900 rounded-lg text-xs leading-relaxed font-medium";
+            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
           }
         });
       }
