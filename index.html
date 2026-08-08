@@ -3,36 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCI Architect Professional | Ultimate Exam Studio</title>
+  <title>OCI Architect Professional 対策 | Pro Dashboard</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Plus Jakarta Sans & Noto Sans JP -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Inter & Noto Sans JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
   </style>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased">
 
   <!-- 🔒 簡易パスワード保護オーバーレイ -->
-  <div id="auth-overlay" class="fixed inset-0 bg-[#070a12]/95 backdrop-blur-xl z-50 flex items-center justify-center p-4">
-    <div class="bg-slate-900/80 border border-slate-800 p-8 rounded-3xl shadow-2xl shadow-indigo-500/10 max-w-sm w-full text-center space-y-6 relative overflow-hidden">
-      <div class="absolute -top-12 -left-12 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="w-16 h-16 bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-indigo-500/30">
+  <div id="auth-overlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-800/90 border border-slate-700/80 p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center space-y-6 backdrop-blur-lg">
+      <div class="w-14 h-14 bg-gradient-to-tr from-indigo-500 to-violet-500 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-indigo-500/30">
         🔐
       </div>
       <div>
-        <h2 class="text-xl font-extrabold text-white tracking-tight">OCI Pro Studio</h2>
-        <p class="text-xs text-slate-400 mt-1">1Z0-997 対策専用スタジオへアクセス</p>
+        <h2 class="text-xl font-bold text-white tracking-wide">OCI Quiz Access</h2>
+        <p class="text-xs text-slate-400 mt-1">パスワードを入力してダッシュボードを解除</p>
       </div>
       <form onsubmit="event.preventDefault(); checkPassword();" class="space-y-4">
-        <input type="password" id="auth-pass" placeholder="Password" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
-        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-95 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30 active:scale-[0.98]">
-          Unlock Studio
+        <input type="password" id="auth-pass" placeholder="Password" class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30">
+          Unlock Dashboard
         </button>
       </form>
       <p id="auth-error" class="text-xs text-rose-400 font-semibold hidden">⚠️ パスワードが正しくありません。</p>
@@ -40,35 +35,29 @@
   </div>
 
   <!-- 🚀 ヘッダー -->
-  <header class="bg-[#0b0f19]/80 border-b border-slate-800/80 sticky top-0 z-40 backdrop-blur-xl">
-    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-4">
+  <header class="bg-slate-900/80 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-3">
-        <div class="relative group">
-          <div class="absolute -inset-0.5 bg-gradient-to-r from-red-500 via-purple-500 to-indigo-500 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-          <div class="relative w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-xs border border-slate-800">
-            PRO
-          </div>
+        <div class="w-9 h-9 bg-gradient-to-tr from-red-500 via-orange-500 to-amber-500 rounded-xl flex items-center justify-center text-white font-black text-xs shadow-md">
+          OCI
         </div>
         <div>
-          <h1 class="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+          <h1 class="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
             Architect Professional 対策
           </h1>
-          <p class="text-[10px] font-medium text-indigo-400/90 tracking-wider uppercase">1Z0-997 Exam Master Toolkit</p>
+          <p class="text-[10px] text-slate-400">Advanced Exam Preparation Toolkit</p>
         </div>
       </div>
 
       <!-- ナビゲーションタブ -->
-      <nav class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800/80 text-xs shadow-inner flex-wrap justify-center gap-1">
-        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30">
+      <nav class="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50 text-xs">
+        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md">
           📝 問題演習
         </button>
-        <button id="tab-mock-btn" onclick="switchTab('mock')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
-          ⏱️ 模擬試験
+        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200">
+          📖 用語辞書
         </button>
-        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
-          📖 プロ用語集
-        </button>
-        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200">
           ⚡ 一問一答
         </button>
       </nav>
@@ -76,61 +65,27 @@
   </header>
 
   <!-- 💻 メイン領域 -->
-  <main class="max-w-6xl mx-auto w-full px-4 py-8 flex-1">
+  <main class="max-w-5xl mx-auto w-full px-4 py-8 flex-1">
 
     <!-- ================= 1. 問題演習タブ ================= -->
     <section id="tab-quiz" class="space-y-6">
-      
-      <!-- コントロール & フィルターバー -->
-      <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4 text-xs">
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-slate-400 font-bold">タグ絞り込み:</span>
-          <select id="tag-filter" onchange="filterQuestions()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-indigo-300 font-semibold focus:outline-none focus:border-indigo-500">
-            <option value="ALL">すべての分野 (All Tags)</option>
-            <option value="DR/高可用性">DR/高可用性</option>
-            <option value="ネットワーク">ネットワーク/FastConnect</option>
-            <option value="セキュリティ">セキュリティ/IAM/ZPR</option>
-            <option value="データベース">データベース/Data Guard</option>
-            <option value="マイグレーション">マイグレーション/OCM</option>
-          </select>
-          <label class="flex items-center gap-2 text-slate-300 ml-2 cursor-pointer font-semibold">
-            <input type="checkbox" id="wrong-only-toggle" onchange="filterQuestions()" class="rounded border-slate-700 bg-slate-950 text-indigo-500">
-            <span>❌ 弱点・間違えた問題のみ表示</span>
-          </label>
-        </div>
-        <div class="flex items-center gap-3">
-          <span id="score-stats" class="text-slate-400">正解数: <strong id="stat-correct" class="text-emerald-400">0</strong> / <strong id="stat-total" class="text-slate-200">0</strong></span>
-          <button onclick="resetProgress()" class="text-slate-500 hover:text-rose-400 font-medium underline">進捗リセット</button>
-        </div>
-      </div>
-
-      <!-- 進捗プログレスバー -->
-      <div class="w-full bg-slate-900/80 rounded-full h-2 border border-slate-800/80 overflow-hidden">
-        <div id="quiz-progress" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full w-0 transition-all duration-500 ease-out"></div>
-      </div>
-
-      <!-- メイン問題カード -->
-      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl relative overflow-hidden">
-        <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-sm relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        
         <!-- ヘッダー情報 -->
-        <div class="flex flex-wrap justify-between items-center gap-3 mb-6 pb-4 border-b border-slate-800/80">
-          <div class="flex items-center gap-2.5 flex-wrap">
-            <span id="q-number" class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
-              QUESTION 1 / 15
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/60">
+          <div class="flex items-center gap-2">
+            <span id="q-number" class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+              問題 1 / 18
             </span>
-            <span id="q-tag" class="text-xs font-bold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full">
-              DR/高可用性
-            </span>
-            <span id="q-req-count" class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1.5 rounded-full">
+            <span id="q-req-count" class="text-xs font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
               1つ選択
             </span>
           </div>
         </div>
 
         <!-- 問題文 -->
-        <p id="q-text" class="text-base sm:text-lg font-semibold text-slate-100 leading-relaxed mb-8 tracking-wide">
+        <p id="q-text" class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed mb-8">
           問題文がここに表示されます。
         </p>
 
@@ -138,133 +93,66 @@
         <div id="options-container" class="space-y-3.5"></div>
 
         <!-- コントロールボタン -->
-        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap justify-between items-center gap-4">
-          <button id="submit-btn" onclick="checkAnswer()" class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]">
+        <div class="mt-8 pt-6 border-t border-slate-700/60 flex flex-wrap justify-between items-center gap-4">
+          <button id="submit-btn" onclick="checkAnswer()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-indigo-600/20 transition duration-200 text-sm">
             回答を送信する
           </button>
-          <div class="flex gap-2.5">
-            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
+          <div class="flex gap-2">
+            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 px-5 py-2.5 rounded-xl text-xs font-medium border border-slate-600/50 transition">
               ← 前へ
             </button>
-            <button id="next-btn" onclick="nextQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
+            <button id="next-btn" onclick="nextQuestion()" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 px-5 py-2.5 rounded-xl text-xs font-medium border border-slate-600/50 transition">
               次へ →
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 詳細解説カード -->
-      <div id="explanation-card" class="hidden bg-slate-900/60 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
-        <div class="flex items-center gap-2.5 text-indigo-400 font-extrabold text-base mb-4">
-          <div class="w-8 h-8 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center justify-center text-lg">💡</div>
-          <span>プロレベル設計解説 & アーキテクチャ的根拠</span>
+      <!-- 解説カード -->
+      <div id="explanation-card" class="hidden bg-slate-800/80 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div class="flex items-center gap-2 text-indigo-400 font-bold text-base mb-3">
+          <span class="text-xl">💡</span> 解答・解説
         </div>
-        <p id="overall-exp" class="text-sm text-slate-300 leading-relaxed mb-6 bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 font-medium"></p>
-        <div id="option-explanations" class="space-y-3 text-xs border-t border-slate-800/80 pt-5"></div>
+        <p id="overall-exp" class="text-sm text-slate-300 leading-relaxed mb-6 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50"></p>
+        <div id="option-explanations" class="space-y-2.5 text-xs border-t border-slate-700/60 pt-4"></div>
       </div>
     </section>
 
-    <!-- ================= 2. 模擬試験モード ================= -->
-    <section id="tab-mock" class="hidden space-y-6">
-      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl text-center space-y-6">
-        <div class="max-w-xl mx-auto space-y-3">
-          <span class="text-xs font-black tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full uppercase">
-            1Z0-997 SIMULATION EXAM
-          </span>
-          <h2 class="text-2xl font-black text-white">本番想定 模擬試験スタジオ</h2>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            全15問をランダム出題し、制限時間（20分）内で回答します。提出後に総合点数と合否判定（合格ライン: 70%）を出力します。
-          </p>
-        </div>
-
-        <div id="mock-start-screen" class="py-8 border-y border-slate-800/80 space-y-6">
-          <div class="grid grid-cols-3 gap-4 max-w-md mx-auto text-center">
-            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-              <span class="block text-slate-500 text-[10px] uppercase font-bold">出題数</span>
-              <span class="text-lg font-black text-indigo-400">15 問</span>
-            </div>
-            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-              <span class="block text-slate-500 text-[10px] uppercase font-bold">制限時間</span>
-              <span class="text-lg font-black text-indigo-400">20 分</span>
-            </div>
-            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-              <span class="block text-slate-500 text-[10px] uppercase font-bold">合格ボーダー</span>
-              <span class="text-lg font-black text-emerald-400">70 %</span>
-            </div>
-          </div>
-          <button onclick="startMockExam()" class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-indigo-600/30 text-sm tracking-wide transition active:scale-[0.98]">
-            🔥 模擬試験を開始する
-          </button>
-        </div>
-
-        <div id="mock-active-screen" class="hidden text-left space-y-6">
-          <div class="flex justify-between items-center bg-slate-950 p-4 rounded-2xl border border-slate-800">
-            <span id="mock-timer" class="text-rose-400 font-mono font-black text-base flex items-center gap-2">
-              ⏱️ 残り時間: 20:00
-            </span>
-            <span id="mock-progress-text" class="text-xs text-slate-400 font-bold">
-              解答状況: 0 / 15
-            </span>
-          </div>
-
-          <div id="mock-questions-container" class="space-y-8"></div>
-
-          <button onclick="finishMockExam()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90 text-white font-black py-4 rounded-2xl shadow-lg shadow-emerald-600/20 text-sm tracking-wide transition active:scale-[0.98]">
-            試験を終了して採点する
-          </button>
-        </div>
-
-        <div id="mock-result-screen" class="hidden py-8 space-y-6">
-          <div class="w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl" id="mock-badge"></div>
-          <div>
-            <h3 id="mock-score-title" class="text-3xl font-black text-white"></h3>
-            <p id="mock-score-sub" class="text-sm text-slate-400 mt-2"></p>
-          </div>
-          <button onclick="switchTab('mock')" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-8 py-3.5 rounded-2xl text-xs border border-slate-700">
-            模擬試験トップへ戻る
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 3. プロ用語一覧タブ ================= -->
+    <!-- ================= 2. 用語一覧タブ ================= -->
     <section id="tab-dict" class="hidden space-y-6">
-      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-4 border-b border-slate-800/80">
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-700/60">
           <div>
-            <h2 class="text-xl font-extrabold text-white tracking-tight">OCI Architect Professional 専門用語集</h2>
-            <p class="text-xs text-slate-400 mt-1">1Z0-997 出題頻出・高度概念の即効マスターガイド</p>
+            <h2 class="text-lg font-bold text-white">OCI Professional 専門用語集</h2>
+            <p class="text-xs text-slate-400">Associate & Professional 出題範囲の完全用語リスト</p>
           </div>
-          <div class="relative w-full sm:w-80">
-            <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="プロ用語で検索..." class="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-slate-800 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
-            <span class="absolute left-3.5 top-3.5 text-slate-500 text-xs">🔍</span>
-          </div>
+          <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="キーワードで検索..." class="w-full sm:w-72 px-4 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
         </div>
         <div id="dict-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
     </section>
 
-    <!-- ================= 4. 用語クイズタブ ================= -->
+    <!-- ================= 3. 用語クイズタブ ================= -->
     <section id="tab-termquiz" class="hidden space-y-6">
-      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
-          <span class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
-            SPEED QUIZ
+      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/60">
+          <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+            一問一答クイズ
           </span>
-          <span class="text-xs text-slate-400 font-medium">該当する正確な高度アーキテクチャ概念を選択してください</span>
+          <span class="text-xs text-slate-400">正しい説明を選択してください</span>
         </div>
         
-        <div class="text-center my-8 bg-slate-950/40 border border-slate-800/60 p-6 rounded-2xl">
-          <span class="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest">Target Term</span>
-          <h3 id="term-quiz-title" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300 mt-1 tracking-tight"></h3>
+        <div class="text-center my-6">
+          <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Target Term</span>
+          <h3 id="term-quiz-title" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-300 mt-1"></h3>
         </div>
 
         <div id="term-quiz-options" class="space-y-3.5"></div>
 
-        <div class="mt-8 pt-6 border-t border-slate-800/80 flex justify-between items-center">
+        <div class="mt-8 pt-6 border-t border-slate-700/60 flex justify-between items-center">
           <div id="term-quiz-result" class="text-sm font-bold"></div>
-          <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98]">
-            次の問題へ →
+          <button onclick="generateTermQuiz()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-6 py-2.5 rounded-xl shadow-lg transition">
+            次の用語へ →
           </button>
         </div>
       </div>
@@ -273,13 +161,14 @@
   </main>
 
   <!-- フッター -->
-  <footer class="bg-[#070a12] border-t border-slate-800/80 py-5 text-center text-xs text-slate-500 font-medium">
-    OCI Architect Professional (1Z0-997) Certification Practice Studio
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+    OCI Architect Professional Certification Practice Tool
   </footer>
 
   <!-- ⚙️ スクリプト -->
   <script>
-    const SECRET_PASS = "1219";
+    // 🔐 簡易パスワード保護
+    const SECRET_PASS = "oci2026";
     function checkPassword() {
       const inputPass = document.getElementById('auth-pass').value;
       if (inputPass === SECRET_PASS) {
@@ -290,408 +179,318 @@
       }
     }
 
-    // 📚 Professional (1Z0-997) 高度問題データ (15問)
+    // 📚 問題データ (18問: Associate + Professional拡張)
     const rawQuestions = [
       {
-        id: 1, tag: "DR/高可用性", reqCount: 1,
-        text: "ミッションクリティカルなデータベースでRPO（目標復旧時点）をゼロに保ちつつ、別リージョンへの災害復旧（DR）構成を設計する必要があります。最も適切なデータベース構成はどれですか？",
+        id: 1, reqCount: 1,
+        text: "Auto Scaling 設定で「クールダウン期間」が適用される主な目的として最も適切なものはどれですか？",
         options: [
-          { id: "A", text: "Autonomous Recovery Service (RCV) を使用し、毎時クロスリージョン・バックアップを転送する。", exp: "【誤】バックアップ転送ではRPO=0を達成できません。" },
-          { id: "B", text: "Oracle Active Data Guard を同期モード（Maximum Protection）または最高可用性モード（Maximum Availability）で別リージョンに構成する。", exp: "【正】Active Data Guardの同期転送により、リージョン間でのリアルタイム同期とRPO=0を両立します。" },
-          { id: "C", text: "Object Storage のクロスリージョン・レプリケーションを1分間隔で実行する。", exp: "【誤】DBログの直接同期ではないため不整合が発生します。" },
-          { id: "D", text: "GoldenGate の非同期双方向レプリケーション構成のみを適用する。", exp: "【誤】非同期レプリケーションではRPO=0の保証は困難です。" }
-        ],
-        correct: ["B"],
-        exp: "【プロフェッショナル解説】RPO=0（データ損失ゼロ）の要件には、Active Data Guardの同期（Maximum Protection / Maximum Availability）構成が必須です。"
-      },
-      {
-        id: 2, tag: "ネットワーク", reqCount: 1,
-        text: "オンプレミスからOCIへの通信において、FastConnect（10Gbps）を使用した冗長接続を設計しています。「99.95%のSLA（高可用性）」を満たすための要求仕様として正しくないものはどれですか？",
-        options: [
-          { id: "A", text: "2本のFastConnect回線を異なる2つのFastConnectパートナー（または物理POP）経由で引き込む。", exp: "【正】物理POPの冗長化が要件に含まれます。" },
-          { id: "B", text: "2本の回線を単一のDRG（動的ルーティング・ゲートウェイ）に接続し、BGPでパス優先度（AS-Path / Local Preference）を設定する。", exp: "【正】適切なBGP構成です。" },
-          { id: "C", text: "冗長化のための2本目の回線として、暗号化IPsec VPNをバックアップとしてのみ利用する（FastConnectは1本のみ）。", exp: "【誤】FastConnect 1本＋IPsec VPNの構成はSLA 99.9%であり、99.95%の高可用性SLAは満たせません。" },
-          { id: "D", text: "オンプレミス側のルーター（CPE）も2台準備し、単一障害点（SPOF）を排除する。", exp: "【正】CPEの冗長化も必須要件です。" }
+          { id: "A", text: "スケールイン（縮小）処理のみを一時停止し、データの整合性を保護するため。", exp: "【誤】クールダウンはスケールアウト・スケールインの両方に適用されます。" },
+          { id: "B", text: "メトリック収集の頻度を下げ、管理コストを削減するため。", exp: "【誤】メトリック収集頻度の制御ではありません。" },
+          { id: "C", text: "前回のスケーリング動作によるメトリックの反映を待ち、過度な連続スケーリングを防ぐため。", exp: "【正】追加したリソースの起動・安定を待たずに再スケーリングされる過剰動作を防ぎます。" },
+          { id: "D", text: "ヘルスチェックの失敗検出精度を上げるため。", exp: "【誤】ヘルスチェック間隔の調整とは無関係です。" }
         ],
         correct: ["C"],
-        exp: "【プロフェッショナル解説】OCIのFastConnect 99.95% SLAを適用するためには、2本の独立した物理FastConnect回線接続が必要です。IPsec VPN併用時のSLAは99.9%となります。"
+        exp: "【総合解説】クールダウン期間はシステムが新しい状態に安定する時間を確保するための待機時間です。"
       },
       {
-        id: 3, tag: "セキュリティ", reqCount: 1,
-        text: "企業がマルチ・コンパートメント環境を管理しており、セキュリティチームに対して「すべてのコンパートメント内のコンピュート・インスタンスの停止・起動は許可するが、削除（DELETE）や新規作成（CREATE）は禁止したい」と考えています。最も適切なIAMポリシー記述はどれですか？",
+        id: 2, reqCount: 1,
+        text: "ネットワーク・ロードバランサ（NLB）の特徴として正しくないものはどれですか？",
         options: [
-          { id: "A", text: "allow group SecurityTeam to manage instance-family in tenancy", exp: "【誤】manage はすべての権限（CREATE/DELETE含む）を与えてしまいます。" },
-          { id: "B", text: "allow group SecurityTeam to use instance-family in tenancy", exp: "【正】use 権限動詞は「既存リソースの操作・停止・起動」を許可し、「作成（CREATE）・削除（DELETE）」は許可しません。" },
-          { id: "C", text: "allow group SecurityTeam to read instance-family in tenancy", exp: "【誤】read は参照のみで停止・起動操作ができません。" },
-          { id: "D", text: "allow group SecurityTeam to inspect instance-family in tenancy", exp: "【誤】inspect は最小限のメタデータ参照のみです。" }
-        ],
-        correct: ["B"],
-        exp: "【プロフェッショナル解説】IAMの動詞レベル（inspect < read < use < manage）の評価問題です。use は「利用・制御（起動/停止）」は可能ですが、「作成/削除」はできません。"
-      },
-      {
-        tag: "DR/高可用性", id: 4, reqCount: 1,
-        text: "2つのリージョン（東京・大阪）間での全自動フェイルオーバーを可能にするWebアプリケーションアーキテクチャを設計しています。RTO（復旧時間）を最小化するための構成として最も適切なものはどれですか？",
-        options: [
-          { id: "A", text: "DNSトラフィック・マネジメントの「ヘルスチェック付きフェイルオーバー・ポリシー」を使用し、プライマリリージョンの障害時にセカンダリのPublic IPへ自動切り替えする。", exp: "【正】DNSヘルスチェック機能と連携した自動フェイルオーバーが最もRTOを小さく抑えます。" },
-          { id: "B", text: "Object StorageのCLIスクリプトをCronで定期実行し、障害時にDNS手動更新を行う。", exp: "【誤】手動運用が入りRTOが大きくなります。" },
-          { id: "C", text: "フレキシブル・ロードバランサをマルチリージョンに跨がせて単一IPで公開する。", exp: "【誤】OCI Load Balancerは単一リージョン内のリソースです。" },
-          { id: "D", text: "DRGピアリング（RPC）を経由して、クライアントのトラフィックを直接VCN内部IPに転送する。", exp: "【误】インターネットからのパブリックアクセスの自動転送には適しません。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】クロスリージョンの広域フェイルオーバーには、OCI Traffic Management Steering Policiesのヘルスチェック機能を利用したDNS自動切替がベストプラクティスです。"
-      },
-      {
-        tag: "データベース", id: 5, reqCount: 1,
-        text: "Autonomous Database (ADB) の「Auto Scaling（自動スケーリング）」機能に関して正しい説明はどれですか？",
-        options: [
-          { id: "A", text: "CPU要求の負荷に応じて、プロビジョニングされたCPUコア数の最大3倍まで自動的に拡張される。", exp: "【正】ADBのAuto Scalingは指定コア数の最大3倍まで即座に動的拡張されます。" },
-          { id: "B", text: "ストレージ容量が80%を超えた際、自動的にノード数を追加（スケールアウト）する。", exp: "【誤】ストレージではなくCPU負荷に応じたスケールアップ処理です。" },
-          { id: "C", text: "スケーリング実行時にはデータベースの数分間の再起動（ダウンタイム）を伴う。", exp: "【誤】ADBのAuto Scalingはダウンタイムゼロで即座に実行されます。" },
-          { id: "D", text: "Auto Scalingを有効にすると、常時3倍の基本料金が発生する。", exp: "【誤】実際に拡張使用された時間分のみ課金されます。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】ADBのAuto ScalingはダウンタイムなしでCPU/IOリソースを基本プロビジョニング数の「最大3倍」まで自動拡張します。"
-      },
-      {
-        tag: "マイグレーション", id: 6, reqCount: 1,
-        text: "Oracle Cloud Migrations (OCM) を使用して、100台のオンプレミスVMware仮想マシンをOCIへ一括移行する計画を立てています。移行プロセス設計として正しい順序はどれですか？",
-        options: [
-          { id: "A", text: "アプライアンス配置 → 資産調査（Inventory/Discovery） → アセスメント（サイズ決定） → マイグレーション・計画（Migration Plan）作成 → 実行", exp: "【正】OCMの標準的・体系的な移行フローです。" },
-          { id: "B", text: "マイグレーション・計画作成 → インスタンス起動 → アプライアンス配置 → 後から資産調査", exp: "【誤】資産調査が最初に行われる必要があります。" },
-          { id: "C", text: "VMwareの全VMを一度Object Storageへエクスポート → OCMで一括読み込み", exp: "【誤】OCMアプライアンスによるエージェントレス直接収集が標準です。" },
-          { id: "D", text: "Terraformコードの手動記述 → 資産調査 → 移行実行", exp: "【誤】OCMがコード変換等を自動化します。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】OCMは「アプライアンス設置による資産の自動検出（Discovery）→ 適切なShape評価（Assessment）→ 移行計画（Migration Plan）→ レプリケーション・起動」の順で進めます。"
-      },
-      {
-        tag: "セキュリティ", id: 7, reqCount: 1,
-        text: "ZPR（Zero Trust Packet Routing）ポリシーを適用した環境で、AppサブネットからDBサブネットへの特定プロトコル通信のみを許可する場合の記述として適切なものはどれですか？",
-        options: [
-          { id: "A", text: "in VCN-Network allow App:Production endpoints to connect to DB:Production endpoints with protocol='tcp/1521'", exp: "【正】ZPRの基本構文 `in <context> allow <source> endpoints to connect to <target> endpoints with protocol='...'` に完全に合致しています。" },
-          { id: "B", text: "allow 10.0.1.0/24 to connect to 10.0.2.0/24 on port 1521", exp: "【誤】ZPRはIP/CIDRではなく属性タグで記述します。" },
-          { id: "C", text: "set security-list rule src=App dst=DB port=1521", exp: "【誤】セキュリティ・リストの記述です。" },
-          { id: "D", text: "allow group App-Users to access db-instance in compartment Production", exp: "【誤】IAMポリシーの記述形式です。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】ZPRポリシー構文は `in <VCN-Context> allow <Source-Attribute> endpoints to connect to <Target-Attribute> endpoints with protocol='...'` 形式をとります。"
-      },
-      {
-        tag: "ネットワーク", id: 8, reqCount: 1,
-        text: "異なるテナンシーに存在するVCN AとVCN BをDRGを介してピアリング（クロス・テナンシー・ピアリング）接続するための必要条件として【誤っているもの】はどれですか？",
-        options: [
-          { id: "A", text: "両方のテナンシーでIAMポリシー（Define / Endorse / Admit）を設定し、相互接続を認可する。", exp: "【正】クロス・テナンシーアクセスには必須のIAMポリシーです。" },
-          { id: "B", text: "両方のVCNのIPv4 CIDRブロックが重複していないことを確認する。", exp: "【正】ルーティングを成立させるための絶対条件です。" },
-          { id: "C", text: "双方のVCNを全く同じリージョン・同じADに配置しなければならない。", exp: "【誤】DRGを経由すれば、異なるリージョン間（クロスリージョン・ピアリング）でも接続可能です。" },
-          { id: "D", text: "DRGアタッチメントを作成し、適切なルート表（DRG Route Table）を構成する。", exp: "【正】正確なルーティング設定手順です。" }
+          { id: "A", text: "超低遅延で高スループレベルのLayer 4（TCP/UDP/ICMP）処理に対応する。", exp: "【正】NLBの基本特徴です。" },
+          { id: "B", text: "クライアントの送信元IPアドレスを保持（Source IP Preservation）できる。", exp: "【正】NLBはL4透過でIPを保持可能です。" },
+          { id: "C", text: "SSL/TLSハンドシェイクの終了処理（SSL Offloading）を行うことができる。", exp: "【誤】SSL/TLS終端機能を持つのはLayer 7のフレキシブルLB（ALB）です。" },
+          { id: "D", text: "ヘルスチェックが失敗した場合、トラフィックを正常なバックエンドのみに自動ルーティングする。", exp: "【正】一般的なLB機能です。" }
         ],
         correct: ["C"],
-        exp: "【プロフェッショナル解説】DRGを使用したピアリングは、リージョンが異なる場合（Remote Peering）でも問題なく構成可能です。"
+        exp: "【総合解説】SSL/TLSターミネーションはLayer 7 Load Balancerの役割であり、Layer 4 NLBでは処理しません。"
       },
       {
-        tag: "DR/高可用性", id: 9, reqCount: 2,
-        text: "複数リージョンでの「アクティブ/アクティブ」構成を検討する際、データの整合性とパフォーマンスに関する考慮事項として【正しいもの】を2つ選んでください。",
+        id: 3, reqCount: 1,
+        text: "Autonomous Recovery Service (RCV) の説明として誤っているものはどれですか？",
         options: [
-          { id: "A", text: "遅延（Latency）が大きい広域ネットワーク（WAN）を挟む場合、強整合性（Synchronous）書き込みはアプリケーションのレスポンス時間を悪化させる要因となる。", exp: "【正】リージョン間遅延による書き込みレイテンシ増大の正当な理由です。" },
-          { id: "B", text: "Active Data Guard は双方向同時書き込み（Active-Active Write）を完全にサポートする。", exp: "【誤】Data Guardはプライマリのみ書き込み可能（Read-Only可）な主系/副系構成です。" },
-          { id: "C", text: "分散データベースやGoldenGateを用いた双方向レプリケーションでは、データの競合（Conflict）検出と解消のルール設計が必須である。", exp: "【正】マルチリージョンアクティブ/アクティブでの必須設計事項です。" },
-          { id: "D", text: "Object Storageのクロスリージョン・レプリケーションにより、ミリ秒単位の同期書き込みが保証される。", exp: "【誤】Object Storageのレプリケーションは非同期です。" }
+          { id: "A", text: "ZDLRA技術に基づき、RPOを1秒未満に抑えるリアルタイム保護を提供する。", exp: "【正】RCVの主要な強みです。" },
+          { id: "B", text: "保護ポリシーによって、リカバリ・ウィンドウ（保持期間）を集中管理できる。", exp: "【正】ポリシーベースで自動管理されます。" },
+          { id: "C", text: "バックアップデータはすべてお客様のVCN内に直接ファイル形式で露出保管される。", exp: "【誤】管理対象の独立した保護領域に格納され、セキュリティが担保されます。" },
+          { id: "D", text: "自動バックアップの暗号化や統合的な健全性チェック機能が含まれている。", exp: "【正】機能に含まれます。" }
         ],
-        correct: ["A", "C"],
-        exp: "【プロフェッショナル解説】マルチリージョンでのアクティブ/アクティブ書き込み設計では、通信遅延（レイテンシ）によるオーバーヘッドと、データ更新の競合解消（Conflict Resolution）設計が最大の論点となります。"
+        correct: ["C"],
+        exp: "【総合解説】RCVのバックアップ領域はマネージドに分離管理されており、ユーザーのVCN内に露出することはありません。"
       },
       {
-        tag: "データベース", id: 10, reqCount: 2,
-        text: "Exadata Database Service（ExaDB-D）のアーキテクチャ設計において正しい特徴を2つ選んでください。",
+        id: 4, reqCount: 1,
+        text: "ジオロケーション・ステアリング・ポリシー（DNS）の主な機能はどれですか？",
         options: [
-          { id: "A", text: "Smart Scan（スマートスキャン）技術により、SQLのフィルタリング処理をストレージ・サーバー層にオフロードしてネットワーク負荷を激減させる。", exp: "【正】Exadataの核となる主要機能です。" },
-          { id: "B", text: "パブリック・サブネット内にのみ配置可能である。", exp: "【誤】セキュリティ上、通常プライベート・サブネットに配置します。" },
-          { id: "C", text: "OCPU（Compute）とストレージ（Storage）を独立して柔軟にオンライン拡張（スケール）可能である。", exp: "【正】Exadata Cloud Infrastructureの柔軟な動的拡張性です。" },
-          { id: "D", text: "バックアップはObject Storageに保存できず、ローカルディスクのみに限定される。", exp: "【誤】Object StorageやAutonomous Recovery Serviceへのバックアップがサポートされます。" }
-        ],
-        correct: ["A", "C"],
-        exp: "【プロフェッショナル解説】Exadata固有の「Smart Scanによるストレージオフロード」および「コンピュート/ストレージの独立したオンライン伸縮性」が大きな強みです。"
-      },
-      {
-        tag: "セキュリティ", id: 11, reqCount: 1,
-        text: "OCI Vaultの「マスター暗号化キー」の運用において、セキュリティ・ガバナンスを高めるためのベストプラクティスとして最も適切なものはどれですか？",
-        options: [
-          { id: "A", text: "自動鍵輪番（Auto Key Rotation）スケジュールを設定し、古いキーのバージョンを保持したまま定期的に新しいキーバッチを生成・利用する。", exp: "【正】安全性を確保しながら既存データの復号互換性を維持するベストプラクティスです。" },
-          { id: "B", text: "暗号化キーを毎年手動で完全削除（DELETE）して新規作成する。", exp: "【誤】キーを削除すると過去データの復号が不可能になります。" },
-          { id: "C", text: "キーの権限をすべての開発ユーザーに直接「manage vaults」で付与する。", exp: "【誤】最小権限の原則に反します。" },
-          { id: "D", text: "すべてのリージョンで単一のマスターキーファイルをインターネット経由で共有利用する。", exp: "【誤】リージョン依存とHSM保護の概念に反します。" }
+          { id: "A", text: "リクエスト元の地理的ロケーションに基づいて、異なるエンドポイントのIPを返答する。", exp: "【正】地域ごとの最適なエンドポイントに誘導できます。" },
+          { id: "B", text: "バックエンドサーバーのCPU使用率に基づいて動的にIPを切り替える。", exp: "【誤】DNSはサーバー負荷率の動的判定を行いません。" },
+          { id: "C", text: "特定IPからのDoS攻撃を地理的にブロックする（WAFの機能）。", exp: "【誤】WAFやNSGの役割です。" },
+          { id: "D", text: "プライベートVCN内のローカル名前解決を他リージョンへ自動転送する。", exp: "【誤】プライベートDNSリゾルバの役割です。" }
         ],
         correct: ["A"],
-        exp: "【プロフェッショナル解説】Vaultでは、過去データの暗号解除機能を損なわずにセキュリティ強度を維持するため、旧バージョンを保持した「自動鍵輪番（Key Rotation）」が推奨されます。"
+        exp: "【総合解説】ジオロケーション・ステアリングはアクセス元の位置情報（国・地域）に応じてDNSレスポンスを変更する機能です。"
       },
       {
-        tag: "ネットワーク", id: 12, reqCount: 2,
-        text: "OCI Web Application Firewall (WAF) の導入設計において適切なアプローチを2つ選んでください。",
+        id: 5, reqCount: 1,
+        text: "OCIR (OCI Container Registry) へのログイン時、パスワードとして使用すべき認証情報は何ですか？",
         options: [
-          { id: "A", text: "エッジ（DNS/CDN層）またはロードバランサ（ALB）の直接アタッチメントとしてWAFルールを適用できる。", exp: "【正】OCI WAFはFlexible LBへのアタッチおよびエッジでの導入に対応しています。" },
-          { id: "B", text: "WAFはLayer 4（TCP/UDP）レベルの過大なパケット攻撃のみを遮断対象とする。", exp: "【誤】WAFはLayer 7（HTTP/HTTPS）のアプリケーション攻撃を防御します。" },
-          { id: "C", text: "SQLインジェクションやクロスサイトスクリプティング（XSS）などの既知の攻撃パターンをOWASP Top 10ルールセットで即座に遮断・検知可能。", exp: "【正】WAFの基本・主要な機能です。" },
-          { id: "D", text: "WAFを導入すると、後続のWebサーバーでのSSL/TLS証明書の設定が一切不要になる。", exp: "【誤】エンドツーエンド暗号化のためにサーバー側の証明書構成も考慮が必要です。" }
+          { id: "A", text: "OCI コンソールのログインパスワード", exp: "【誤】CLI/Dockerアクセスには使用できません。" },
+          { id: "B", text: "API 署名用秘密鍵（PEMフォーマット）", exp: "【誤】Docker CLIでは使用しません。" },
+          { id: "C", text: "認証トークン（Auth Token）", exp: "【正】ユーザーごとに発行するAuth Tokenを使用します。" },
+          { id: "D", text: "SSH パブリックキー", exp: "【誤】コンピュートへのアクセス用です。" }
         ],
-        correct: ["A", "C"],
-        exp: "【プロフェッショナル解説】OCI WAFはLayer 7で動作し、ALBへの直接アタッチやエッジ配信に対応、OWASPルール等でWeb脆弱性攻撃をブロックします。"
+        correct: ["C"],
+        exp: "【総合解説】OCIRを含む外部連携ツールからの認証には「Auth Token（認証トークン）」を使用します。"
       },
       {
-        tag: "DR/高可用性", id: 13, reqCount: 1,
-        text: "コンピュート・インスタンスの「自動修復（Auto-Healing）」を達成するために、Instance Pool（インスタンス・プール）と組み合わせて使用すべき機能はどれですか？",
+        id: 6, reqCount: 1,
+        text: "Oracle Cloud Migrations (OCM) の説明として適切なものはどれですか？",
         options: [
-          { id: "A", text: "ロードバランサのヘルスチェック（Health Check）と連動したインスタンス・プールの自動置換ポリシー", exp: "【正】LBのヘルスチェック失敗時に不健全インスタンスを自動終了・新規再生成します。" },
-          { id: "B", text: "Object Storage のライフサイクル管理ルール", exp: "【誤】ストレージのデータ保持管理用です。" },
-          { id: "C", text: "コンパートメント間の自動リソース移動機能", exp: "【誤】自動修復機能ではありません。" },
-          { id: "D", text: "ブロック・ボリュームの自動クローン機能", exp: "【誤】ボリュームのバックアップ用です。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】LBのヘルスチェックとInstance Poolを連動させることで、障害発生ノードの自動切り離し・破棄・自動再作成（Auto-Healing）が実現します。"
-      },
-      {
-        tag: "マイグレーション", id: 14, reqCount: 1,
-        text: "テラバイト〜ペタバイト規模の大容量データをオンプレミスからOCI Object Storageへ最短かつネットワーク帯域を圧迫せずに移行する方法として最適なものはどれですか？",
-        options: [
-          { id: "A", text: "Data Transfer Appliance (DTA) を利用した物理転送サービス", exp: "【正】ペタバイト級の大規模データはDTAハードウェアの送付による物理移行が最速・最適です。" },
-          { id: "B", text: "インターネット経由での標準OCI CLIマルチパートアップロード", exp: "【誤】回線帯域を枯渇させ時間がかかりすぎます。" },
-          { id: "C", text: "1Gbps FastConnect経由での連続rsync転送", exp: "【誤】大規模データの場合、完了までに数か月要する可能性があります。" },
-          { id: "D", text: "Service Connector Hub によるログリアルタイム同期", exp: "【誤】ログやイベントストリーム用の転送ツールです。" }
+          { id: "A", text: "オンプレミスVMware環境の資産調査、依存関係分析、OCIインスタンスへの自動移行をサポートする。", exp: "【正】OCMのメイン用途です。" },
+          { id: "B", text: "Object Storage内のデータをアーカイブ層へ自動移行するライフサイクルルール。", exp: "【誤】ストレージ側のライフサイクル機能です。" },
+          { id: "C", text: "AWSからOCIへのアクティブ・アクティブ型フルリアルタイム双方向同期ツール。", exp: "【誤】アクティブ/アクティブ同期ツールではありません。" },
+          { id: "D", text: "MySQLからAutonomous Databaseへのスキーマ変換に限定された軽量ツール。", exp: "【誤】DB限定の変換ツールではありません。" }
         ],
         correct: ["A"],
-        exp: "【プロフェッショナル解説】ネットワーク転送に膨大な時間を要するペタバイト規模のデータ移行には、物理暗号化アプライアンス（Data Transfer Appliance）のレンタル利用がベストプラクティスです。"
+        exp: "【総合解説】OCMはオンプレミス（特にVMwareなど）からのワークロード移行をエンドツーエンドで自動化・一括管理するサービスです。"
       },
       {
-        tag: "セキュリティ", id: 15, reqCount: 1,
-        text: "Cloud Guard の説明として最も適切なものはどれですか？",
+        id: 7, reqCount: 1,
+        text: "Monitoring Query Language (MQL) について正しく記述されているものはどれですか？",
         options: [
-          { id: "A", text: "OCIテナンシー全体のセキュリティ構成の不備や疑わしいアクティビティを継続的に監視・検出・自動修復（Responder）するマネージドサービス。", exp: "【正】Cloud Guardの役割（DetectorとResponderによるガバナンス維持）です。" },
-          { id: "B", text: "VCNのサブネット間通信パケットをリアルタイムで直接ディープインスペクションする次世代ハードウェアFW。", exp: "【誤】ネットワーク層のパケット検査装置ではありません。" },
-          { id: "C", text: "データベース内の個人情報（PII）データを自動的に伏字・マスキングするDBオプション。", exp: "【誤】Data Masking等の機能です。" },
-          { id: "D", text: "ユーザーの生体認証情報を管理する認証プロバイダ。", exp: "【誤】認証管理プロバイダではありません。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】Cloud Guardはテナンシー全域の構成エラー（パブリックBucket等）を検出し、設定されたResponder（レスポンダー）によって自動修復を行う強固なセキュリティ標準機能です。"
-      }
-      {
-        id: 16, tag: "ネットワーク", reqCount: 1,
-        text: "Kubernetes (OKE) 上のマイクロサービスに対して、マルチリージョンおよびマルチVCNに渡るサービス間通信の安全な暗号化（mTLS）とトラフィック制御を実現したいと考えています。最も適切なアーキテクチャ構成はどれですか？",
-        options: [
-          { id: "A", text: "各VCNのパブリック・サブネットに個別でNetwork Load Balancerを配置し、手動で証明書を配布する。", exp: "【誤】運用コストが高く、サービス間通信の動的な認証・暗号化に対応できません。" },
-          { id: "B", text: "OCI Service Mesh（またはIstio）を導入し、サイドカー・プロキシ経由で自動mTLS暗号化と高度なトラフィック管理を行う。", exp: "【正】Service Meshはマイクロサービス間の暗号化（mTLS）、可視化、トラフィック制御を自動化します。" },
-          { id: "C", text: "VCNセキュリティ・リストのルールで全ポートのTCP暗号化フラグを有効化する。", exp: "【誤】セキュリティ・リストはL3/L4のルール定義であり、mTLS処理は行えません。" },
-          { id: "D", text: "すべてのポッド（Pod）にパブリックIPアドレスを直接割り当てる。", exp: "【誤】セキュリティ上の重大なアンチパターンです。" }
+          { id: "A", text: "SQL標準構文を用いてAutonomous Databaseのデータを検索する言語。", exp: "【誤】メトリック検索用でありDBアクセス用ではありません。" },
+          { id: "B", text: "OCI Monitoringでメトリックデータの抽出、集計（sum, meanなど）、アラーム定義を行う専用言語。", exp: "【正】MQLの役割です。" },
+          { id: "C", text: "Terraformコードを自動生成するための宣言型記述言語。", exp: "【誤】IaC用言語ではありません。" },
+          { id: "D", text: "WAFのカスタムルールを作成するための正規表現言語。", exp: "【誤】WAFルール用ではありません。" }
         ],
         correct: ["B"],
-        exp: "【プロフェッショナル解説】OKE環境における高度なマイクロサービス間通信（mTLS暗号化、ルーティング、オブザーバビリティ）には、OCI Service Meshの活用が推奨されます。"
+        exp: "【総合解説】MQLはOCIのメトリック（監視データ）を評価・集計・アラート化するための問い合わせ言語です。"
       },
       {
-        id: 17, tag: "セキュリティ", reqCount: 1,
-        text: "特定の「コンパートメント」に対して、運用者が誤って「パブリックIPを持つインスタンス」や「未暗号化のバケット」を作成できないように強制的に防止したいと考えています。最も適したOCI機能はどれですか？",
+        id: 8, reqCount: 1,
+        text: "ZPR（Zero Trust Packet Routing）の特徴・概念として最も正しいものはどれですか？",
         options: [
-          { id: "A", text: "Security Zones（セキュリティ・ゾーン）を有効化し、ゾーン・レシピでセキュリティ・ポリシーを適用する。", exp: "【正】Security Zonesはポリシーに反するリソース作成アクションを「事前防止（ブロック）」する強力なガバナンス機能です。" },
-          { id: "B", text: "Cloud Guardのデテクターのみを「監査モード」で有効化する。", exp: "【误】Cloud Guardは作成後の「事後検出」が基本であり、事前作成の防止（防壁）ではありません。" },
-          { id: "C", text: "IAMポリシーで「allow group Admins to manage all-resources in compartment」を記述する。", exp: "【誤】manage権限はすべての操作を許可するため防止になりません。" },
-          { id: "D", text: "VCNのデフォルト・セキュリティ・リストですべてのインバウンド通信を破棄（Drop）する。", exp: "【誤】リソース作成自体を阻止することはできません。" }
-        ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】事後検出のCloud Guardに対し、Security Zonesは厳格なセキュリティ・ポリシーに違反する構成変更やリソース作成を「事前ブロック」します。"
-      },
-      {
-        id: 18, tag: "データベース", reqCount: 1,
-        text: "Autonomous Database (ADB) で「Cross-Region Autonomous Data Guard」を構成する際の正しい動作仕様はどれですか？",
-        options: [
-          { id: "A", text: "スタンバイDBへのデータ同期は完全同期（Synchronous）のみがサポートされる。", exp: "【誤】リージョン間（広域）では非同期（Asynchronous）転送が用いられます。" },
-          { id: "B", text: "プライマリDBの障害時には、数クリックまたはAPI呼び出しでスタンバイDBへスイッチオーバー/フェイルオーバーが可能である。", exp: "【正】完全マネージドで即座にスタンバイ側へ切り替えることができます。" },
-          { id: "C", text: "スタンバイDBを配置するリージョンには、プライマリと同じOCPU数を常時課金固定で割り当てなければならない。", exp: "【誤】スタンバイ側はコストを抑えたスケーリング構成が可能です。" },
-          { id: "D", text: "スイッチオーバー実行時には、データベースの全データの手動リストアが必要となる。", exp: "【誤】マネージドData Guardのためリストア作業は不要です。" }
+          { id: "A", text: "IPアドレスやCIDRに基づき、サブネット単位で通信制御を行う。", exp: "【誤】従来のセキュリティ・リスト等の動作です。" },
+          { id: "B", text: "ネットワークの物理IP構成に依存せず、意図を表す「セキュリティ属性（タグ）」に基づき通信を強力に制限する。", exp: "【正】ZPRの根本概念（属性ベースアクセス制御）です。" },
+          { id: "C", text: "すべての通信をインターネット経由に強制リダイレクトしてWAFで検査する。", exp: "【誤】WAFへのリダイレクト機能ではありません。" },
+          { id: "D", text: "暗号化キーをHSMで強制保持するための専用プロトコルである。", exp: "【誤】Vault/HSMの領域です。" }
         ],
         correct: ["B"],
-        exp: "【プロフェッショナル解説】ADBのAutonomous Data Guardは、別リージョンへの非同期レプリケーションと、簡単な操作での高速なフェイルオーバー/スイッチオーバーを実現します。"
+        exp: "【総合解説】ZPRはIPアドレスではなく、リソースに割り当てられた「属性（ZPR tag）」に基づいてアクセス制御を実施します。"
       },
       {
-        id: 19, tag: "ネットワーク", reqCount: 2,
-        text: "オンプレミスとOCI間で「FastConnect（主回線）」と「IPsec VPN（バックアップ回線）」を組み合わせたハイブリッドネットワークを設計する際、適切なBGPおよびルーティング設計を2つ選んでください。",
+        id: 9, reqCount: 1,
+        text: "OCI Cache (インメモリキャッシュ) に関する説明として正しいものはどれですか？",
         options: [
-          { id: "A", text: "OCI側からのアウトバウンドトラフィックにおいて、FastConnect経由の経路（BGPルート）の「AS-Path Prepending」を短く設定し、優先経路とする。", exp: "【正】AS-Path長を短くすることでFastConnectを優先パスに指定できます。" },
-          { id: "B", text: "オンプレミス側からのインバウンドトラフィックにおいて、BGPの「Local Preference」値をFastConnect側で高く設定する。", exp: "【正】Local Preference値を高く設定することで、オンプレミスからの受信用にもFastConnectが優先されます。" },
-          { id: "C", text: "FastConnectとIPsec VPNの双方で「全く同じBGPメトリック値・AS-Path長」を設定し、常にECMP（等コストマルチパス）で負荷分散させる。", exp: "【誤】帯域や遅延が異なる異種回線でのECMPはパケット再送信や不整合の原因となります。" },
-          { id: "D", text: "IPsec VPNのBGPセッションを無効化し、静的ルート（Static Route）のみで運用する。", exp: "【誤】障害発生時の自動切り替え（Failover）が機能しなくなります。" }
+          { id: "A", text: "Apache Cassandra と互換性を持つ完全マネージド型NoSQLデータベースである。", exp: "【誤】Cassandra互換ではありません。" },
+          { id: "B", text: "RedisおよびValkeyと互換性があり、超低遅延で高スループットなデータアクセスを実現する。", exp: "【正】OCI Cacheの特長です。" },
+          { id: "C", text: "大容量の動画ファイルを低コストで長期保管するためのストレージサービスである。", exp: "【誤】インメモリ技術であり動画アーカイブ用ではありません。" },
+          { id: "D", text: "オンプレミスからOCIへの大容量データ物理転送を行うハードウェア装置である。", exp: "【誤】Data Transfer Applianceの説明です。" }
+        ],
+        correct: ["B"],
+        exp: "【総合解説】OCI CacheはRedis/Valkey互換のインメモリデータストアサービスです。"
+      },
+      {
+        id: 10, reqCount: 1,
+        text: "OCI Search with OpenSearch の説明として適切なものはどれですか？",
+        options: [
+          { id: "A", text: "暗号化キーの鍵管理・輪番処理を行うフルマネージドサービス。", exp: "【誤】OCI Vaultの機能です。" },
+          { id: "B", text: "大規模なログ分析やテキスト検索を可能にするフルマネージド型の検索・分析エンジン。", exp: "【正】OpenSearchの機能です。" },
+          { id: "C", text: "ドメイン名の登録と権限DNSサーバーの管理に特化した機能。", exp: "【誤】DNSサービスの説明です。" },
+          { id: "D", text: "VCN間のすべてのパケットを監視して不正侵入を物理遮断するIDS/IPSエンジン。", exp: "【誤】OpenSearchは検索・分析用途です。" }
+        ],
+        correct: ["B"],
+        exp: "【総合解説】OCI Search with OpenSearchはOpenSearch/OpenSearch Dashboardsを提供する管理型検索エンジンです。"
+      },
+      {
+        id: 11, reqCount: 1,
+        text: "ZPR ポリシー「in VCN-Network:DB allow App:App1 endpoints to connect to DB-Server:App1 endpoints with protocol='tcp/1521'」に関する解釈で【誤っているもの】を1つ選んでください。",
+        options: [
+          { id: "A", text: "コンテキスト条件として VCN-Network:DB を持つVCN内での通信を規定している。", exp: "【正】正しい解釈です。" },
+          { id: "B", text: "App:App1 の属性を持つリソースから、DB-Server:App1 の属性を持つリソースへの通信を許可している。", exp: "【正】正しい解釈です。" },
+          { id: "C", text: "対象プロトコルおよびポートは 1521/TCP に制限されている。", exp: "【正】正しい解釈です。" },
+          { id: "D", text: "このポリシーを適用するには、すべての送信元インスタンスのIPアドレスをポリシー内に個別列挙する必要がある。", exp: "【誤】ZPRはIPアドレスを個別指定せず属性タグで制御します。" }
+        ],
+        correct: ["D"],
+        exp: "【総合解説】ZPRのメリットはIPアドレス依存からの脱却です。IPの個別に指定や管理は不要です。"
+      },
+      {
+        id: 12, reqCount: 1,
+        text: "ZPRの文法規則における「ZPR属性（ZPR Attribute）」のフォーマットとして正しいものはどれですか？",
+        options: [
+          { id: "A", text: "Namespace/Key=Value", exp: "【誤】スラッシュ区切りではありません。" },
+          { id: "B", text: "Namespace:Key:Value", exp: "【誤】全コロン区切りではありません。" },
+          { id: "C", text: "Namespace.Key:Value（省略時は oracle-zpr ネームスペース）", exp: "【正】ZPR属性の標準構文です。" },
+          { id: "D", text: "Key::Value", exp: "【誤】ネームスペースが必要です。" }
+        ],
+        correct: ["C"],
+        exp: "【総合解説】ZPRの属性は `Namespace.Key:Value` 形式で表され、ネームスペース省略時は `oracle-zpr` が補完されます。"
+      },
+      {
+        id: 13, reqCount: 2,
+        text: "ネットワーク・ロードバランサ（NLB）とフレキシブル・ロードバランサ（ALB）の比較において、NLBが適しているシナリオを【2つ】選んでください。",
+        options: [
+          { id: "A", text: "HTTP/2 や WebSocket などのL7アプリケーション層プロトコルに基づく高度なパスルーティングを行いたい場合。", exp: "【误】L7 ALBの得意領域です。" },
+          { id: "B", text: "ミリ秒未満の極めて低いレイテンシと超高スループレベルが要求される UDP トラフィックの処理。", exp: "【正】NLB（L4）が極めて適しています。" },
+          { id: "C", text: "クライアントの元のパケットの送信元IPアドレスをバックエンドサーバー側で直接受信・保持したい場合。", exp: "【正】NLBのSource IP Preservation機能が適しています。" },
+          { id: "D", text: "SSL Offloading を適用し、バックエンドサーバーの暗号化復号負荷を軽減したい場合。", exp: "【誤】L7 ALBの領域です。" }
+        ],
+        correct: ["B", "C"],
+        exp: "【総合解説】NLBはL4レベルで超低遅延・高スループットを実現し、送信元IPアドレスの保持が可能です。"
+      },
+      {
+        id: 14, reqCount: 3,
+        text: "ZPR ポリシー「in VCN-Network:DB allow App:App1 endpoints to connect to DB-Server:App1 endpoints with protocol='tcp/1521'」の正しい解釈を3つ選んでください。",
+        options: [
+          { id: "A", text: "ネームスペースが明示されていないためポリシーは無効。", exp: "【誤】補完ルールが存在します。" },
+          { id: "B", text: "VCN-Network:DB の VCN-Network は属性値を表している。", exp: "【誤】属性（Key）を示します。" },
+          { id: "C", text: "App:App1 において、App は属性（Key）であり、App1 はその属性値（Value）である。", exp: "【正】Key:Value の構文ルールに基づきます。" },
+          { id: "D", text: "App:App1 の属性を持つリソースから、DB-Server:App1 の属性を持つ DB へ 1521/TCP 接続を許可している。", exp: "【正】指定属性間の通信を許可します。" },
+          { id: "E", text: "接続元インスタンスには VCN-Network:DB 属性が付与されている必要がある。", exp: "【誤】VCN-Network:DB はVCNに対するコンテキスト指定であり、インスタンス属性ではありません。" },
+          { id: "F", text: "ネームスペースが省略されている場合、デフォルトで oracle-zpr ネームスペースが補完される。", exp: "【正】省略時は oracle-zpr が補完されます。" }
+        ],
+        correct: ["C", "D", "F"],
+        exp: "【総合解説】ZPR（Zero Trust Packet Routing）ポリシーの記述仕様に基づきます。"
+      },
+      {
+        id: 15, reqCount: 2,
+        text: "Auto Scaling グループを構築する際に必要な設定コンポーネントを【2つ】選んでください。",
+        options: [
+          { id: "A", text: "インスタンス構成（Instance Configuration）", exp: "【正】スケーリング時に作成されるインスタンスのひな型（OS、SHAPE、VNIC設定等）を定義します。" },
+          { id: "B", text: "インスタンス・プール（Instance Pool）", exp: "【正】同一構成のインスタンス群をグループ化し、Auto Scalingの実行対象とします。" },
+          { id: "C", text: "Autonomous Recovery Service (RCV)", exp: "【誤】DB自動バックアップ用サービスです。" },
+          { id: "D", text: "ジオロケーション・ステアリング・ポリシー", exp: "【誤】DNSルーティング設定です。" }
         ],
         correct: ["A", "B"],
-        exp: "【プロフェッショナル解説】異種回線（FastConnect＋VPN）の主系/副系設計では、BGPの `AS-Path Prepending`（OCI側からの出力制御）と `Local Preference`（オンプレミス側からの出力制御）を正しく設計することが鉄則です。"
+        exp: "【総合解説】Auto Scalingは「インスタンス構成」からひな型を作り、「インスタンス・プール」に対してスケーリング条件を設定します。"
       },
       {
-        id: 20, tag: "DR/高可用性", reqCount: 1,
-        text: "OCI Monitoring および Logging Analytics を使用して、複数リージョンにまたがる高度な監査・アラート基盤を構築する際のベストプラクティスはどれですか？",
+        id: 16, reqCount: 1,
+        text: "[Pro] オンプレミスと複数のOCI VCN間をFastConnect経由でハブ＆スポーク型の全互いに接続するアーキテクチャを設計する場合、最も推奨される設計パターンはどれですか？",
         options: [
-          { id: "A", text: "Service Connector Hub を使用して各リージョンのログ（Audit/VCN Flow Logs）を集約し、単一リージョンのObject StorageやLogging Analyticsに集約分析する。", exp: "【正】Service Connector Hubによるログ集約パイプラインの構築が、マルチリージョン監視のベストプラクティスです。" },
-          { id: "B", text: "各インスタンス内で手動のShellスクリプトを実行し、SCPで単一サーバーへログを転送する。", exp: "【誤】運用負荷が高く非効率です。" },
-          { id: "C", text: "リージョンごとに独立した監視ダッシュボードのみを参照し、統合集約は行わない。", exp: "【誤】統合的なガバナンス・セキュリティ分析が困難になります。" },
-          { id: "D", text: "監査ログの保持期間をデフォルトの14日間に固定し、長期保存の設定を行わない。", exp: "【誤】コンプライアンス要件（通常1年以上）を満たせません。" }
+          { id: "A", text: "各VCNごとに独立したLPGを介してオンプレミスと個別に手動接続する。", exp: "【誤】LPGは推移的ルーティングをサポートせず、スケーラビリティに欠けます。" },
+          { id: "B", text: "1つのDRG（Dynamic Routing Gateway）にFastConnectとすべてのVCNアタッチメントを統合し、DRGルート表で推移的ルーティング（Transitive Routing）を制御する。", exp: "【正】新DRG機能により、1つのDRGで全VCNおよびFastConnectのルーティングを集中制御できます。" },
+          { id: "C", text: "すべてのVCNをパイク式にパブリック・インターネット経由のIPsec VPNで接続する。", exp: "【誤】FastConnectの利点（低遅延・広帯域）が失われます。" },
+          { id: "D", text: "VCN間にフルメッシュのローカル・ピアリング・ゲートウェイ（LPG）を100個構築する。", exp: "【誤】構築・管理が極めて複雑になりスケールしません。" }
         ],
-        correct: ["A"],
-        exp: "【プロフェッショナル解説】マルチリージョン環境のログ統合には、Service Connector Hubをハブとして機能させ、中央のLogging AnalyticsやObject Storageへバッチ/ストリーミング集約する設計が最適です。"
+        correct: ["B"],
+        exp: "【総合解説】OCIのDRGはVCN間およびオンプレミス（FastConnect/VPN）間の推移的ルーティングハブとして機能します。"
+      },
+      {
+        id: 17, reqCount: 1,
+        text: "[Pro] Oracle DatabaseをオンプレミスからOCI上のExabyte / Autonomous Databaseへ「最小限のダウンタイム（Zero Downtime）」で移行する場合、Oracle標準として推奨されるツールはどれですか？",
+        options: [
+          { id: "A", text: "Oracle Data Pumpのフル・エクスポート/インポートのみ", exp: "【誤】大容量DBではダウンタイムが長くなります。" },
+          { id: "B", text: "Oracle Zero Downtime Migration (ZDM)", exp: "【正】Data GuardやGoldenGate技術を自動化し、無停止に近い状態でのDB移行を支援する最良の選択肢です。" },
+          { id: "C", text: "OCI Storage Gateway", exp: "【誤】非構造化ファイル転送用でありDB移行専用ツールではありません。" },
+          { id: "D", text: "RMAN Duplicate コマンドによる手動構築のみ", exp: "【誤】手動構築手順が多く、完全自動化されたZDMが推奨されます。" }
+        ],
+        correct: ["B"],
+        exp: "【総合解説】ZDM (Zero Downtime Migration) はOracleが提供する標準移行自動化サービスです。"
+      },
+      {
+        id: 18, reqCount: 1,
+        text: "[Pro] テナント全体のセキュリティ基準を厳格に強制適用し、セキュリティ・リストの変更やストレージのパブリック化などの設定ミスを予防・自動修正するサービスとして適切なものはどれですか？",
+        options: [
+          { id: "A", text: "OCI Vault / Secrets Manager", exp: "【誤】暗号キーおよびパスワード管理ツールです。" },
+          { id: "B", text: "OCI Cloud Guard および Security Zones", exp: "【正】Cloud Guardで問題を検知し、Security Zonesで不正設定を未然に防止します。" },
+          { id: "C", text: "OCI Audit Log Console", exp: "【誤】監査ログの閲覧用途です。" },
+          { id: "D", text: "Network Security Group (NSG)", exp: "【誤】個別のVNIC単位ファイアウォールです。" }
+        ],
+        correct: ["B"],
+        exp: "【総合解説】Cloud GuardとMaximum Security ZonesはOCI環境全域のセキュリティ脅威の検出とポリシールール強制を提供します。"
       }
     ];
 
-    // 📖 プロフェッショナル必須 用語辞書 (30用語)
+    // 📖 用語データ (Professional用を追加拡張)
     const termDictionary = [
-      { term: "Active Data Guard (ADG)", desc: "Oracle DBの災害復旧技術。副系DBを読み取り専用（Read-Only）でオープンしたままリアルタイムで同期可能。RPO=0およびRTO数分の高度なDR構成を実現。" },
-      { term: "Maximum Availability / Protection", desc: "Active Data Guardの同期モード。主系でのトランザクションコミット時に副系へのログ到達を確認・保証することでデータ損失ゼロ（RPO=0）を担保する。" },
-      { term: "FastConnect (99.95% SLA)", desc: "オンプレミスとOCIを専用線で接続するサービス。多様な物理POPおよび2本の回線・2台のCPE構成をとることで99.95%の超高可用性SLAが適用される。" },
-      { term: "ZPR (Zero Trust Packet Routing)", desc: "ネットワークのIPアドレス指定に代わり、意図を表す「ZPR属性タグ（Key:Value）」を用いてサブネットやインスタンス間の通信を強制制御する次世代型ゼロトラスト機能。" },
-      { term: "IAM Verb (Inspect / Read / Use / Manage)", desc: "OCI IAMポリシーの4つの動詞レベル。Useはリソースの更新・起動・停止は可能だが、新規作成（Create）および削除（Delete）は許可されない。" },
-      { term: "Traffic Management Steering Policies", desc: "OCI DNSの高度なルーティング機能。ヘルスチェックと連動してユーザーのアクセス先を最適リージョンへ誘導、障害時にはDR先へ自動切替（Failover）を行う。" },
-      { term: "Data Transfer Appliance (DTA)", desc: "ペタバイト規模の大容量データを暗号化ハードウェア装置に格納して物理配送することで、ネットワーク帯域を使わず高速にOCIへ移行する物理サービス。" },
-      { term: "Cloud Guard", desc: "OCIテナンシー全体の設定不備（例: 誤ったPublic Bucket公開）や異常アクティビティを検出（Detector）し、自動的に公開停止などの修復（Responder）を行うセキュリティ管理機能。" },
-      { term: "Exadata Database Service (ExaDB-D)", desc: "専用Exadataインフラ上で動作する最高峰DBサービス。Smart Scanによるストレージオフロードと、コンピュート/ストレージの独立したオンライン拡張が特徴。" },
-      { term: "OCI WAF (Web Application Firewall)", desc: "Layer 7（HTTP/HTTPS）レベルでWebアプリケーションへの悪意あるリクエスト（SQLi, XSS等）を検知・遮断するセキュリティコンポーネント。" },
-      { term: "Auto Scaling (ADB)", desc: "Autonomous DatabaseでCPU負荷に応じて基本設定コア数の「最大3倍」までダウンタイムなしで即座に動的拡張する自律スケーリング機能。" },
-      { term: "Instance Pool & Auto-Healing", desc: "同構成のインスタンス群をグループ管理し、ロードバランサのヘルスチェックと連動して不健全ノードを自動再生成（置換）する高可用性パターン。" },
-      { term: "Oracle Cloud Migrations (OCM)", desc: "オンプレミスのVMware環境などの資産検出（Discovery）、最適Shape算出（Assessment）、移行実行までを一気通貫で自動化するマイグレーションサービス。" },
-      { term: "Cross-Tenancy DRG Peering", desc: "異なるOCIテナンシー間のVCN同士をDRGおよび双方向IAMポリシー（Define / Endorse / Admit）を用いて安全にプライベートピアリング接続する構成。" },
-      { term: "Auto Key Rotation (Vault)", desc: "OCI Vaultでマスター暗号化キーを過去の解読互換性を保ったまま一定周期で新バージョンに切り替え、暗号強度を高めるベストプラクティス。" },
-      { term: "Service Connector Hub", desc: "OCI上のログやイベントデータをターゲット（Object Storage, Functions, Streaming等）へ自動的に転送・加工するマネージドメッセージパイプライン。" },
-      { term: "DRG Route Table", desc: "DRG内部に保持される高度な仮想ルーティングテーブル。複数VCNやFastConnect、IPsec VPN間でのトラフィックの相互集約・転送（Transit Routing）を制御。" },
-      { term: "Security Zones", desc: "コンパートメントに対して厳格なセキュリティポリシーを事前定義・即時適用し、パブリックIPの付与や未暗号化ストレージの作成を強制遮断する領域。" },
-      { term: "Maximum Protection Mode", desc: "Data Guardにおいて、何らかの理由で副系（Standby）への同期ログ書き込みが失敗した場合、主系（Primary）のDB処理自体を停止させてデータ損失を絶対回避する極限保護モード。" },
-      { term: "Maximum Availability Mode", desc: "Data Guardにおいて、通常は同期モードで動作し、万一ネットワーク断が発生した場合は一時的に非同期へ自動切替して業務継続を最優先する高可用性モード。" },
-      { term: "Cross-Region Replication", desc: "Object StorageやBlock Volumeのデータを地理的に離れた別リージョンへ自動的に非同期複製し、広域災害に備えるDR機能。" },
-      { term: "Autonomous Recovery Service (RCV)", desc: "Oracle DB専用のリアルタイム保護サービス。チェンジログを連続転送（ZDLRA技術）することでRPOを1秒未満に抑えた高速リカバリを実現。" },
-      { term: "Network Firewall", desc: "Palo Alto Networksテクノロジーをベースとしたマネージド次世代ファイアウォール（NGFW）。VCN内のパケットのL7ディープインスペクションやURLフィルタリングを提供。" },
-      { term: "OCI Functions", desc: "Fn Projectをベースとしたサーバーレス実行基盤。イベント（Events）やService Connector Hubと連携し、特定イベント発生時にコードを自動実行。" },
-      { term: "Dynamic Group", desc: "OCIリソース（コンピュートインスタンス等）をマッチングルールで束ね、IAMポリシーを適用することで、インスタンス自体にOCI API実行権限を付与する仕組み。" },
-      { term: "Compartment Explorer", desc: "テナンシー内の複数コンパートメントに分散配置されたすべてのOCIリソースを一覧・横断検索し、ガバナンスとツリー構造を可視化する管理機能。" },
-      { term: "BGP (Border Gateway Protocol)", desc: "FastConnectやIPsec VPN構成時にOCIとオンプレミス間で動的にルーティング情報を交換し、障害時の自動迂回（Failover）を実現するプロトコル。" },
-      { term: "AS-Path Prepending", desc: "BGPルーティングにおいて、冗長化されたFastConnect回線のプライマリ/セカンダリの経路優先度を明示的に制御するために用いるBGP技法。" },
-      { term: "OCI Search with OpenSearch", desc: "大量のログデータや非構造化テキストを分散インデックス化し、OpenSearch Dashboardsによりリアルタイムで高速可視化・分析する分析基盤。" },
-      { term: "MQL (Monitoring Query Language)", desc: "OCI Monitoringサービスで大量のインフラ・アプリケーションメトリックを集計・評価し、アラート（Alarm）条件を柔軟に記述するための専用問い合わせ言語。" }
+      { term: "AD（アベイラビリティ・ドメイン）", desc: "リージョン内に存在する、互いに独立した1つ以上のデータセンター。電源やネットワークが完全に隔離されており、障害耐性を高める配置に使用する。" },
+      { term: "FD（障害ドメイン）", desc: "1つのAD内に存在するハードウェアや電源のグループ（各ADに3つ配置）。同一AD内での機器故障の影響を分散させるために利用する。" },
+      { term: "VCN（仮想クラウド・ネットワーク）", desc: "OCI上に構築する自分専用のカスタマイズ可能な仮想ネットワーク。サブネット、ルート表、セキュリティ・リストなどで構成される。" },
+      { term: "コンパートメント", desc: "OCIのリソースを論理的に整理・隔離するための領域。アクセス制御（IAMポリシー）や課金管理の単位として使用される。" },
+      { term: "IAM（Identity and Access Management）", desc: "ユーザー、グループ、動的グループに対して「誰が・どのリソースに・どのような操作を行えるか」をポリシーで制御する認証・認可機能。" },
+      { term: "動的グループ（Dynamic Group）", desc: "OCIリソース（コンピュートやFunctionsなど）を自動でまとめるグループ。IAMポリシーを適用することで、リソース自体に他サービスへのアクセス権限を付与できる。" },
+      { term: "インターネット・ゲートウェイ（IGW）", desc: "VCNのパブリック・サブネットとインターネットとの間で双方向の通信を可能にするゲートウェイ。" },
+      { term: "NAT ゲートウェイ", desc: "プライベート・サブネット内のインスタンスが、インターネット側へ一方通行で通信（アウトバウンド）できるようにするゲートウェイ。" },
+      { term: "サービス・ゲートウェイ", desc: "VCN内のプライベート・サブネットから、インターネットを経由せずにOCIの各種サービス（LoggingやObject Storageなど）へ安全にアクセスするための通信口。" },
+      { term: "DRG（動的ルーティング・ゲートウェイ）", desc: "VCNと外部ネットワーク（オンプレミス、他リージョンのVCN、Azureなど）を専用線やVPNで相互接続するための仮想ルーター。" },
+      { term: "LPG（ローカル・ピアリング・ゲートウェイ）", desc: "同一リージョン内にある2つのVCN同士を、インターネットを経由させずに直接通信させるためのゲートウェイ。" },
+      { term: "RPC（リモート・ピアリング・コネクション）", desc: "異なるリージョン間にあるVCN同士を、DRGを介して接続・通信させるためのコンポーネント。" },
+      { term: "ブロック・ボリューム", desc: "コンピュート・インスタンスに接続して使用する永続的な高パフォーマンス・ブロック・ストレージ（SANと同等）。VPUで性能を調整可能。" },
+      { term: "オブジェクト・ストレージ", desc: "非構造化データ（画像、バックアップ、ログなど）を無制限に保存できる拡張性に優れたストレージ（Standard/Archive/Infrequencyアクセス層がある）。" },
+      { term: "ファイル・ストレージ（FSS）", desc: "NFSv3プロトコルをサポートし、複数のコンピュート・インスタンスから同時にマウントして共有できるファイルシステム。" },
+      { term: "Autonomous Database（ADB）", desc: "チューニング、パッチ適用、バックアップなどの運用管理がAI・機械学習により完全に自動化された自律型データベース（ATP/ADW）。" },
+      { term: "RCV（Autonomous Recovery Service）", desc: "Oracle Database向けの全自動リカバリサービス。ZDLRA技術をベースとし、RPOを1秒未満に抑えるリアルタイム保護を提供する。" },
+      { term: "セキュリティ・リスト", desc: "サブネットレベルで適用される仮想ファイアウォール。インバウンド／アウトバウンドのルールをステートフル／ステートレスで指定する。" },
+      { term: "NSG（ネットワーク・セキュリティ・グループ）", desc: "特定のVNIC（仮想NIC）単位で適用できる仮想ファイアウォール。VCN設計を変えずに柔軟なアクセス制御が可能。" },
+      { term: "WAF（Web Application Firewall）", desc: "Webアプリケーションの手前に配置し、SQLインジェクションやXSSなどの悪意あるリクエストを検知・遮断するセキュリティ機能。" },
+      { term: "OCI Vault", desc: "暗号化キー（マスター・キー）やデータ接続の認証情報（シークレット）を安全に中央管理・保管するサービス。" },
+      { term: "ZPR（Zero Trust Packet Routing）", desc: "ネットワークIPアドレスではなく「セキュリティ属性（タグ）」に基づいて通信の許可・不許可を制御するOCIのゼロトラストセキュリティ機能。" },
+      { term: "ジオロケーション・ステアリング", desc: "OCI DNSの機能。アクセス元のユーザーの地理的ロケーションに基づいて、最も近いデータセンターのIPアドレスへ誘導するポリシー。" },
+      { term: "認証トークン（Auth Token）", desc: "Docker CLIなどの外部ツールからOCI Container Registry（OCIR）へアクセス・ログインする際にパスワードとして使用する文字列。" },
+      { term: "Resource Manager", desc: "TerraformをベースとしたOCIのマネージドサービス。Infrastructure as Code (IaC) によりインフラ構築・変更を自動化する。" },
+      { term: "サービス・コネクタ・ハブ", desc: "Loggingなどのソースから、Object StorageやFunctionsなどのターゲットへデータを自動転送・加工・連携するクラウドパイプライン。" },
+      { term: "OCI Cache", desc: "RedisおよびValkeyと互換性のあるフルマネージドのインメモリキャッシュサービス。ミリ秒未満の高速レスポンスを実現する。" },
+      { term: "OCI Search with OpenSearch", desc: "大規模なログ分析や全文検索を実現するフルマネージド検索エンジン。OpenSearch Dashboardsによる可視化にも対応。" },
+      { term: "Oracle Cloud Migrations (OCM)", desc: "オンプレミスのVMware環境などの仮想マシンを分析し、OCI上のコンピュート・インスタンスへ自動移行・変換するサービス。" },
+      { term: "MQL（Monitoring Query Language）", desc: "OCI Monitoringでメトリックデータを検索・集計・アラーム定義するために使用する専用のクエリ言語。" },
+      { term: "FastConnect", desc: "オンプレミス環境とOCI間をインターネットを経由せず専用線で接続する高品質・低遅延の接続サービス。" },
+      { term: "ZDM (Zero Downtime Migration)", desc: "Oracle DBをオンプレミスからOCIへ最小限のダウンタイムで安全に移行するための標準ツール。" },
+      { term: "Autonomous Data Guard", desc: "Autonomous Databaseで数クリックで設定可能な高可用性・災害復旧（DR）自動同期機能。" },
+      { term: "Cloud Guard", desc: "OCI環境全体を常時監視し、セキュリティ設定の不備や危険な操作を自動検知・修復するサービス。" },
+      { term: "Maximum Security Zones", desc: "厳格なセキュリティ・ポリシーがコンパートメント単位で事前に強制適用されるセキュリティ・ゾーン。" }
     ];
 
-    let currentFilteredQuestions = [...rawQuestions];
     let currentIndex = 0;
-    
-    // localStorage から学習状態を復元
-    let selectedAnswers = JSON.parse(localStorage.getItem('oci_pro_selectedAnswers') || '{}');
-    let answeredState = JSON.parse(localStorage.getItem('oci_pro_answeredState') || '{}');
-    let wrongQuestions = JSON.parse(localStorage.getItem('oci_pro_wrongQuestions') || '{}');
+    let selectedAnswers = {};
+    let answeredState = {};
 
     window.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('authenticated') === 'true') {
         document.getElementById('auth-overlay').classList.add('hidden');
       }
-      filterQuestions();
+      renderQuestion();
       renderDictionary();
       generateTermQuiz();
     });
 
-    function saveState() {
-      localStorage.setItem('oci_pro_selectedAnswers', JSON.stringify(selectedAnswers));
-      localStorage.setItem('oci_pro_answeredState', JSON.stringify(answeredState));
-      localStorage.setItem('oci_pro_wrongQuestions', JSON.stringify(wrongQuestions));
-      updateStats();
-    }
-
-    function resetProgress() {
-      if (confirm("学習の回答履歴と弱点記録をすべてリセットしますか？")) {
-        selectedAnswers = {};
-        answeredState = {};
-        wrongQuestions = {};
-        saveState();
-        filterQuestions();
-      }
-    }
-
-    function updateStats() {
-      let correctCount = 0;
-      let totalAnswered = 0;
-      rawQuestions.forEach(q => {
-        if (answeredState[q.id]) {
-          totalAnswered++;
-          if (!wrongQuestions[q.id]) {
-            correctCount++;
-          }
-        }
-      });
-      document.getElementById('stat-correct').innerText = correctCount;
-      document.getElementById('stat-total').innerText = rawQuestions.length;
-    }
-
-    function filterQuestions() {
-      const selectedTag = document.getElementById('tag-filter').value;
-      const wrongOnly = document.getElementById('wrong-only-toggle').checked;
-
-      currentFilteredQuestions = rawQuestions.filter(q => {
-        const matchesTag = (selectedTag === 'ALL' || q.tag === selectedTag);
-        const matchesWrong = (!wrongOnly || wrongQuestions[q.id] === true);
-        return matchesTag && matchesWrong;
-      });
-
-      currentIndex = 0;
-      renderQuestion();
-      updateStats();
-    }
-
     function switchTab(tabName) {
       document.getElementById('tab-quiz').classList.add('hidden');
-      document.getElementById('tab-mock').classList.add('hidden');
       document.getElementById('tab-dict').classList.add('hidden');
       document.getElementById('tab-termquiz').classList.add('hidden');
 
       const btnQuiz = document.getElementById('tab-quiz-btn');
-      const btnMock = document.getElementById('tab-mock-btn');
       const btnDict = document.getElementById('tab-dict-btn');
       const btnTermQuiz = document.getElementById('tab-termquiz-btn');
 
-      [btnQuiz, btnMock, btnDict, btnTermQuiz].forEach(btn => {
-        btn.className = "px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
+      [btnQuiz, btnDict, btnTermQuiz].forEach(btn => {
+        btn.className = "px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200";
       });
 
       if (tabName === 'quiz') {
         document.getElementById('tab-quiz').classList.remove('hidden');
-        btnQuiz.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
-      } else if (tabName === 'mock') {
-        document.getElementById('tab-mock').classList.remove('hidden');
-        btnMock.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
+        btnQuiz.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
       } else if (tabName === 'dict') {
         document.getElementById('tab-dict').classList.remove('hidden');
-        btnDict.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
+        btnDict.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
       } else if (tabName === 'termquiz') {
         document.getElementById('tab-termquiz').classList.remove('hidden');
-        btnTermQuiz.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
+        btnTermQuiz.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
       }
     }
 
     function renderQuestion() {
-      const container = document.getElementById('options-container');
-      const expCard = document.getElementById('explanation-card');
+      const q = rawQuestions[currentIndex];
       
-      if (currentFilteredQuestions.length === 0) {
-        document.getElementById('q-number').innerText = "QUESTION 0 / 0";
-        document.getElementById('q-tag').innerText = "該当なし";
-        document.getElementById('q-req-count').innerText = "-";
-        document.getElementById('q-text').innerText = "該当する問題が見つかりませんでした。フィルター条件を変更してください。";
-        container.innerHTML = '';
-        expCard.classList.add('hidden');
-        document.getElementById('quiz-progress').style.width = '0%';
-        return;
-      }
-
-      const q = currentFilteredQuestions[currentIndex];
-      
-      const progressPercent = ((currentIndex + 1) / currentFilteredQuestions.length) * 100;
-      document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
-
-      document.getElementById('q-number').innerText = `QUESTION ${currentIndex + 1} / ${currentFilteredQuestions.length}`;
-      document.getElementById('q-tag').innerText = q.tag;
+      document.getElementById('q-number').innerText = `問題 ${currentIndex + 1} / ${rawQuestions.length}`;
       document.getElementById('q-req-count').innerText = `${q.reqCount}つ選択`;
       document.getElementById('q-text').innerText = q.text;
 
       document.getElementById('prev-btn').disabled = currentIndex === 0;
-      document.getElementById('prev-btn').classList.toggle('opacity-30', currentIndex === 0);
-      document.getElementById('next-btn').disabled = currentIndex === currentFilteredQuestions.length - 1;
-      document.getElementById('next-btn').classList.toggle('opacity-30', currentIndex === currentFilteredQuestions.length - 1);
+      document.getElementById('prev-btn').classList.toggle('opacity-40', currentIndex === 0);
+      document.getElementById('next-btn').disabled = currentIndex === rawQuestions.length - 1;
+      document.getElementById('next-btn').classList.toggle('opacity-40', currentIndex === rawQuestions.length - 1);
 
+      const container = document.getElementById('options-container');
       container.innerHTML = '';
 
       const currentSelected = selectedAnswers[q.id] || [];
@@ -701,38 +500,39 @@
         const isChecked = currentSelected.includes(opt.id);
         const optEl = document.createElement('label');
         
-        let borderStyle = "border-slate-800/80 bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 text-slate-300";
+        let borderStyle = "border-slate-700/70 bg-slate-900/40 hover:bg-slate-900/80 hover:border-indigo-500/50 text-slate-300";
         if (isChecked) {
-          borderStyle = "border-indigo-500/80 bg-indigo-500/10 text-white font-semibold ring-2 ring-indigo-500/20 shadow-lg shadow-indigo-500/10";
+          borderStyle = "border-indigo-500 bg-indigo-500/10 text-white font-medium ring-1 ring-indigo-500/50";
         }
 
         if (isAnswered) {
           const isCorrectOpt = q.correct.includes(opt.id);
           if (isCorrectOpt) {
-            borderStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-200 font-semibold ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/10";
+            borderStyle = "border-emerald-500/80 bg-emerald-500/10 text-emerald-300 font-semibold ring-1 ring-emerald-500/40";
           } else if (isChecked && !isCorrectOpt) {
-            borderStyle = "border-rose-500 bg-rose-500/10 text-rose-300 ring-2 ring-rose-500/20";
+            borderStyle = "border-rose-500/80 bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/40";
           }
         }
 
-        optEl.className = `flex items-start gap-4 p-4.5 rounded-2xl border text-sm cursor-pointer transition-all duration-200 ${borderStyle}`;
+        optEl.className = `flex items-start gap-3.5 p-4 rounded-xl border text-sm cursor-pointer transition-all duration-200 ${borderStyle}`;
         
         const inputType = q.reqCount === 1 ? 'radio' : 'checkbox';
         optEl.innerHTML = `
           <input type="${inputType}" name="q-option" value="${opt.id}" ${isChecked ? 'checked' : ''} ${isAnswered ? 'disabled' : ''} 
-            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-500 focus:ring-indigo-500/30 rounded border-slate-700 bg-slate-950">
-          <span class="flex-1 leading-relaxed"><strong class="mr-2 text-indigo-400 font-bold">${opt.id}.</strong>${opt.text}</span>
+            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-500 focus:ring-indigo-500 rounded border-slate-700 bg-slate-900">
+          <span class="flex-1"><strong class="mr-2 text-indigo-400 font-bold">${opt.id}.</strong>${opt.text}</span>
         `;
         container.appendChild(optEl);
       });
 
+      const expCard = document.getElementById('explanation-card');
       const submitBtn = document.getElementById('submit-btn');
 
       if (isAnswered) {
         expCard.classList.remove('hidden');
-        submitBtn.innerText = "✓ 回答済み";
+        submitBtn.innerText = "回答済み";
         submitBtn.disabled = true;
-        submitBtn.className = "bg-slate-800/50 text-slate-500 font-bold px-8 py-3.5 rounded-2xl text-sm cursor-not-allowed border border-slate-800/80";
+        submitBtn.className = "bg-slate-700/50 text-slate-500 font-semibold px-8 py-3 rounded-xl text-sm cursor-not-allowed border border-slate-700/50";
 
         document.getElementById('overall-exp').innerText = q.exp;
         const optExpContainer = document.getElementById('option-explanations');
@@ -740,7 +540,7 @@
         q.options.forEach(opt => {
           const p = document.createElement('p');
           const isCorrect = q.correct.includes(opt.id);
-          p.className = isCorrect ? "text-emerald-400 font-medium bg-emerald-500/5 p-2.5 rounded-xl border border-emerald-500/20" : "text-slate-400 p-1";
+          p.className = isCorrect ? "text-emerald-400 font-medium" : "text-slate-400";
           p.innerHTML = `<strong class="text-indigo-300">${opt.id}:</strong> ${opt.exp}`;
           optExpContainer.appendChild(p);
         });
@@ -749,13 +549,12 @@
         expCard.classList.add('hidden');
         submitBtn.innerText = "回答を送信する";
         submitBtn.disabled = false;
-        submitBtn.className = "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]";
+        submitBtn.className = "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-indigo-600/20 transition duration-200 text-sm";
       }
     }
 
     function toggleOption(optId) {
-      if (currentFilteredQuestions.length === 0) return;
-      const q = currentFilteredQuestions[currentIndex];
+      const q = rawQuestions[currentIndex];
       let current = selectedAnswers[q.id] || [];
 
       if (q.reqCount === 1) {
@@ -773,13 +572,11 @@
         }
       }
       selectedAnswers[q.id] = current;
-      saveState();
       renderQuestion();
     }
 
     function checkAnswer() {
-      if (currentFilteredQuestions.length === 0) return;
-      const q = currentFilteredQuestions[currentIndex];
+      const q = rawQuestions[currentIndex];
       const current = selectedAnswers[q.id] || [];
 
       if (current.length === 0) {
@@ -793,16 +590,6 @@
       }
 
       answeredState[q.id] = true;
-
-      // 正解判定 & 弱点フラグの更新
-      const isCorrect = q.correct.length === current.length && q.correct.every(val => current.includes(val));
-      if (isCorrect) {
-        delete wrongQuestions[q.id];
-      } else {
-        wrongQuestions[q.id] = true;
-      }
-
-      saveState();
       renderQuestion();
     }
 
@@ -814,13 +601,12 @@
     }
 
     function nextQuestion() {
-      if (currentIndex < currentFilteredQuestions.length - 1) {
+      if (currentIndex < rawQuestions.length - 1) {
         currentIndex++;
         renderQuestion();
       }
     }
 
-    // 📖 用語集レンダリング
     function renderDictionary() {
       const searchText = document.getElementById('dict-search').value.toLowerCase();
       const container = document.getElementById('dict-list');
@@ -832,25 +618,21 @@
       );
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 py-4">該当するプロ用語が見つかりませんでした。</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-2">該当する用語が見つかりませんでした。</p>`;
         return;
       }
 
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = "p-5 border border-slate-800/80 rounded-2xl bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 transition duration-200 space-y-2";
+        card.className = "p-4 border border-slate-700/60 rounded-xl bg-slate-900/40 hover:bg-slate-900/80 hover:border-indigo-500/40 transition duration-200";
         card.innerHTML = `
-          <h4 class="font-extrabold text-indigo-300 text-sm tracking-wide flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-            ${item.term}
-          </h4>
-          <p class="text-xs text-slate-400 leading-relaxed font-normal">${item.desc}</p>
+          <h4 class="font-bold text-indigo-300 text-sm mb-1.5">${item.term}</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">${item.desc}</p>
         `;
         container.appendChild(card);
       });
     }
 
-    // ⚡ スピード一問一答
     let currentTermQuiz = null;
 
     function generateTermQuiz() {
@@ -884,8 +666,8 @@
 
       choices.forEach((choice, i) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300";
-        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400 font-mono">[${i + 1}]</span>${choice.desc}`;
+        btn.className = "w-full text-left p-4 border border-slate-700/60 rounded-xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 transition bg-slate-900/40 text-slate-300";
+        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400">${i + 1}.</span>${choice.desc}`;
         btn.onclick = () => answerTermQuiz(choice.isCorrect, btn);
         optionsContainer.appendChild(btn);
       });
@@ -898,142 +680,19 @@
       allButtons.forEach(btn => btn.disabled = true);
 
       if (isCorrect) {
-        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
-        resultEl.innerText = "⭕ 正解です！高度アーキテクチャ概念を完全把握しています。";
+        btnElement.className = "w-full text-left p-4 border border-emerald-500/80 bg-emerald-500/10 text-emerald-300 rounded-xl text-xs leading-relaxed font-semibold";
+        resultEl.innerText = "⭕ 正解です！";
         resultEl.className = "text-sm font-bold text-emerald-400";
       } else {
-        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed";
-        resultEl.innerText = "❌ 残念！不正解です。用語集で再確認しましょう。";
+        btnElement.className = "w-full text-left p-4 border border-rose-500/80 bg-rose-500/10 text-rose-300 rounded-xl text-xs leading-relaxed";
+        resultEl.innerText = "❌ 残念！不正解です。";
         resultEl.className = "text-sm font-bold text-rose-400";
 
         currentTermQuiz.choices.forEach((c, idx) => {
           if (c.isCorrect) {
-            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
+            allButtons[idx].className = "w-full text-left p-4 border border-emerald-500/80 bg-emerald-500/10 text-emerald-300 rounded-xl text-xs leading-relaxed font-semibold";
           }
         });
-      }
-    }
-
-    // ⏱️ 模擬試験モード ロジック
-    let mockQuestions = [];
-    let mockAnswers = {};
-    let mockTimerInterval = null;
-    let mockTimeRemaining = 1200; // 20分 (1200秒)
-
-    function startMockExam() {
-      document.getElementById('mock-start-screen').classList.add('hidden');
-      document.getElementById('mock-result-screen').classList.add('hidden');
-      document.getElementById('mock-active-screen').classList.remove('hidden');
-
-      // ランダムシャッフルして問題セットを作成
-      mockQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
-      mockAnswers = {};
-      mockTimeRemaining = 1200;
-
-      renderMockQuestions();
-      startMockTimer();
-    }
-
-    function startMockTimer() {
-      clearInterval(mockTimerInterval);
-      mockTimerInterval = setInterval(() => {
-        mockTimeRemaining--;
-        const mins = Math.floor(mockTimeRemaining / 60);
-        const secs = mockTimeRemaining % 60;
-        document.getElementById('mock-timer').innerText = `⏱️ 残り時間: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-        if (mockTimeRemaining <= 0) {
-          clearInterval(mockTimerInterval);
-          alert("制限時間終了です。自動採点します。");
-          finishMockExam();
-        }
-      }, 1000);
-    }
-
-    function renderMockQuestions() {
-      const container = document.getElementById('mock-questions-container');
-      container.innerHTML = '';
-
-      mockQuestions.forEach((q, idx) => {
-        const qCard = document.createElement('div');
-        qCard.className = "p-6 rounded-2xl border border-slate-800 bg-slate-950/40 space-y-4";
-        
-        let optionsHtml = '';
-        q.options.forEach(opt => {
-          const inputType = q.reqCount === 1 ? 'radio' : 'checkbox';
-          optionsHtml += `
-            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-800 bg-slate-900/50 hover:bg-slate-800/80 cursor-pointer text-xs text-slate-300">
-              <input type="${inputType}" name="mock-q-${q.id}" value="${opt.id}" onchange="selectMockOption(${q.id}, '${opt.id}', ${q.reqCount})" class="mt-0.5 text-indigo-500 rounded border-slate-700 bg-slate-950">
-              <span><strong class="text-indigo-400 mr-1">${opt.id}.</strong>${opt.text}</span>
-            </label>
-          `;
-        });
-
-        qCard.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full">問 ${idx + 1} / ${q.reqCount}つ選択</span>
-            <span class="text-xs text-slate-500 font-bold">[${q.tag}]</span>
-          </div>
-          <p class="text-sm font-semibold text-slate-100">${q.text}</p>
-          <div class="space-y-2.5">${optionsHtml}</div>
-        `;
-        container.appendChild(qCard);
-      });
-      updateMockProgress();
-    }
-
-    function selectMockOption(qId, optId, reqCount) {
-      let current = mockAnswers[qId] || [];
-      if (reqCount === 1) {
-        current = [optId];
-      } else {
-        if (current.includes(optId)) {
-          current = current.filter(id => id !== optId);
-        } else {
-          current.push(optId);
-        }
-      }
-      mockAnswers[qId] = current;
-      updateMockProgress();
-    }
-
-    function updateMockProgress() {
-      const answeredCount = Object.keys(mockAnswers).filter(k => mockAnswers[k].length > 0).length;
-      document.getElementById('mock-progress-text').innerText = `解答状況: ${answeredCount} / ${mockQuestions.length}`;
-    }
-
-    function finishMockExam() {
-      clearInterval(mockTimerInterval);
-
-      let correctCount = 0;
-      mockQuestions.forEach(q => {
-        const userAns = mockAnswers[q.id] || [];
-        const isCorrect = q.correct.length === userAns.length && q.correct.every(val => userAns.includes(val));
-        if (isCorrect) correctCount++;
-      });
-
-      const scorePercent = Math.round((correctCount / mockQuestions.length) * 100);
-      const isPassed = scorePercent >= 70;
-
-      document.getElementById('mock-active-screen').classList.add('hidden');
-      document.getElementById('mock-result-screen').classList.remove('hidden');
-
-      const badge = document.getElementById('mock-badge');
-      const title = document.getElementById('mock-score-title');
-      const sub = document.getElementById('mock-score-sub');
-
-      if (isPassed) {
-        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
-        badge.innerText = "🎉";
-        title.innerText = `合格判定 (${scorePercent}点)`;
-        title.className = "text-3xl font-black text-emerald-400";
-        sub.innerText = `正解数: ${correctCount} / ${mockQuestions.length} 問。1Z0-997 の本番合格レベルに到達しています！`;
-      } else {
-        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-rose-500/20 text-rose-400 border border-rose-500/40";
-        badge.innerText = "⚠️";
-        title.innerText = `不合格判定 (${scorePercent}点)`;
-        title.className = "text-3xl font-black text-rose-400";
-        sub.innerText = `正解数: ${correctCount} / ${mockQuestions.length} 問（合格ライン 70%）。弱点問題を見直して再挑戦しましょう。`;
       }
     }
   </script>
