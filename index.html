@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCI Architect Associate 対策問題集</title>
+  <title>OCI Architect Associate 総合学習アプリ</title>
   <style>
     :root {
       --bg: #f4f6f9;
@@ -32,6 +32,37 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       box-sizing: border-box;
     }
+    /* タブナビゲーション */
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border: none;
+      background: #e0e0e0;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 共通要素 */
     .header {
       display: flex;
       justify-content: space-between;
@@ -61,10 +92,6 @@
       font-size: 14px;
       line-height: 1.4;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-    .option-btn:active {
-      background: #f0f0f0;
     }
     .option-btn.selected {
       border-color: var(--primary);
@@ -93,9 +120,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-    .action-btn:disabled {
-      background: #ccc;
-    }
     .explanation {
       margin-top: 16px;
       padding: 12px;
@@ -117,330 +141,401 @@
       border: 1px dashed #ccc;
       display: none;
     }
+
+    /* 用語一覧用スタイル */
+    .search-box {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .term-item {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .term-title {
+      padding: 12px;
+      background: #f9f9f9;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+    .term-body {
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="header">
-    <span id="q-count">問題 1 / 20</span>
-    <span id="q-req"></span>
+  <!-- タブ切り替えボタン -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('quiz-tab')">実践問題集</button>
+    <button class="tab-btn" onclick="switchTab('terms-tab')">用語一覧</button>
+    <button class="tab-btn" onclick="switchTab('term-quiz-tab')">用語クイズ</button>
   </div>
-  
-  <div id="q-text" class="q-text"></div>
-  <div id="options" class="options"></div>
-  
-  <button id="action-btn" class="action-btn" onclick="submitAnswer()">回答する</button>
-  <div id="explanation" class="explanation"></div>
+
+  <!-- TAB 1: 実践問題集 -->
+  <div id="quiz-tab" class="tab-content active">
+    <div class="header">
+      <span id="q-count">問題 1 / 20</span>
+      <span id="q-req"></span>
+    </div>
+    <div id="q-text" class="q-text"></div>
+    <div id="options" class="options"></div>
+    <button id="action-btn" class="action-btn" onclick="submitAnswer()">回答する</button>
+    <div id="explanation" class="explanation"></div>
+  </div>
+
+  <!-- TAB 2: 用語一覧 -->
+  <div id="terms-tab" class="tab-content">
+    <input type="text" id="term-search" class="search-box" placeholder="用語を検索..." oninput="filterTerms()">
+    <div id="terms-list"></div>
+  </div>
+
+  <!-- TAB 3: 用語クイズ -->
+  <div id="term-quiz-tab" class="tab-content">
+    <div class="header">
+      <span id="tq-count">用語クイズ 1 / 10</span>
+    </div>
+    <div id="tq-text" class="q-text"></div>
+    <div id="tq-options" class="options"></div>
+    <button id="tq-action-btn" class="action-btn" onclick="submitTermQuizAnswer()">回答する</button>
+    <div id="tq-explanation" class="explanation"></div>
+  </div>
 </div>
 
 <script>
-const MY_PASSWORD = "1219"; // ← 「pass」の部分をご自身の好きなパスワードに変更してください
-
+// パスワード機能（必要に応じてパスワードを変更してください）
+const MY_PASSWORD = "pass"; 
 let inputPass = prompt("パスワードを入力してください:");
 if (inputPass !== MY_PASSWORD) {
   alert("パスワードが正しくありません。");
   document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px;'>アクセス権限がありません。</h2>";
   throw new Error("Unauthorized");
 }
+
+// --------------------------------------------------
+// 専門用語データ（辞書＆クイズ用）
+// --------------------------------------------------
+const termDictionary = [
+  { term: "動的グループ（Dynamic Group）", desc: "OCIリソース（コンピュートやFunctionsなど）を自動でまとめるグループ。IAMポリシーを適用することで、リソース自体に他サービスへのアクセス権限を付与できる。" },
+  { term: "サービス・ゲートウェイ", desc: "VCN内のプライベート・サブネットから、インターネットを経由せずにOCIの各種サービス（LoggingやObject Storageなど）へ安全にアクセスするための通信口。" },
+  { term: "NAT ゲートウェイ", desc: "プライベート・サブネット内のインスタンスが、インターネット側へ一方通行で通信（アウトバウンド）できるようにするゲートウェイ。" },
+  { term: "DRG（動的ルーティング・ゲートウェイ）", desc: "VCNと外部ネットワーク（オンプレミス、他リージョンのVCN、Azureなど）を専用線やVPNで相互接続するための仮想ルーター。" },
+  { term: "ジオロケーション・ステアリング", desc: "OCI DNSの機能。アクセス元のユーザーの地理的ロケーションに基づいて、最も近いデータセンターのIPアドレスへ誘導するポリシー。" },
+  { term: "WAF（Web Application Firewall）", desc: "Webアプリケーションの手前に配置し、SQLインジェクションやXSSなどの悪意あるリクエストを検知・遮断するセキュリティ機能。" },
+  { term: "認証トークン（Auth Token）", desc: "Docker CLIなどの外部ツールからOCI Container Registry（OCIR）へアクセス・ログインする際にパスワードとして使用する文字列。" },
+  { term: "ZPR（Zero Trust Packet Routing）", desc: "ネットワークIPアドレスではなく「セキュリティ属性（タグ）」に基づいて通信の許可・不許可を制御するOCIのゼロトラストセキュリティ機能。" },
+  { term: "RCV（Autonomous Recovery Service）", desc: "Oracle Database向けの全自動リカバリサービス。ZDLRA技術をベースとし、RPOを1秒未満に抑えるリアルタイム保護を提供する。" },
+  { term: "OCI Cache", desc: "RedisおよびValkeyと互換性のあるフルマネージドのインメモリキャッシュサービス。ミリ秒未満の高速レスポンスを実現する。" }
+];
+
+// --------------------------------------------------
+// 全20問の問題データ
+// --------------------------------------------------
 const rawQuestions = [
   {
-    id: 1,
-    reqCount: 4,
+    id: 1, reqCount: 4,
     text: "OCI Functions（ファンクション）に関する記述として正しいものを4つ選んでください。",
     options: [
       { id: "A", text: "実行中のファンクションから他の OCI リソースにアクセスすることは禁止されている。", exp: "【誤】IAMポリシーや動的グループを使えば他リソースへのアクセスが可能です。" },
-      { id: "B", text: "ファンクションを動的グループに含め、IAM ポリシーを構成することで、他の OCI リソースへアクセスできる。", exp: "【正】動動的グループとポリシーの組み合わせにより、セキュアに他リソースへアクセスできます。" },
-      { id: "C", text: "ファンクションの呼び出し回数や実行時間などは、OCI モニタリング・サービスでメトリックとして監視できる。", exp: "【正】呼び出し回数や実行時間は標準のモニタリングメトリックとして用意されています。" },
+      { id: "B", text: "ファンクションを動的グループに含め、IAM ポリシーを構成することで、他の OCI リソースへアクセスできる。", exp: "【正】動的グループとポリシーの組み合わせによりアクセス権を付与できます。" },
+      { id: "C", text: "ファンクションの呼び出し回数や実行時間などは、OCI モニタリング・サービスでメトリックとして監視できる。", exp: "【正】呼び出し回数や実行時間は標準メトリックです。" },
       { id: "D", text: "モニタリング・サービスで監視できるメトリックとして、ファンクションが消費している CPU やメモリーの量がある。", exp: "【誤】CPUやメモリ消費量のメトリックは直接提供されていません。" },
-      { id: "E", text: "サービス・コネクタ・ハブのタスクとしてファンクションを指定し、ログデータを加工できる。", exp: "【正】サービス・コネクタ・ハブのタスクとして呼び出し、ストリーミングデータやログの加工が可能です。" },
-      { id: "F", text: "モニタリングのアラーム定義において、アラーム通知の宛先として直接指定できる。", exp: "【誤】通知の宛先にはオンス（Topics）やシカ（PDSなど）を指定します。" },
-      { id: "G", text: "リソース・スケジューラを使用して、ファンクションの定期実行を設定できる。", exp: "【正】リソース・スケジューラのターゲットとしてファンクションを指定し、定期実行が可能です。" }
+      { id: "E", text: "サービス・コネクタ・ハブのタスクとしてファンクションを指定し、ログデータを加工できる。", exp: "【正】サービス・コネクタ・ハブのタスクとしてデータ加工に利用可能です。" },
+      { id: "F", text: "モニタリングのアラーム定義において、アラーム通知の宛先として直接指定できる。", exp: "【誤】通知の宛先にはトピック（ONS）等を指定します。" },
+      { id: "G", text: "リソース・スケジューラを使用して、ファンクションの定期実行を設定できる。", exp: "【正】リソース・スケジューラからの定期実行に対応しています。" }
     ],
     correct: ["B", "C", "E", "G"],
     exp: "【総合解説】ファンクションは動的グループとIAMポリシーで他リソースへアクセスでき、モニタリング監視やサービス・コネクタ連携、リソース・スケジューラからの実行に対応しています。"
   },
   {
-    id: 2,
-    reqCount: 2,
+    id: 2, reqCount: 2,
     text: "マルチ AD 構成において、AD3 にだけ新しいインスタンスが作成されませんでした。原因として考えられるものを2つ選んでください。",
     options: [
-      { id: "A", text: "ロード・バランサのバックエンド・セットで AD3 が除外されているため。", exp: "【誤】ロードバランサの設定はインスタンスの作成自体には影響しません。" },
-      { id: "B", text: "インスタンス・プールの「配置構成」で AD3 が選択されていないため。", exp: "【正】プールの配置構成にAD3が含まれていない場合、AD3にはインスタンスが作成されません。" },
-      { id: "C", text: "インスタンス・プールは複数 AD に跨って構成することはできないため。", exp: "【誤】インスタンス・プールは複数ADに跨った構成が可能です。" },
-      { id: "D", text: "自動スケーリング・ポリシーの設定で AD3 が明示的に除外されているため。", exp: "【誤】自動スケーリングポリシーでAD単位の除外設定は行いません。" },
+      { id: "A", text: "ロード・バランサのバックエンド・セットで AD3 が除外されているため。", exp: "【誤】ロードバランサの設定はインスタンス作成に影響しません。" },
+      { id: "B", text: "インスタンス・プールの「配置構成」で AD3 が選択されていないため。", exp: "【正】配置構成にAD3が含まれていない場合、作成されません。" },
+      { id: "C", text: "インスタンス・プールは複数 AD に跨って構成することはできないため。", exp: "【誤】複数ADに跨った構成が可能です。" },
+      { id: "D", text: "自動スケーリング・ポリシーの設定で AD3 が明示的に除外されているため。", exp: "【誤】自動スケーリングでAD単位の除外設定は行いません。" },
       { id: "E", text: "インスタンス・プール構成において AD を複数選択することはできないため。", exp: "【誤】複数選択可能です。" },
-      { id: "F", text: "当該コンパートメントの AD3 におけるコンピュート・クォータ（またはサービス制限）の上限に達しているため。", exp: "【正】リソースのクォータやサービス制限に達していると、該当ADでの作成がエラーになります。" },
-      { id: "G", text: "ロード・バランサの負荷分散アルゴリズムが「加重ラウンド・ロビン」に設定されているため。", exp: "【誤】負荷分散アルゴリズムはコンピュート作成とは無関係です。" }
+      { id: "F", text: "当該コンパートメントの AD3 におけるコンピュート・クォータ（またはサービス制限）の上限に達しているため。", exp: "【正】クォータやサービス制限に達しているとエラーになります。" },
+      { id: "G", text: "ロード・バランサの負荷分散アルゴリズムが「加重ラウンド・ロビン」に設定されているため。", exp: "【誤】コンピュート作成とは無関係です。" }
     ],
     correct: ["B", "F"],
-    exp: "【総合解説】インスタンス作成先はプールの配置構成で決まるほか、特定ADでのクォータ/制限上限によるエラーが原因となります。"
+    exp: "【総合解説】配置構成の設定ミスか、特定ADでのクォータ/サービス制限上限が主な原因です。"
   },
   {
-    id: 3,
-    reqCount: 1,
+    id: 3, reqCount: 1,
     text: "地理的に最も近いデータセンターへトラフィックを誘導し、障害時には自動的に別データセンターへ切り替える最適なDNS設定を1つ選んでください。",
     options: [
-      { id: "A", text: "DNS トラフィック管理で「ジオロケーション・ステアリング・ポリシー」を使用し、ヘルス・チェックをアタッチする。", exp: "【正】位置情報に基づく「ジオロケーション・ステアリング」と「ヘルス・チェック」の組み合わせが最適です。" },
+      { id: "A", text: "DNS トラフィック管理で「ジオロケーション・ステアリング・ポリシー」を使用し、ヘルス・チェックをアタッチする。", exp: "【正】「ジオロケーション・ステアリング」と「ヘルス・チェック」の組み合わせが最適です。" },
       { id: "B", text: "DNS トラフィック管理で「ラウンド・ロビン」ポリシーを使用し、ヘルス・チェックをアタッチする。", exp: "【誤】ラウンドロビンは地理的な近接性を考慮しません。" },
       { id: "C", text: "DNS トラフィック管理で「ロード・バランサ」ポリシーを使用し、ヘルス・チェックをアタッチする。", exp: "【誤】位置情報を考慮した誘導には不適切です。" },
-      { id: "D", text: "DNS トラフィック管理で「フェイルオーバー」ポリシーを使用し、ヘルス・チェックをアタッチする。", exp: "【誤】フェイルオーバーは優先順位に基づく切り替えであり、地理的近接性ベースではありません。" },
-      { id: "E", text: "OCI DNS ゾーンで個別の A レコードを直接定義し、TTL を短く設定する。", exp: "【誤】自動的な負荷分散や障害切替は行えません。" }
+      { id: "D", text: "DNS トラフィック管理で「フェイルオーバー」ポリシーを使用し、ヘルス・チェックをアタッチする。", exp: "【誤】フェイルオーバーは地理的近接性ベースではありません。" },
+      { id: "E", text: "OCI DNS ゾーンで個別の A レコードを直接定義し、TTL を短く設定する。", exp: "【誤】自動的な障害切替は行えません。" }
     ],
     correct: ["A"],
-    exp: "【総合解説】ジオロケーション・ステアリング・ポリシーにヘルス・チェックを組み合わせることで、地理的最適性と高可用性を両立できます。"
+    exp: "【総合解説】ジオロケーション・ステアリング・ポリシーにヘルス・チェックを組み合わせることで高可用性を担保します。"
   },
   {
-    id: 4,
-    reqCount: 2,
+    id: 4, reqCount: 2,
     text: "ブロック・ボリュームでスループットが約128 MB/秒で頭打ちになりました。原因と対策として正しいものを2つ選んでください。",
     options: [
-      { id: "A", text: "ブロック・ボリュームの VPU 設定を「高パフォーマンス」に引き上げる。", exp: "【誤】IOPS/スループット上限を上げても、接続元インスタンス側の制限を超えなければ改善しません。" },
-      { id: "B", text: "ボリュームの暗号化方式を「顧客管理キー」に変更する。", exp: "【誤】暗号化方式の変更はパフォーマンスに直接影響しません。" },
-      { id: "C", text: "接続先インスタンスの OCPU 数を「1 OCPU」から「2 OCPU」以上にスケールアップする。", exp: "【正】OCPUを増やすことで、インスタンスに割り当てられるネットワーク帯域が拡張されボトルネックが解消されます。" },
-      { id: "D", text: "実際のパフォーマンスは、接続されているインスタンスのシェイプ（ネットワーク帯域制限）に依存するため、インスタンス側の帯域を拡張する。", exp: "【正】ブロックボリュームの通信はインスタンスのネットワーク帯域に依存するため、インスタンス側の拡張が必要です。" },
-      { id: "E", text: "ボリュームサイズを 500 GB から 1 TB に変更する。", exp: "【誤】サイズ変更単体では帯域の制限は解消されません。" },
-      { id: "F", text: "アタッチメント・タイプを iSCSI から準仮想化に変更する。", exp: "【誤】パフォーマンス面では一般にiSCSIアタッチが推奨されます。" }
+      { id: "A", text: "ブロック・ボリュームの VPU 設定を「高パフォーマンス」に引き上げる。", exp: "【誤】接続元インスタンス側の帯域制限を超えなければ改善しません。" },
+      { id: "B", text: "ボリュームの暗号化方式を「顧客管理キー」に変更する。", exp: "【誤】暗号化方式はパフォーマンスに直接影響しません。" },
+      { id: "C", text: "接続先インスタンスの OCPU 数を「1 OCPU」から「2 OCPU」以上にスケールアップする。", exp: "【正】OCPUを増やすと割り当てられる帯域が拡張されます。" },
+      { id: "D", text: "実際のパフォーマンスは、接続されているインスタンスのシェイプ（ネットワーク帯域制限）に依存するため、インスタンス側の帯域を拡張する。", exp: "【正】インスタンス側の帯域を拡張する必要があります。" },
+      { id: "E", text: "ボリュームサイズを 500 GB から 1 TB に変更する。", exp: "【誤】サイズ変更単体では帯域制限は解消されません。" },
+      { id: "F", text: "アタッチメント・タイプを iSCSI から準仮想化に変更する。", exp: "【誤】パフォーマンス面ではiSCSIアタッチが推奨されます。" }
     ],
     correct: ["C", "D"],
-    exp: "【総合解説】低OCPUのインスタンスはネットワーク帯域が制限されるため、OCPUの追加等によりインスタンス側の帯域を広げる必要があります。"
+    exp: "【総合解説】低OCPUインスタンスの帯域制限がボトルネックとなるため、OCPU追加等で帯域を拡張します。"
   },
   {
-    id: 5,
-    reqCount: 3,
+    id: 5, reqCount: 3,
     text: "プライベート・サブネットのインスタンスからモニタリング・サービスへデータを送信するために必要な設定を3つ選んでください。",
     options: [
-      { id: "A", text: "プライベート・サブネットのルート表に、すべての OCI サービス宛ての「サービス・ゲートウェイ」を追加する。", exp: "【正】VCN内からインターネットを経由せずにOCIサービスへアクセスするためにサービスゲートウェイが必要です。" },
-      { id: "B", text: "インスタンスにパブリック IP アドレスを割り当てる。", exp: "【誤】プライベートサブネットのためパブリックIPの付与は適切ではありません。" },
-      { id: "C", text: "プライベート・サブネットのルート表に「NAT ゲートウェイ」宛てのデフォルトルートを追加する。", exp: "【正】インターネット経由等での通信経路としてNATゲートウェイやサービスゲートウェイのルーティングが必要です。" },
-      { id: "D", text: "Oracle Cloud Agent で「コンピュート・インスタンスのモニタリング」プラグインを有効化する。", exp: "【正】OS側のメトリックを収集・送信するためにはモニタリングプラグインの有効化が必須です。" },
-      { id: "E", text: "Oracle Cloud Agent で「OS 管理ハブ」プラグインを有効化する。", exp: "【誤】OS管理ハブはパッチ管理用でありモニタリング送信の直接要因ではありません。" }
+      { id: "A", text: "プライベート・サブネットのルート表に、すべての OCI サービス宛ての「サービス・ゲートウェイ」を追加する。", exp: "【正】インターネットを経由せずにOCIサービスへ接続する経路です。" },
+      { id: "B", text: "インスタンスにパブリック IP アドレスを割り当てる。", exp: "【誤】プライベートサブネットのため不適切です。" },
+      { id: "C", text: "プライベート・サブネットのルート表に「NAT ゲートウェイ」宛てのデフォルトルートを追加する。", exp: "【正】通信経路としてNATゲートウェイのルーティングも利用可能です。" },
+      { id: "D", text: "Oracle Cloud Agent で「コンピュート・インスタンスのモニタリング」プラグインを有効化する。", exp: "【正】OS側メトリックを送信するために必須です。" },
+      { id: "E", text: "Oracle Cloud Agent で「OS 管理ハブ」プラグインを有効化する。", exp: "【誤】OS管理ハブはパッチ管理用です。" }
     ],
     correct: ["A", "C", "D"],
-    exp: "【総合解説】サービス・ゲートウェイやNATゲートウェイによるルーティング確保と、Oracle Cloud Agentのモニタリングプラグイン有効化が必要です。"
+    exp: "【総合解説】サービス/NATゲートウェイによる通信経路確保と、モニタリングプラグインの有効化が必要です。"
   },
   {
-    id: 6,
-    reqCount: 3,
+    id: 6, reqCount: 3,
     text: "VCN 外（共有領域）の ATP（サーバーレス）に対して、VCN 内から安全に接続するための構成を3つ選んでください。",
     options: [
-      { id: "A", text: "ATP の ACL に、プライベート・サブネットの CIDR ブロックを追加する。", exp: "【誤】ATPサーバーレスのアクセス制御リスト（ACL）にはプライベートCIDRを直接指定できません。" },
-      { id: "B", text: "ATP の ACL に、パブリック・サブネットのインスタンスのパブリック IP を追加する。", exp: "【正】パブリックIPを持つインスタンスからのアクセス許可にはIP指定が可能です。" },
-      { id: "C", text: "ATP の ACL に、NAT ゲートウェイのパブリック IP を追加する。", exp: "【正】プライベートサブネットからNATゲートウェイ経由でアクセスする場合、NATのパブリックIPをATPのACLに登録します。" },
-      { id: "D", text: "ATP が含まれるサブネットのセキュリティ・リストで、ポート 1521 を許可する。", exp: "【誤】ATPサーバーレスはVCNの外側に位置するため、VCN内のセキュリティリスト設定は影響しません。" },
-      { id: "E", text: "プライベート・サブネットのルート表に、NAT ゲートウェイ経由のルーティングを設定する。", exp: "【正】トラフィックをNATゲートウェイに向けるためのルート表設定が必要です。" },
-      { id: "F", text: "プライベート・サブネットのセキュリティ・リストで、ATP の IP 宛てポート 1521 を追加する。", exp: "【誤】これもATPがVCN外にあるため無効です。" }
+      { id: "A", text: "ATP の ACL に、プライベート・サブネットの CIDR ブロックを追加する。", exp: "【誤】ATPサーバーレスのACLにプライベートCIDRは指定できません。" },
+      { id: "B", text: "ATP の ACL に、パブリック・サブネットのインスタンスのパブリック IP を追加する。", exp: "【正】パブリックIPを持つインスタンスからの接続を許可できます。" },
+      { id: "C", text: "ATP の ACL に、NAT ゲートウェイのパブリック IP を追加する。", exp: "【正】NATゲートウェイのパブリックIPをACLに登録します。" },
+      { id: "D", text: "ATP が含まれるサブネットのセキュリティ・リストで、ポート 1521 を許可する。", exp: "【誤】ATPはVCN外にあるためセキュリティリストは影響しません。" },
+      { id: "E", text: "プライベート・サブネットのルート表に、NAT ゲートウェイ経由のルーティングを設定する。", exp: "【正】NATゲートウェイに向けるルーティング設定が必要です。" },
+      { id: "F", text: "プライベート・サブネットのセキュリティ・リストで、ATP の IP 宛てポート 1521 を追加する。", exp: "【誤】ATPはVCN外のため無効です。" }
     ],
     correct: ["B", "C", "E"],
-    exp: "【総合解説】VCN外のATPへのアクセスは、NATゲートウェイ経由の通信経路をルート表で作り、そのNATのパブリックIPをATPのACLに許可設定します。"
+    exp: "【総合解説】NATゲートウェイ経由の経路を設定し、そのパブリックIPをATP側のACLに許可登録します。"
   },
   {
-    id: 7,
-    reqCount: 1,
+    id: 7, reqCount: 1,
     text: "オンプレミスと OCI 間で、通常時は高速専用線、障害時は安価なバックアップに切り替わるコスト効率に優れた設計を1つ選んでください。",
     options: [
       { id: "A", text: "FastConnect を諦めて IPsec VPN を 2 本で冗長化する。", exp: "【誤】高速専用線のメリットが失われます。" },
-      { id: "B", text: "FastConnect 回線を 2 本契約してプライマリ/セカンダリ構成とする。", exp: "【誤】コスト効率の観点でFastConnect2本は高価になります。" },
-      { id: "C", text: "メインに FastConnect、バックアップに IPsec VPN を使用し、1 つの DRG に接続して動的ルーティングを設定する。", exp: "【正】メインに高速なFastConnect、バックアップに安価なIPsec VPNを組み合わせるのが最適です。" },
-      { id: "D", text: "通常時は IPsec VPN を使用し、障害時に FastConnect へ切り替える。", exp: "【誤】通常時のパフォーマンスを優先する要件に反します。" },
-      { id: "E", text: "FastConnect 用と IPsec VPN 用にそれぞれ別々の DRG を作成する。", exp: "【誤】1つのDRGに集約して動的ルーティングで制御します。" }
+      { id: "B", text: "FastConnect 回線を 2 本契約してプライマリ/セカンダリ構成とする。", exp: "【誤】コストが高価になります。" },
+      { id: "C", text: "メインに FastConnect、バックアップに IPsec VPN を使用し、1 つの DRG に接続して動的ルーティングを設定する。", exp: "【正】メインにFastConnect、バックアップにIPsec VPNを組むのが最適です。" },
+      { id: "D", text: "通常時は IPsec VPN を使用し、障害時に FastConnect へ切り替える。", exp: "【誤】通常時のパフォーマンス要件に反します。" },
+      { id: "E", text: "FastConnect 用と IPsec VPN 用にそれぞれ別々の DRG を作成する。", exp: "【誤】1つのDRGに集約します。" }
     ],
     correct: ["C"],
-    exp: "【総合解説】FastConnectとIPsec VPNを単一のDRGに接続し、動的ルーティングで自動フェイルオーバーさせる構成がベストプラクティスです。"
+    exp: "【総合解説】FastConnectとIPsec VPNを単一DRGに接続し、動的ルーティングで制御するのがベストです。"
   },
   {
-    id: 8,
-    reqCount: 1,
+    id: 8, reqCount: 1,
     text: "OCI 上の複数 VCN と Azure 仮想ネットワークを専用線でダイレクト接続し、全 VCN からアクセス可能にする最適な構成を1つ選んでください。",
     options: [
-      { id: "A", text: "OCI と Azure 間を直接 FastConnect で接続することはできないため、オンプレミスを経由させる。", exp: "【誤】OCIとAzureはOracle Interconnectを通じて直接接続可能です。" },
-      { id: "B", text: "ハブ VCN を作成して Azure と FastConnect（DRG）で接続し、各スポーク VCN と間を LPG で接続してトランジット・ルーティングを構成する。", exp: "【正】ハブ＆スポーク構成とトランジットルーティングにより全VCNからアクセス可能になります。" },
-      { id: "C", text: "各 VCN にそれぞれ DRG をアタッチし、それぞれから Azure へ接続する。", exp: "【誤】管理やコスト面で非効率です。" },
-      { id: "D", text: "1 つの FastConnect 仮想サーキットを複数の DRG に直接アタッチする。", exp: "【誤】1つのサーキットを複数DRGに直接はアタッチできません。" },
-      { id: "E", text: "各 VCN 間に RPC（リモート・ピアリング・コネクション）を設定する。", exp: "【誤】トランジットルーティングを活用する方がスケーラブルです。" },
+      { id: "A", text: "OCI と Azure 間を直接 FastConnect で接続することはできないため、オンプレミスを経由させる。", exp: "【誤】Oracle Interconnect等で直接接続可能です。" },
+      { id: "B", text: "ハブ VCN を作成して Azure と FastConnect（DRG）で接続し、各スポーク VCN と間を LPG で接続してトランジット・ルーティングを構成する。", exp: "【正】ハブ＆スポーク構成とトランジットルーティングにより接続します。" },
+      { id: "C", text: "各 VCN にそれぞれ DRG をアタッチし、それぞれから Azure へ接続する。", exp: "【誤】非効率です。" },
+      { id: "D", text: "1 つの FastConnect 仮想サーキットを複数の DRG に直接アタッチする。", exp: "【誤】1サーキットを複数DRGに直接アタッチできません。" },
+      { id: "E", text: "各 VCN 間に RPC（リモート・ピアリング・コネクション）を設定する。", exp: "【誤】トランジットルーティングを利用する方がスマートです。" },
       { id: "F", text: "インターネット経由でパブリック IP を使って接続する。", exp: "【誤】専用線接続の要件に反します。" }
     ],
     correct: ["B"],
-    exp: "【総合解説】Oracle Interconnect for Microsoft Azureとハブ＆スポーク（LPGによるトランジットルーティング）を組み合わせます。"
+    exp: "【総合解説】ハブ＆スポーク構成（LPG＋トランジットルーティング）が集約接続の最適解です。"
   },
   {
-    id: 9,
-    reqCount: 2,
+    id: 9, reqCount: 2,
     text: "監査ログ（eventName: LaunchInstance, principalName: 99353990-lab.user01）から判明する事実を2つ選んでください。",
     options: [
-      { id: "A", text: "99353990-lab.user01 というユーザーによって操作が実行された。", exp: "【正】principalNameは操作を実行したプリンシパル（ユーザー等）を示します。" },
-      { id: "B", text: "インスタンスの作成リクエストは HTTP GET メソッドを使用して送信された。", exp: "【誤】リソース作成は通常POSTメソッドを使用します。" },
-      { id: "C", text: "ipAddress は、新たに作成されたインスタンスのパブリック IP である。", exp: "【誤】ipAddressは操作を実行したクライアント元のIPアドレスです。" },
-      { id: "D", text: "実行された操作は、コンピュート・インスタンスの新規作成（LaunchInstance）である。", exp: "【正】eventNameがLaunchInstanceであるためインスタンスの新規作成です。" },
-      { id: "E", text: "作成されたインスタンスの名前は 99353990-C01 である。", exp: "【誤】ログのイベント名やプリンシパル名からインスタンス名は特定できません。" }
+      { id: "A", text: "99353990-lab.user01 というユーザーによって操作が実行された。", exp: "【正】principalNameは操作ユーザーを示します。" },
+      { id: "B", text: "インスタンスの作成リクエストは HTTP GET メソッドを使用して送信された。", exp: "【誤】作成リクエストは通常POSTメソッドです。" },
+      { id: "C", text: "ipAddress は、新たに作成されたインスタンスのパブリック IP である。", exp: "【誤】ipAddressは操作元端末のアドレスです。" },
+      { id: "D", text: "実行された操作は、コンピュート・インスタンスの新規作成（LaunchInstance）である。", exp: "【正】eventNameは新規作成アクションを示します。" },
+      { id: "E", text: "作成されたインスタンスの名前は 99353990-C01 である。", exp: "【誤】ログからインスタンス名は特定できません。" }
     ],
     correct: ["A", "D"],
-    exp: "【総合解説】principalNameから実行ユーザーが、eventNameからコンピュートインスタンスの作成アクションが行われたことが分かります。"
+    exp: "【総合解説】principalNameからユーザー、eventNameからインスタンス作成の実行が確認できます。"
   },
   {
-    id: 10,
-    reqCount: 3,
+    id: 10, reqCount: 3,
     text: "Web アプリにおいて、高可用性を担保しつつ、SQL インジェクションや XSS から防御する最適な組み合わせを3つ選んでください。",
     options: [
-      { id: "A", text: "複数の AD や FD に Web サーバーを分散配置し、手前にロード・バランサを設置する。", exp: "【正】マルチAD/FD配置とロードバランサにより高可用性を担保できます。" },
-      { id: "B", text: "DNS トラフィック管理で不正リクエストを自動的に破棄する。", exp: "【誤】DNS層でアプリケーション層の攻撃（SQLi等）は防御できません。" },
-      { id: "C", text: "ロード・バランサに Web Application Firewall（WAF）を適用する。", exp: "【正】ロードバランサにWAFを連携させて不正な入力をブロックします。" },
-      { id: "D", text: "データベースのストレージを Vault のマスター暗号化キーで暗号化する。", exp: "【誤】ストレージ暗号化はデータ保護には有効ですがSQLi/XSSの直接防御にはなりません。" },
-      { id: "E", text: "セキュリティ・リストで特定の国からのトラフィックをブロックする。", exp: "【誤】セキュリティリストはレイヤー4の制御でありアプリ層の攻撃防御には不向きです。" },
-      { id: "F", text: "WAF の設定で「SQL インジェクション保護」や「XSS 保護」などの保護ルール・グループを有効化する。", exp: "【正】WAFの保護ルールを有効化することで具体的な脆弱性攻撃を防げます。" }
+      { id: "A", text: "複数の AD や FD に Web サーバーを分散配置し、手前にロード・バランサを設置する。", exp: "【正】マルチ配置とLBで高可用性を実現します。" },
+      { id: "B", text: "DNS トラフィック管理で不正リクエストを自動的に破棄する。", exp: "【誤】DNS層でアプリ層攻撃（SQLi等）は防げません。" },
+      { id: "C", text: "ロード・バランサに Web Application Firewall（WAF）を適用する。", exp: "【正】LBにWAFを適用して攻撃をブロックします。" },
+      { id: "D", text: "データベースのストレージを Vault のマスター暗号化キーで暗号化する。", exp: "【誤】SQLi/XSSの直接防御にはなりません。" },
+      { id: "E", text: "セキュリティ・リストで特定の国からのトラフィックをブロックする。", exp: "【誤】レイヤー4制御のためアプリ層攻撃には不向きです。" },
+      { id: "F", text: "WAF の設定で「SQL インジェクション保護」や「XSS 保護」などの保護ルール・グループを有効化する。", exp: "【正】保護ルールの有効化により具体的な脆弱性攻撃を防ぎます。" }
     ],
     correct: ["A", "C", "F"],
-    exp: "【総合解説】ロードバランサによる冗長構成と、WAFおよびその保護ルール（SQLi/XSS対策）の適用が正解です。"
+    exp: "【総合解説】ロードバランサによる冗長化と、WAFおよびその保護ルールの適用が正解です。"
   },
   {
-    id: 11,
-    reqCount: 1,
+    id: 11, reqCount: 1,
     text: "Docker CLI を使用して OCI Container Registry（OCIR）へログイン（docker login）する際、パスワードとして指定すべき情報を1つ選んでください。",
     options: [
-      { id: "A", text: "OCI コンソールのログインパスワード", exp: "【誤】コンソールパスワードは使用できません。" },
-      { id: "B", text: "SSH パブリック/プライベート・キーペア", exp: "【誤】SSHキーはコンピュート接続用です。" },
-      { id: "C", text: "ユーザー設定画面で生成した「認証トークン（Auth Token）」", exp: "【正】OCIRへのログインには認証トークンを使用します。" },
-      { id: "D", text: "OCI Vault で作成したマスター暗号化キー", exp: "【誤】Vaultのキーはデータ暗号化用です。" }
+      { id: "A", text: "OCI コンソールのログインパスワード", exp: "【誤】コンソールパスワードは不可です。" },
+      { id: "B", text: "SSH パブリック/プライベート・キーペア", exp: "【誤】SSHキーはコンピュート用です。" },
+      { id: "C", text: "ユーザー設定画面で生成した「認証トークン（Auth Token）」", exp: "【正】OCIRのログインパスワードには「認証トークン」を使用します。" },
+      { id: "D", text: "OCI Vault で作成したマスター暗号化キー", exp: "【誤】暗号化キーは不可です。" }
     ],
     correct: ["C"],
-    exp: "【総合解説】Dockerなどの外部ツールからOCIRに認証する際は、ユーザー画面で作成する「認証トークン」をパスワードに入力します。"
+    exp: "【総合解説】Docker CLI等からOCIRへログインする際は「認証トークン」を使用します。"
   },
   {
-    id: 12,
-    reqCount: 2,
+    id: 12, reqCount: 2,
     text: "Resource Manager（Terraform）を活用した運用において、推奨されるプラクティスを2つ選んでください。",
     options: [
-      { id: "A", text: "GitHub や GitLab などの外部リポジトリと連携（GitOps）し、コード更新で自動適用できる。", exp: "【正】Gitリポジトリとの連携によるCI/CD（GitOps）が推奨されます。" },
-      { id: "B", text: "IAM ポリシーは Resource Manager から作成できない。", exp: "【誤】IAMポリシーも含めてTerraformで管理可能です。" },
-      { id: "C", text: "DB パスワードなどの機密情報はコード内に書かず、OCI Vault（シークレット）から参照する。", exp: "【正】機密情報はコードにハードコードせずVaultから安全に参照します。" },
-      { id: "D", text: "パブリック IP などの動的な情報は Resource Manager では取得できない。", exp: "【誤】Terraformのデータソース等で動的情報の取得は可能です。" },
-      { id: "E", text: "シェイプを変更する場合はスタック全体を破棄（Destroy）する必要がある。", exp: "【誤】一部のパラメータ変更にスタックの完全破棄は不要です。" }
+      { id: "A", text: "GitHub や GitLab などの外部リポジトリと連携（GitOps）し、コード更新で自動適用できる。", exp: "【正】Gitリポジトリ連携（GitOps）が推奨されます。" },
+      { id: "B", text: "IAM ポリシーは Resource Manager から作成できない。", exp: "【誤】IAMポリシーもコード管理可能です。" },
+      { id: "C", text: "DB パスワードなどの機密情報はコード内に書かず、OCI Vault（シークレット）から参照する。", exp: "【正】機密情報はVaultから安全に参照します。" },
+      { id: "D", text: "パブリック IP などの動的な情報は Resource Manager では取得できない。", exp: "【誤】データソース等で取得可能です。" },
+      { id: "E", text: "シェイプを変更する場合はスタック全体を破棄（Destroy）する必要がある。", exp: "【誤】完全破棄は不要です。" }
     ],
     correct: ["A", "C"],
-    exp: "【総合解説】外部Git連携による自動化と、OCI Vaultを活用した機密情報の安全な管理がベストプラクティスです。"
+    exp: "【総合解説】GitOps自動化とOCI Vaultを用いた機密情報の管理がベストプラクティスです。"
   },
   {
-    id: 13,
-    reqCount: 1,
+    id: 13, reqCount: 1,
     text: "API Gateway に対する短時間の過剰アクセス（DDoS等）を、コード改修なしで迅速に制限するための最も効果的な対策を1つ選んでください。",
     options: [
-      { id: "A", text: "Web アプリのソースコードを改修しリクエスト制限ロジックを実装する。", exp: "【誤】コード改修には時間がかかります。" },
-      { id: "B", text: "OCI Functions を使用してカスタム制限ファンクションを作成する。", exp: "【誤】標準機能の設定だけで対応可能です。" },
-      { id: "C", text: "API Gateway のデプロイメント設定で「レート制限（Rate Limiting）」を有効化する。", exp: "【正】API Gatewayの標準機能であるレート制限を設定すればコード修正不要で即座に制限できます。" },
-      { id: "D", text: "セキュリティ・リストですべてのインバウンド通信を遮断する。", exp: "【誤】通信全体が遮断されてしまいます。" },
-      { id: "E", text: "Oracle Integration Cloud (OIC) を前段に配置する。", exp: "【誤】過剰アクセスの対策としては不適切です。" }
+      { id: "A", text: "Web アプリのソースコードを改修しリクエスト制限ロジックを実装する。", exp: "【誤】改修に時間を要します。" },
+      { id: "B", text: "OCI Functions を使用してカスタム制限ファンクションを作成する。", exp: "【誤】標準機能で対応可能です。" },
+      { id: "C", text: "API Gateway のデプロイメント設定で「レート制限（Rate Limiting）」を有効化する。", exp: "【正】レート制限機能によりコード修正なしで対応可能です。" },
+      { id: "D", text: "セキュリティ・リストですべてのインバウンド通信を遮断する。", exp: "【誤】全体通信が遮断されます。" },
+      { id: "E", text: "Oracle Integration Cloud (OIC) を前段に配置する。", exp: "【誤】過剰アクセス対策として不適切です。" }
     ],
     correct: ["C"],
-    exp: "【総合解説】API Gatewayのデプロイメント設定で「レート制限」を有効化するのが最も迅速かつ効果的です。"
+    exp: "【総合解説】API Gateway標準の「レート制限」機能を使うのが最も迅速です。"
   },
   {
-    id: 14,
-    reqCount: 3,
+    id: 14, reqCount: 3,
     text: "ZPR ポリシー「in VCN-Network:DB allow App:App1 endpoints to connect to DB-Server:App1 endpoints with protocol='tcp/1521'」の正しい解釈を3つ選んでください。",
     options: [
-      { id: "A", text: "ネームスペースが明示されていないためポリシーは無効。", exp: "【誤】ネームスペースが省略された場合の補完ルールがあります。" },
-      { id: "B", text: "VCN-Network:DB の VCN-Network は属性値を表している。", exp: "【誤】VCN-Networkは属性（Key）です。" },
-      { id: "C", text: "App:App1 において、App は属性（Key）であり、App1 はその属性値（Value）である。", exp: "【正】ZPRポリシーでは `Key:Value` の形式で記述します。" },
-      { id: "D", text: "App:App1 の属性を持つリソースから、DB-Server:App1 の属性を持つ DB へ 1521/TCP 接続を許可している。", exp: "【正】指定された属性間の通信とプロトコルを許可するポリシーです。" },
-      { id: "E", text: "接続元インスタンスには VCN-Network:DB 属性が付与されている必要がある。", exp: "【正】`in VCN-Network:DB` はコンテキスト条件として該当VCN内からの通信を指定しています。" },
-      { id: "F", text: "ネームスペースが省略されている場合、デフォルトで oracle-zpr ネームスペースが補完される。", exp: "【正】省略時は `oracle-zpr` が補完されます。" }
+      { id: "A", text: "ネームスペースが明示されていないためポリシーは無効。", exp: "【誤】補完ルールが存在します。" },
+      { id: "B", text: "VCN-Network:DB の VCN-Network は属性値を表している。", exp: "【誤】属性（Key）を示します。" },
+      { id: "C", text: "App:App1 において、App は属性（Key）であり、App1 はその属性値（Value）である。", exp: "【正】Key:Value の構文ルールに基づきます。" },
+      { id: "D", text: "App:App1 の属性を持つリソースから、DB-Server:App1 の属性を持つ DB へ 1521/TCP 接続を許可している。", exp: "【正】指定属性間の通信を許可します。" },
+      { id: "E", text: "接続元インスタンスには VCN-Network:DB 属性が付与されている必要がある。", exp: "【正】in VCN-Network:DB はコンテキスト条件を指定します。" },
+      { id: "F", text: "ネームスペースが省略されている場合、デフォルトで oracle-zpr ネームスペースが補完される。", exp: "【正】省略時は oracle-zpr が補完されます。" }
     ],
     correct: ["C", "D", "F"],
-    exp: "【総合解説】ZPR（Zero Trust Packet Routing）ポリシーの構文ルール（Key:Value構造、接続許可の指定、省略時のoracle-zpr補完）に基づきます。"
+    exp: "【総合解説】ZPR（Zero Trust Packet Routing）ポリシーの記述仕様に基づきます。"
   },
   {
-    id: 15,
-    reqCount: 3,
+    id: 15, reqCount: 3,
     text: "OCI Autonomous Recovery Service (RCV) に関する記述として正しいものを3つ選んでください。",
     options: [
-      { id: "A", text: "毎週日曜日にフルバックアップを自動実行する。", exp: "【誤】初回フルバックアップ後は永久増分方式で管理されます。" },
-      { id: "B", text: "リアルタイム保護（ZRCV）によりデータ損失を 1 秒未満（RPO < 1秒）に抑えられる。", exp: "【正】リアルタイム保護によりRPO 1秒未満を実現します。" },
-      { id: "C", text: "MySQL や PostgreSQL のバックアップにも対応している。", exp: "【誤】主にOracle Database向けのサービスです。" },
-      { id: "D", text: "Oracle のアプライアンス ZDLRA の技術に基づいている。", exp: "【正】ZDLRA（Zero Data Loss Recovery Appliance）のクラウドテクノロジーがベースです。" },
-      { id: "E", text: "ランサムウェア対策としてデータの削除・変更を不可にする「保持ロック」をサポート。", exp: "【正】改ざんや削除を防ぐ保持ロック機能を備えています。" },
-      { id: "F", text: "リージョン間の自動フェイルオーバー機能を標準提供する。", exp: "【誤】リカバリサービス自体の機能としてリージョン間自動フェイルオーバーを提供するわけではありません。" }
+      { id: "A", text: "毎週日曜日にフルバックアップを自動実行する。", exp: "【誤】永久増分方式で動作します。" },
+      { id: "B", text: "リアルタイム保護（ZRCV）によりデータ損失を 1 秒未満（RPO < 1秒）に抑えられる。", exp: "【正】RPO 1秒未満のリアルタイム保護を提供します。" },
+      { id: "C", text: "MySQL や PostgreSQL のバックアップにも対応している。", exp: "【誤】Oracle Database専用です。" },
+      { id: "D", text: "Oracle のアプライアンス ZDLRA の技術に基づいている。", exp: "【正】ZDLRAのテクノロジーがベースとなっています。" },
+      { id: "E", text: "ランサムウェア対策としてデータの削除・変更を不可にする「保持ロック」をサポート。", exp: "【正】改ざん防止の保持ロックをサポートします。" },
+      { id: "F", text: "リージョン間の自動フェイルオーバー機能を標準提供する。", exp: "【误】自動フェイルオーバー機能を提供するものではありません。" }
     ],
     correct: ["B", "D", "E"],
-    exp: "【総合解説】ZDLRA技術をベースに、リアルタイム保護による超低RPOと、ランサムウェア対策の保持ロック機能を提供します。"
+    exp: "【総合解説】ZDLRAベースの技術で、低RPOかつ保持ロックによる改ざん防止を実現します。"
   },
   {
-    id: 16,
-    reqCount: 2,
+    id: 16, reqCount: 2,
     text: "OCI Cache サービスの特徴に関する記述として正しいものを2つ選んでください。",
     options: [
-      { id: "A", text: "オープンソースの Redis および Valkey と互換性のあるフルマネージド・インメモリキャッシュである。", exp: "【正】RedisおよびValkey互換のマネージドキャッシュサービスです。" },
-      { id: "B", text: "ミリ秒未満の高速レスポンスを提供するが、データは一時的なキャッシュ（揮発性）である。", exp: "【正】インメモリのためミリ秒未満の高速応答ですがデータは揮発性です。" },
-      { id: "C", text: "複数リージョン間でのアクティブ-アクティブ構成を自動同期する。", exp: "【誤】マルチリージョンの自動アクティブ-アクティブ同期は標準提供されません。" },
-      { id: "D", text: "OS パッチ適用や運用管理はユーザー自身が行う必要がある。", exp: "【誤】フルマネージドサービスのためパッチ適用等は自動化されています。" },
-      { id: "E", text: "リレーショナル・データベース（RDB）の完全な代替として使用できる。", exp: "【誤】RDBの永続ストレージや複雑なクエリ処理の完全な代替にはなりません。" }
+      { id: "A", text: "オープンソースの Redis および Valkey と互換性のあるフルマネージド・インメモリキャッシュである。", exp: "【正】Redis/Valkey互換のインメモリキャッシュです。" },
+      { id: "B", text: "ミリ秒未満の高速レスポンスを提供するが、データは一時的なキャッシュ（揮発性）である。", exp: "【正】高速ですがデータは揮発性です。" },
+      { id: "C", text: "複数リージョン間でのアクティブ-アクティブ構成を自動同期する。", exp: "【誤】自動同期は提供されません。" },
+      { id: "D", text: "OS パッチ適用や運用管理はユーザー自身が行う必要がある。", exp: "【誤】フルマネージドサービスです。" },
+      { id: "E", text: "リレーショナル・データベース（RDB）の完全な代替として使用できる。", exp: "【誤】RDBの完全代替にはなりません。" }
     ],
     correct: ["A", "B"],
-    exp: "【総合解説】Redis/Valkey互換のインメモリキャッシュであり、高速な揮発性データストアとしてフルマネージドで提供されます。"
+    exp: "【総合解説】Redis/Valkey互換の高速インメモリ・マネージドキャッシュです。"
   },
   {
-    id: 17,
-    reqCount: 2,
+    id: 17, reqCount: 2,
     text: "MQL式「CpuUtilization[1m]{availabilityDomain = \"AD-1\"}.groupBy(faultDomain).mean()」の解説として正しいものを2つ選んでください。",
     options: [
       { id: "A", text: "CpuUtilization はメトリックのネームスペースを表している。", exp: "【誤】CpuUtilizationはメトリック名です。" },
-      { id: "B", text: "{availabilityDomain = \"AD-1\"} は groupBy 句によるグループ化を表している。", exp: "【誤】これはディメンションによるフィルタリング条件です。" },
-      { id: "C", text: "mean() はデータの合計値を算出する関数である。", exp: "【誤】mean()は平均値を算出する関数です。" },
-      { id: "D", text: "角カッコ内の [1m] は、データを集計する時間の間隔（1分間）を指定している。", exp: "【正】[1m] は集計間隔（インターバル）を意味します。" },
-      { id: "E", text: "「メトリック名」「集計間隔」「統計関数」の 3 つは省略できない必須要素である。", exp: "【正】MQL構文においてメトリック名、集計間隔、統計関数は必須の3要素です。" },
-      { id: "F", text: "結果をアベイラビリティ・ドメイン（AD）ごとにグループ化している。", exp: "【誤】グループ化しているのは `groupBy(faultDomain)` による障害ドメイン（FD）ごとです。" }
+      { id: "B", text: "{availabilityDomain = \"AD-1\"} は groupBy 句によるグループ化を表している。", exp: "【誤】ディメンションのフィルタ条件です。" },
+      { id: "C", text: "mean() はデータの合計値を算出する関数である。", exp: "【誤】mean()は平均値です。" },
+      { id: "D", text: "角カッコ内の [1m] は、データを集計する時間の間隔（1分間）を指定している。", exp: "【正】[1m] は集計間隔（1分）を表します。" },
+      { id: "E", text: "「メトリック名」「集計間隔」「統計関数」の 3 つは省略できない必須要素である。", exp: "【正】MQL構文の必須3要素です。" },
+      { id: "F", text: "結果をアベイラビリティ・ドメイン（AD）ごとにグループ化している。", exp: "【誤】グループ化は障害ドメイン（FD）単位です。" }
     ],
     correct: ["D", "E"],
-    exp: "【総合解説】MQLの必須要素（メトリック名・集計間隔[1m]・統計関数）を満たしており、構文上の役割が定義されています。"
+    exp: "【総合解説】MQLの構文規則（メトリック名・集計間隔・統計関数が必須）に基づきます。"
   },
   {
-    id: 18,
-    reqCount: 1,
+    id: 18, reqCount: 1,
     text: "オンプレミスの VMware 環境にある仮想マシンを OCI コンピュートへ自動移行・変換するための推奨サービスを1つ選んでください。",
     options: [
-      { id: "A", text: "Oracle Cloud VMware Solution (OCVS)", exp: "【誤】OCVSはOCI上にVMware環境を構築するサービスです。" },
-      { id: "B", text: "Oracle Cloud Migrations (OCM)", exp: "【正】オンプレミスのVMをOCIネイティブコンピュートへ移行・変換するための専用サービスです。" },
-      { id: "C", text: "Full Stack Disaster Recovery (FSDR)", exp: "【誤】災害対策（DR）オーケストレーション用のサービスです。" },
-      { id: "D", text: "Oracle Database Migration (ODM)", exp: "【誤】データベース移行用のサービスです。" },
-      { id: "E", text: "Data Transfer Service (DTS)", exp: "【誤】物理デバイスによるデータ搬送サービスです。" }
+      { id: "A", text: "Oracle Cloud VMware Solution (OCVS)", exp: "【誤】OCI上でVMware環境を稼働させるサービスです。" },
+      { id: "B", text: "Oracle Cloud Migrations (OCM)", exp: "【正】VMware等のVMをOCIコンピュートへ自動移行・変換するサービスです。" },
+      { id: "C", text: "Full Stack Disaster Recovery (FSDR)", exp: "【誤】DRオーケストレーションサービスです。" },
+      { id: "D", text: "Oracle Database Migration (ODM)", exp: "【誤】DB移行サービスです。" },
+      { id: "E", text: "Data Transfer Service (DTS)", exp: "【誤】物理ディスクでのデータ搬送です。" }
     ],
     correct: ["B"],
-    exp: "【総合解説】VMware環境からの自動検出・データ複製・インスタンス変換による移行には Oracle Cloud Migrations (OCM) が用いられます。"
+    exp: "【総合解説】オンプレミスVMからOCIネイティブ環境への移行・変換は OCM を使用します。"
   },
   {
-    id: 19,
-    reqCount: 2,
+    id: 19, reqCount: 2,
     text: "オンプレミスログを OCI Logging に集約し、Object Storage へ自動転送・保存する仕組みに必要な設定を2つ選んでください。",
     options: [
-      { id: "A", text: "各オンプレミス・サーバーに Oracle Cloud Agent プラグインをリモート施工する。", exp: "【誤】オンプレミス環境にはOCIエージェント（統合モニタリングエージェント）を導入します。" },
-      { id: "B", text: "Object Storage に ObjectCollectionRule を作成して Logging から引き抜く。", exp: "【誤】そのようなルール名・仕組みはありません。" },
-      { id: "C", text: "ログ出力先として Object Storage を直接指定するグループ化関数を定義する。", exp: "【誤】直接指定ではなくサービスコネクタを介します。" },
-      { id: "D", text: "Logging をソース、Object Storage をターゲットとする「サービス・コネクタ」を設定する。", exp: "【正】LoggingからObject Storageへの転送にはサービス・コネクタ・ハブを利用します。" },
-      { id: "E", text: "オンプレミスに統合モニタリング・エージェントを導入し「エージェント構成」を適用する。", exp: "【正】オンプレミスサーバーからログを収集するためにはエージェントの導入とエージェント構成が必要です。" }
+      { id: "A", text: "各オンプレミス・サーバーに Oracle Cloud Agent プラグインをリモート施工する。", exp: "【誤】オンプレミスには統合モニタリングエージェントを導入します。" },
+      { id: "B", text: "Object Storage に ObjectCollectionRule を作成して Logging から引き抜く。", exp: "【誤】そのような設定はありません。" },
+      { id: "C", text: "ログ出力先として Object Storage を直接指定するグループ化関数を定義する。", exp: "【誤】サービスコネクタを使用します。" },
+      { id: "D", text: "Logging をソース、Object Storage をターゲットとする「サービス・コネクタ」を設定する。", exp: "【正】LoggingからObject Storageへの転送にはサービス・コネクタが必要です。" },
+      { id: "E", text: "オンプレミスに統合モニタリング・エージェントを導入し「エージェント構成」を適用する。", exp: "【正】オンプレからのログ収集には統合モニタリングエージェントが必要です。" }
     ],
     correct: ["D", "E"],
-    exp: "【総合解説】オンプレミスからのログ収集には統合モニタリングエージェント（エージェント構成）、Object Storageへの転送にはサービス・コネクタが必要です。"
+    exp: "【総合解説】オンプレからのログ収集に「エージェント構成」、Storage転送に「サービス・コネクタ」を使用します。"
   },
   {
-    id: 20,
-    reqCount: 2,
+    id: 20, reqCount: 2,
     text: "OCI Search with OpenSearch に関する記述として正しいものを2つ選んでください。",
     options: [
-      { id: "A", text: "OpenSearch Dashboards による可視化をサポートし、VCN 内プライベート接続や暗号化に対応。", exp: "【正】Dashboardsによる可視化やプライベート接続、暗号化をサポートしています。" },
-      { id: "B", text: "完全なサーバーレス・サービスでありノード数の指定は不要。", exp: "【誤】クラスター構成やノード数の指定・管理が必要です。" },
-      { id: "C", text: "スナップショット（バックアップ）を作成し、Object Storage に保存・復元できる。", exp: "【正】バックアップとしてObject Storageにスナップショットを保存・復元できます。" },
-      { id: "D", text: "トランザクション処理（OLTP）に優れ Autonomous DB の代替になる。", exp: "【誤】検索・分析向けのエンジンでありOLTPやADBの代替にはなりません。" },
-      { id: "E", text: "各ノードの OS パッチ適用は手動 SSH で行う。", exp: "【誤】フルマネージドのサービス領域が含まれます。" }
+      { id: "A", text: "OpenSearch Dashboards による可視化をサポートし、VCN 内プライベート接続や暗号化に対応。", exp: "【正】Dashboardsによる可視化や暗号化を標準サポートしています。" },
+      { id: "B", text: "完全なサーバーレス・サービスでありノード数の指定は不要。", exp: "【誤】ノード数やクラスター構成の指定が必要です。" },
+      { id: "C", text: "スナップショット（バックアップ）を作成し、Object Storage に保存・復元できる。", exp: "【正】スナップショットをObject Storageに保存・復元できます。" },
+      { id: "D", text: "トランザクション処理（OLTP）に優れ Autonomous DB の代替になる。", exp: "【誤】検索・分析エンジンでありOLTP用途ではありません。" },
+      { id: "E", text: "各ノードの OS パッチ適用は手動 SSH で行う。", exp: "【誤】フルマネージドサービスです。" }
     ],
     correct: ["A", "C"],
-    exp: "【総合解説】OpenSearch Dashboardsによる可視化や暗号化、およびObject Storageへのスナップショット保存・復元をサポートしています。"
+    exp: "【総合解説】OpenSearch Dashboardsによる可視化と、Object Storageへのバックアップ（スナップショット）に対応します。"
   }
 ];
 
-let questions = [];
-let currentIdx = 0;
-let selectedIds = [];
-let isSubmitted = false;
+// --------------------------------------------------
+// ロジック制御
+// --------------------------------------------------
 
+// タブ切り替え
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  if(tabId === 'quiz-tab') document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  if(tabId === 'terms-tab') document.querySelectorAll('.tab-btn')[1].classList.add('active');
+  if(tabId === 'term-quiz-tab') document.querySelectorAll('.tab-btn')[2].classList.add('active');
+  
+  document.getElementById(tabId).classList.add('active');
+}
+
+// 配列シャッフル
 function shuffle(array) {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -450,13 +545,17 @@ function shuffle(array) {
   return arr;
 }
 
-function init() {
-  questions = shuffle(rawQuestions).map(q => {
-    return {
-      ...q,
-      shuffledOptions: shuffle(q.options)
-    };
-  });
+// --- TAB 1: 実践問題集制御 ---
+let questions = [];
+let currentIdx = 0;
+let selectedIds = [];
+let isSubmitted = false;
+
+function initQuiz() {
+  questions = shuffle(rawQuestions).map(q => ({
+    ...q,
+    shuffledOptions: shuffle(q.options)
+  }));
   currentIdx = 0;
   loadQuestion();
 }
@@ -494,30 +593,23 @@ function loadQuestion() {
   });
   
   document.getElementById('action-btn').innerText = "回答する";
-  document.getElementById('action-btn').disabled = false;
-  
-  const expDiv = document.getElementById('explanation');
-  expDiv.style.display = 'none';
-  expDiv.innerText = '';
+  document.getElementById('explanation').style.display = 'none';
 }
 
 function selectOption(id, btn) {
   if (isSubmitted) return;
   const q = questions[currentIdx];
-  
   if (q.reqCount === 1) {
     selectedIds = [id];
-    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('#options .option-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
   } else {
     if (selectedIds.includes(id)) {
       selectedIds = selectedIds.filter(i => i !== id);
       btn.classList.remove('selected');
-    } else {
-      if (selectedIds.length < q.reqCount) {
-        selectedIds.push(id);
-        btn.classList.add('selected');
-      }
+    } else if (selectedIds.length < q.reqCount) {
+      selectedIds.push(id);
+      btn.classList.add('selected');
     }
   }
 }
@@ -531,45 +623,160 @@ function submitAnswer() {
       alert(`${q.reqCount} つの選択肢を選んでください。`);
       return;
     }
-    
     isSubmitted = true;
-    const optionBtns = document.querySelectorAll('.option-btn');
+    const optionBtns = document.querySelectorAll('#options .option-btn');
     
     q.shuffledOptions.forEach((opt, idx) => {
       const isCorrect = q.correct.includes(opt.id);
       const isSelected = selectedIds.includes(opt.id);
-      
-      if (isCorrect) {
-        optionBtns[idx].classList.add('correct-show');
-      } else if (isSelected && !isCorrect) {
-        optionBtns[idx].classList.add('wrong-show');
-      }
-      
-      // 各選択肢の個別解説を表示
+      if (isCorrect) optionBtns[idx].classList.add('correct-show');
+      else if (isSelected) optionBtns[idx].classList.add('wrong-show');
       document.getElementById(`opt-exp-${idx}`).style.display = 'block';
     });
     
-    // 全体（総合）解説を表示
     const expDiv = document.getElementById('explanation');
     expDiv.innerText = q.exp;
     expDiv.style.display = 'block';
     
-    if (currentIdx < questions.length - 1) {
-      btn.innerText = "次の問題へ";
-    } else {
-      btn.innerText = "最初からやり直す（全シャッフル）";
-    }
+    btn.innerText = (currentIdx < questions.length - 1) ? "次の問題へ" : "最初からやり直す";
   } else {
     if (currentIdx < questions.length - 1) {
       currentIdx++;
       loadQuestion();
     } else {
-      init();
+      initQuiz();
     }
   }
 }
 
-init();
+// --- TAB 2: 用語一覧制御 ---
+function renderTerms(filter = "") {
+  const listDiv = document.getElementById('terms-list');
+  listDiv.innerHTML = '';
+  
+  termDictionary.forEach(item => {
+    if (filter && !item.term.toLowerCase().includes(filter.toLowerCase()) && !item.desc.toLowerCase().includes(filter.toLowerCase())) {
+      return;
+    }
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'term-item';
+    
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'term-title';
+    titleDiv.innerHTML = `<span>${item.term}</span><span>▼</span>`;
+    
+    const bodyDiv = document.createElement('div');
+    bodyDiv.className = 'term-body';
+    bodyDiv.innerText = item.desc;
+    
+    titleDiv.onclick = () => {
+      const isOpen = bodyDiv.style.display === 'block';
+      bodyDiv.style.display = isOpen ? 'none' : 'block';
+      titleDiv.querySelector('span:last-child').innerText = isOpen ? '▼' : '▲';
+    };
+    
+    itemDiv.appendChild(titleDiv);
+    itemDiv.appendChild(bodyDiv);
+    listDiv.appendChild(itemDiv);
+  });
+}
+
+function filterTerms() {
+  const val = document.getElementById('term-search').value;
+  renderTerms(val);
+}
+
+// --- TAB 3: 用語一問一答クイズ制御 ---
+let termQuestions = [];
+let tqIdx = 0;
+let tqSelectedOption = null;
+let tqIsSubmitted = false;
+
+function initTermQuiz() {
+  // 辞書データから四択クイズを動的生成
+  termQuestions = shuffle(termDictionary).map(target => {
+    // 正解以外の用語からランダムに3つ選出
+    const dummyOptions = shuffle(termDictionary.filter(t => t.term !== target.term)).slice(0, 3);
+    const options = shuffle([
+      { term: target.term, isCorrect: true },
+      ...dummyOptions.map(d => ({ term: d.term, isCorrect: false }))
+    ]);
+    return {
+      desc: target.desc,
+      correctTerm: target.term,
+      options: options
+    };
+  });
+  tqIdx = 0;
+  loadTermQuestion();
+}
+
+function loadTermQuestion() {
+  tqIsSubmitted = false;
+  tqSelectedOption = null;
+  const q = termQuestions[tqIdx];
+  
+  document.getElementById('tq-count').innerText = `用語クイズ ${tqIdx + 1} / ${termQuestions.length}`;
+  document.getElementById('tq-text').innerText = `【説明】\n${q.desc}\n\n上記の説明に該当する最も適切な用語を選んでください。`;
+  
+  const optionsDiv = document.getElementById('tq-options');
+  optionsDiv.innerHTML = '';
+  
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerText = opt.term;
+    btn.onclick = () => selectTermOption(opt, btn);
+    optionsDiv.appendChild(btn);
+  });
+  
+  document.getElementById('tq-action-btn').innerText = "回答する";
+  document.getElementById('tq-explanation').style.display = 'none';
+}
+
+function selectTermOption(opt, btn) {
+  if (tqIsSubmitted) return;
+  tqSelectedOption = opt;
+  document.querySelectorAll('#tq-options .option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function submitTermQuizAnswer() {
+  const q = termQuestions[tqIdx];
+  const btn = document.getElementById('tq-action-btn');
+  
+  if (!tqIsSubmitted) {
+    if (!tqSelectedOption) {
+      alert("用語を1つ選択してください。");
+      return;
+    }
+    tqIsSubmitted = true;
+    const optionBtns = document.querySelectorAll('#tq-options .option-btn');
+    
+    q.options.forEach((opt, idx) => {
+      if (opt.isCorrect) optionBtns[idx].classList.add('correct-show');
+      else if (opt === tqSelectedOption) optionBtns[idx].classList.add('wrong-show');
+    });
+    
+    const expDiv = document.getElementById('tq-explanation');
+    expDiv.innerText = tqSelectedOption.isCorrect ? "【正解！】" : `【不正解】 正解は「${q.correctTerm}」です。`;
+    expDiv.style.display = 'block';
+    
+    btn.innerText = (tqIdx < termQuestions.length - 1) ? "次の問題へ" : "最初からやり直す";
+  } else {
+    if (tqIdx < termQuestions.length - 1) {
+      tqIdx++;
+      loadTermQuestion();
+    } else {
+      initTermQuiz();
+    }
+  }
+}
+
+// 初期化実行
+initQuiz();
+renderTerms();
+initTermQuiz();
 </script>
 
 </body>
