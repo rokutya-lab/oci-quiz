@@ -3,31 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCI Architect Professional 対策 | Pro Dashboard</title>
+  <title>OCI Architect Associate | Ultimate Exam Studio</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & Noto Sans JP -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Plus Jakarta Sans & Noto Sans JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; }
+    /* カスタムスクロールバー */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
 
   <!-- 🔒 簡易パスワード保護オーバーレイ -->
-  <div id="auth-overlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-    <div class="bg-slate-800/90 border border-slate-700/80 p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center space-y-6 backdrop-blur-lg">
-      <div class="w-14 h-14 bg-gradient-to-tr from-indigo-500 to-violet-500 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-indigo-500/30">
+  <div id="auth-overlay" class="fixed inset-0 bg-[#070a12]/95 backdrop-blur-xl z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900/80 border border-slate-800 p-8 rounded-3xl shadow-2xl shadow-indigo-500/10 max-w-sm w-full text-center space-y-6 relative overflow-hidden">
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="w-16 h-16 bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-lg shadow-indigo-500/30">
         🔐
       </div>
       <div>
-        <h2 class="text-xl font-bold text-white tracking-wide">OCI Quiz Access</h2>
-        <p class="text-xs text-slate-400 mt-1">パスワードを入力してダッシュボードを解除</p>
+        <h2 class="text-xl font-extrabold text-white tracking-tight">OCI Quiz Studio</h2>
+        <p class="text-xs text-slate-400 mt-1">パスワードを入力してアクセスを解除</p>
       </div>
       <form onsubmit="event.preventDefault(); checkPassword();" class="space-y-4">
-        <input type="password" id="auth-pass" placeholder="Password" class="w-full px-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
-        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold py-3 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30">
-          Unlock Dashboard
+        <input type="password" id="auth-pass" placeholder="Password" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+        <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-95 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30 active:scale-[0.98]">
+          Unlock Studio
         </button>
       </form>
       <p id="auth-error" class="text-xs text-rose-400 font-semibold hidden">⚠️ パスワードが正しくありません。</p>
@@ -35,29 +41,32 @@
   </div>
 
   <!-- 🚀 ヘッダー -->
-  <header class="bg-slate-900/80 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md">
+  <header class="bg-[#0b0f19]/80 border-b border-slate-800/80 sticky top-0 z-40 backdrop-blur-xl">
     <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-gradient-to-tr from-red-500 via-orange-500 to-amber-500 rounded-xl flex items-center justify-center text-white font-black text-xs shadow-md">
-          OCI
+        <div class="relative group">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-red-500 via-amber-500 to-indigo-500 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+          <div class="relative w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-xs border border-slate-800">
+            OCI
+          </div>
         </div>
         <div>
-          <h1 class="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-            Architect Professional 対策
+          <h1 class="text-base font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+            Architect Associate 対策
           </h1>
-          <p class="text-[10px] text-slate-400">Advanced Exam Preparation Toolkit</p>
+          <p class="text-[10px] font-medium text-indigo-400/90 tracking-wider uppercase">Pro Exam Toolkit</p>
         </div>
       </div>
 
       <!-- ナビゲーションタブ -->
-      <nav class="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50 text-xs">
-        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md">
+      <nav class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800/80 text-xs shadow-inner">
+        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30">
           📝 問題演習
         </button>
-        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200">
+        <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
           📖 用語辞書
         </button>
-        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200">
+        <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
           ⚡ 一問一答
         </button>
       </nav>
@@ -69,23 +78,30 @@
 
     <!-- ================= 1. 問題演習タブ ================= -->
     <section id="tab-quiz" class="space-y-6">
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl backdrop-blur-sm relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
-        
+      
+      <!-- 進捗プログレスバー -->
+      <div class="w-full bg-slate-900/80 rounded-full h-2 border border-slate-800/80 overflow-hidden">
+        <div id="quiz-progress" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full w-0 transition-all duration-500 ease-out"></div>
+      </div>
+
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
         <!-- ヘッダー情報 -->
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/60">
-          <div class="flex items-center gap-2">
-            <span id="q-number" class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
-              問題 1 / 18
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
+          <div class="flex items-center gap-2.5">
+            <span id="q-number" class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
+              QUESTION 1 / 15
             </span>
-            <span id="q-req-count" class="text-xs font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
+            <span id="q-req-count" class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1.5 rounded-full">
               1つ選択
             </span>
           </div>
         </div>
 
         <!-- 問題文 -->
-        <p id="q-text" class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed mb-8">
+        <p id="q-text" class="text-base sm:text-lg font-semibold text-slate-100 leading-relaxed mb-8 tracking-wide">
           問題文がここに表示されます。
         </p>
 
@@ -93,15 +109,15 @@
         <div id="options-container" class="space-y-3.5"></div>
 
         <!-- コントロールボタン -->
-        <div class="mt-8 pt-6 border-t border-slate-700/60 flex flex-wrap justify-between items-center gap-4">
-          <button id="submit-btn" onclick="checkAnswer()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-indigo-600/20 transition duration-200 text-sm">
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-wrap justify-between items-center gap-4">
+          <button id="submit-btn" onclick="checkAnswer()" class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]">
             回答を送信する
           </button>
-          <div class="flex gap-2">
-            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 px-5 py-2.5 rounded-xl text-xs font-medium border border-slate-600/50 transition">
+          <div class="flex gap-2.5">
+            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
               ← 前へ
             </button>
-            <button id="next-btn" onclick="nextQuestion()" class="bg-slate-700/60 hover:bg-slate-700 text-slate-200 px-5 py-2.5 rounded-xl text-xs font-medium border border-slate-600/50 transition">
+            <button id="next-btn" onclick="nextQuestion()" class="bg-slate-800/80 hover:bg-slate-800 text-slate-300 px-5 py-3 rounded-2xl text-xs font-bold border border-slate-700/50 transition active:scale-[0.97]">
               次へ →
             </button>
           </div>
@@ -109,24 +125,28 @@
       </div>
 
       <!-- 解説カード -->
-      <div id="explanation-card" class="hidden bg-slate-800/80 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-        <div class="flex items-center gap-2 text-indigo-400 font-bold text-base mb-3">
-          <span class="text-xl">💡</span> 解答・解説
+      <div id="explanation-card" class="hidden bg-slate-900/60 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div class="flex items-center gap-2.5 text-indigo-400 font-extrabold text-base mb-4">
+          <div class="w-8 h-8 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center justify-center text-lg">💡</div>
+          <span>解答・解説</span>
         </div>
-        <p id="overall-exp" class="text-sm text-slate-300 leading-relaxed mb-6 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50"></p>
-        <div id="option-explanations" class="space-y-2.5 text-xs border-t border-slate-700/60 pt-4"></div>
+        <p id="overall-exp" class="text-sm text-slate-300 leading-relaxed mb-6 bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 font-medium"></p>
+        <div id="option-explanations" class="space-y-3 text-xs border-t border-slate-800/80 pt-5"></div>
       </div>
     </section>
 
     <!-- ================= 2. 用語一覧タブ ================= -->
     <section id="tab-dict" class="hidden space-y-6">
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-700/60">
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-4 border-b border-slate-800/80">
           <div>
-            <h2 class="text-lg font-bold text-white">OCI Professional 専門用語集</h2>
-            <p class="text-xs text-slate-400">Associate & Professional 出題範囲の完全用語リスト</p>
+            <h2 class="text-xl font-extrabold text-white tracking-tight">OCI 専門用語集</h2>
+            <p class="text-xs text-slate-400 mt-1">試験に出題される必須キーワードの完全マスターガイド</p>
           </div>
-          <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="キーワードで検索..." class="w-full sm:w-72 px-4 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="dict-search" oninput="renderDictionary()" placeholder="キーワードで検索..." class="w-full pl-10 pr-4 py-3 bg-slate-950/80 border border-slate-800 rounded-2xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition duration-200">
+            <span class="absolute left-3.5 top-3.5 text-slate-500 text-xs">🔍</span>
+          </div>
         </div>
         <div id="dict-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
       </div>
@@ -134,25 +154,25 @@
 
     <!-- ================= 3. 用語クイズタブ ================= -->
     <section id="tab-termquiz" class="hidden space-y-6">
-      <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 sm:p-8 shadow-xl">
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700/60">
-          <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
-            一問一答クイズ
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
+          <span class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
+            SPEED QUIZ
           </span>
-          <span class="text-xs text-slate-400">正しい説明を選択してください</span>
+          <span class="text-xs text-slate-400 font-medium">該当する正確な説明を選択してください</span>
         </div>
         
-        <div class="text-center my-6">
-          <span class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Target Term</span>
-          <h3 id="term-quiz-title" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-300 mt-1"></h3>
+        <div class="text-center my-8 bg-slate-950/40 border border-slate-800/60 p-6 rounded-2xl">
+          <span class="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest">Target Term</span>
+          <h3 id="term-quiz-title" class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300 mt-1 tracking-tight"></h3>
         </div>
 
         <div id="term-quiz-options" class="space-y-3.5"></div>
 
-        <div class="mt-8 pt-6 border-t border-slate-700/60 flex justify-between items-center">
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex justify-between items-center">
           <div id="term-quiz-result" class="text-sm font-bold"></div>
-          <button onclick="generateTermQuiz()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-6 py-2.5 rounded-xl shadow-lg transition">
-            次の用語へ →
+          <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98]">
+            次の問題へ →
           </button>
         </div>
       </div>
@@ -161,14 +181,14 @@
   </main>
 
   <!-- フッター -->
-  <footer class="bg-slate-950 border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-    OCI Architect Professional Certification Practice Tool
+  <footer class="bg-[#070a12] border-t border-slate-800/80 py-5 text-center text-xs text-slate-500 font-medium">
+    OCI Architect Associate Certification Practice Studio
   </footer>
 
   <!-- ⚙️ スクリプト -->
   <script>
     // 🔐 簡易パスワード保護
-    const SECRET_PASS = "oci2026";
+    const SECRET_PASS = "1219";
     function checkPassword() {
       const inputPass = document.getElementById('auth-pass').value;
       if (inputPass === SECRET_PASS) {
@@ -179,7 +199,7 @@
       }
     }
 
-    // 📚 問題データ (18問: Associate + Professional拡張)
+    // 📚 問題データ (15問)
     const rawQuestions = [
       {
         id: 1, reqCount: 1,
@@ -329,7 +349,7 @@
         id: 13, reqCount: 2,
         text: "ネットワーク・ロードバランサ（NLB）とフレキシブル・ロードバランサ（ALB）の比較において、NLBが適しているシナリオを【2つ】選んでください。",
         options: [
-          { id: "A", text: "HTTP/2 や WebSocket などのL7アプリケーション層プロトコルに基づく高度なパスルーティングを行いたい場合。", exp: "【误】L7 ALBの得意領域です。" },
+          { id: "A", text: "HTTP/2 や WebSocket などのL7アプリケーション層プロトコルに基づく高度なパスルーティングを行いたい場合。", exp: "【誤】L7 ALBの得意領域です。" },
           { id: "B", text: "ミリ秒未満の極めて低いレイテンシと超高スループレベルが要求される UDP トラフィックの処理。", exp: "【正】NLB（L4）が極めて適しています。" },
           { id: "C", text: "クライアントの元のパケットの送信元IPアドレスをバックエンドサーバー側で直接受信・保持したい場合。", exp: "【正】NLBのSource IP Preservation機能が適しています。" },
           { id: "D", text: "SSL Offloading を適用し、バックエンドサーバーの暗号化復号負荷を軽減したい場合。", exp: "【誤】L7 ALBの領域です。" }
@@ -362,46 +382,10 @@
         ],
         correct: ["A", "B"],
         exp: "【総合解説】Auto Scalingは「インスタンス構成」からひな型を作り、「インスタンス・プール」に対してスケーリング条件を設定します。"
-      },
-      {
-        id: 16, reqCount: 1,
-        text: "[Pro] オンプレミスと複数のOCI VCN間をFastConnect経由でハブ＆スポーク型の全互いに接続するアーキテクチャを設計する場合、最も推奨される設計パターンはどれですか？",
-        options: [
-          { id: "A", text: "各VCNごとに独立したLPGを介してオンプレミスと個別に手動接続する。", exp: "【誤】LPGは推移的ルーティングをサポートせず、スケーラビリティに欠けます。" },
-          { id: "B", text: "1つのDRG（Dynamic Routing Gateway）にFastConnectとすべてのVCNアタッチメントを統合し、DRGルート表で推移的ルーティング（Transitive Routing）を制御する。", exp: "【正】新DRG機能により、1つのDRGで全VCNおよびFastConnectのルーティングを集中制御できます。" },
-          { id: "C", text: "すべてのVCNをパイク式にパブリック・インターネット経由のIPsec VPNで接続する。", exp: "【誤】FastConnectの利点（低遅延・広帯域）が失われます。" },
-          { id: "D", text: "VCN間にフルメッシュのローカル・ピアリング・ゲートウェイ（LPG）を100個構築する。", exp: "【誤】構築・管理が極めて複雑になりスケールしません。" }
-        ],
-        correct: ["B"],
-        exp: "【総合解説】OCIのDRGはVCN間およびオンプレミス（FastConnect/VPN）間の推移的ルーティングハブとして機能します。"
-      },
-      {
-        id: 17, reqCount: 1,
-        text: "[Pro] Oracle DatabaseをオンプレミスからOCI上のExabyte / Autonomous Databaseへ「最小限のダウンタイム（Zero Downtime）」で移行する場合、Oracle標準として推奨されるツールはどれですか？",
-        options: [
-          { id: "A", text: "Oracle Data Pumpのフル・エクスポート/インポートのみ", exp: "【誤】大容量DBではダウンタイムが長くなります。" },
-          { id: "B", text: "Oracle Zero Downtime Migration (ZDM)", exp: "【正】Data GuardやGoldenGate技術を自動化し、無停止に近い状態でのDB移行を支援する最良の選択肢です。" },
-          { id: "C", text: "OCI Storage Gateway", exp: "【誤】非構造化ファイル転送用でありDB移行専用ツールではありません。" },
-          { id: "D", text: "RMAN Duplicate コマンドによる手動構築のみ", exp: "【誤】手動構築手順が多く、完全自動化されたZDMが推奨されます。" }
-        ],
-        correct: ["B"],
-        exp: "【総合解説】ZDM (Zero Downtime Migration) はOracleが提供する標準移行自動化サービスです。"
-      },
-      {
-        id: 18, reqCount: 1,
-        text: "[Pro] テナント全体のセキュリティ基準を厳格に強制適用し、セキュリティ・リストの変更やストレージのパブリック化などの設定ミスを予防・自動修正するサービスとして適切なものはどれですか？",
-        options: [
-          { id: "A", text: "OCI Vault / Secrets Manager", exp: "【誤】暗号キーおよびパスワード管理ツールです。" },
-          { id: "B", text: "OCI Cloud Guard および Security Zones", exp: "【正】Cloud Guardで問題を検知し、Security Zonesで不正設定を未然に防止します。" },
-          { id: "C", text: "OCI Audit Log Console", exp: "【誤】監査ログの閲覧用途です。" },
-          { id: "D", text: "Network Security Group (NSG)", exp: "【誤】個別のVNIC単位ファイアウォールです。" }
-        ],
-        correct: ["B"],
-        exp: "【総合解説】Cloud GuardとMaximum Security ZonesはOCI環境全域のセキュリティ脅威の検出とポリシールール強制を提供します。"
       }
     ];
 
-    // 📖 用語データ (Professional用を追加拡張)
+    // 📖 用語データ (追加・補完済み 34用語)
     const termDictionary = [
       { term: "AD（アベイラビリティ・ドメイン）", desc: "リージョン内に存在する、互いに独立した1つ以上のデータセンター。電源やネットワークが完全に隔離されており、障害耐性を高める配置に使用する。" },
       { term: "FD（障害ドメイン）", desc: "1つのAD内に存在するハードウェアや電源のグループ（各ADに3つ配置）。同一AD内での機器故障の影響を分散させるために利用する。" },
@@ -415,9 +399,13 @@
       { term: "DRG（動的ルーティング・ゲートウェイ）", desc: "VCNと外部ネットワーク（オンプレミス、他リージョンのVCN、Azureなど）を専用線やVPNで相互接続するための仮想ルーター。" },
       { term: "LPG（ローカル・ピアリング・ゲートウェイ）", desc: "同一リージョン内にある2つのVCN同士を、インターネットを経由させずに直接通信させるためのゲートウェイ。" },
       { term: "RPC（リモート・ピアリング・コネクション）", desc: "異なるリージョン間にあるVCN同士を、DRGを介して接続・通信させるためのコンポーネント。" },
+      { term: "VCNピアリング", desc: "プライベートIPアドレスを使用して、複数のVCN間を直接接続する技術（同一リージョン内はLPG、リージョン間はDRG/RPCを使用）。" },
       { term: "ブロック・ボリューム", desc: "コンピュート・インスタンスに接続して使用する永続的な高パフォーマンス・ブロック・ストレージ（SANと同等）。VPUで性能を調整可能。" },
+      { term: "Block Volume Performance Units (VPUs)", desc: "ブロック・ボリュームのパフォーマンス帯域幅（IOPSやスループレベル）を1GB単位で柔軟に変更・設定するための評価指標指標。" },
       { term: "オブジェクト・ストレージ", desc: "非構造化データ（画像、バックアップ、ログなど）を無制限に保存できる拡張性に優れたストレージ（Standard/Archive/Infrequencyアクセス層がある）。" },
       { term: "ファイル・ストレージ（FSS）", desc: "NFSv3プロトコルをサポートし、複数のコンピュート・インスタンスから同時にマウントして共有できるファイルシステム。" },
+      { term: "インスタンス構成（Instance Configuration）", desc: "コンピュート・インスタンスのひな型（OSイメージ、シェイプ、VNIC、ストレージなど）を定義した設定オブジェクト。Auto Scaling等で利用。" },
+      { term: "インスタンス・プール（Instance Pool）", desc: "同一の「インスタンス構成」に基づいて複数のコンピュート・インスタンスを一括管理・プロビジョニングするグループ。" },
       { term: "Autonomous Database（ADB）", desc: "チューニング、パッチ適用、バックアップなどの運用管理がAI・機械学習により完全に自動化された自律型データベース（ATP/ADW）。" },
       { term: "RCV（Autonomous Recovery Service）", desc: "Oracle Database向けの全自動リカバリサービス。ZDLRA技術をベースとし、RPOを1秒未満に抑えるリアルタイム保護を提供する。" },
       { term: "セキュリティ・リスト", desc: "サブネットレベルで適用される仮想ファイアウォール。インバウンド／アウトバウンドのルールをステートフル／ステートレスで指定する。" },
@@ -432,12 +420,7 @@
       { term: "OCI Cache", desc: "RedisおよびValkeyと互換性のあるフルマネージドのインメモリキャッシュサービス。ミリ秒未満の高速レスポンスを実現する。" },
       { term: "OCI Search with OpenSearch", desc: "大規模なログ分析や全文検索を実現するフルマネージド検索エンジン。OpenSearch Dashboardsによる可視化にも対応。" },
       { term: "Oracle Cloud Migrations (OCM)", desc: "オンプレミスのVMware環境などの仮想マシンを分析し、OCI上のコンピュート・インスタンスへ自動移行・変換するサービス。" },
-      { term: "MQL（Monitoring Query Language）", desc: "OCI Monitoringでメトリックデータを検索・集計・アラーム定義するために使用する専用のクエリ言語。" },
-      { term: "FastConnect", desc: "オンプレミス環境とOCI間をインターネットを経由せず専用線で接続する高品質・低遅延の接続サービス。" },
-      { term: "ZDM (Zero Downtime Migration)", desc: "Oracle DBをオンプレミスからOCIへ最小限のダウンタイムで安全に移行するための標準ツール。" },
-      { term: "Autonomous Data Guard", desc: "Autonomous Databaseで数クリックで設定可能な高可用性・災害復旧（DR）自動同期機能。" },
-      { term: "Cloud Guard", desc: "OCI環境全体を常時監視し、セキュリティ設定の不備や危険な操作を自動検知・修復するサービス。" },
-      { term: "Maximum Security Zones", desc: "厳格なセキュリティ・ポリシーがコンパートメント単位で事前に強制適用されるセキュリティ・ゾーン。" }
+      { term: "MQL（Monitoring Query Language）", desc: "OCI Monitoringでメトリックデータを検索・集計・アラーム定義するために使用する専用のクエリ言語。" }
     ];
 
     let currentIndex = 0;
@@ -463,32 +446,36 @@
       const btnTermQuiz = document.getElementById('tab-termquiz-btn');
 
       [btnQuiz, btnDict, btnTermQuiz].forEach(btn => {
-        btn.className = "px-4 py-2 rounded-lg transition font-medium text-slate-400 hover:text-slate-200";
+        btn.className = "px-5 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
       });
 
       if (tabName === 'quiz') {
         document.getElementById('tab-quiz').classList.remove('hidden');
-        btnQuiz.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
+        btnQuiz.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       } else if (tabName === 'dict') {
         document.getElementById('tab-dict').classList.remove('hidden');
-        btnDict.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
+        btnDict.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       } else if (tabName === 'termquiz') {
         document.getElementById('tab-termquiz').classList.remove('hidden');
-        btnTermQuiz.className = "px-4 py-2 rounded-lg transition font-medium bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md";
+        btnTermQuiz.className = "px-5 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
       }
     }
 
     function renderQuestion() {
       const q = rawQuestions[currentIndex];
       
-      document.getElementById('q-number').innerText = `問題 ${currentIndex + 1} / ${rawQuestions.length}`;
+      // プログレスバーの更新
+      const progressPercent = ((currentIndex + 1) / rawQuestions.length) * 100;
+      document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+
+      document.getElementById('q-number').innerText = `QUESTION ${currentIndex + 1} / ${rawQuestions.length}`;
       document.getElementById('q-req-count').innerText = `${q.reqCount}つ選択`;
       document.getElementById('q-text').innerText = q.text;
 
       document.getElementById('prev-btn').disabled = currentIndex === 0;
-      document.getElementById('prev-btn').classList.toggle('opacity-40', currentIndex === 0);
+      document.getElementById('prev-btn').classList.toggle('opacity-30', currentIndex === 0);
       document.getElementById('next-btn').disabled = currentIndex === rawQuestions.length - 1;
-      document.getElementById('next-btn').classList.toggle('opacity-40', currentIndex === rawQuestions.length - 1);
+      document.getElementById('next-btn').classList.toggle('opacity-30', currentIndex === rawQuestions.length - 1);
 
       const container = document.getElementById('options-container');
       container.innerHTML = '';
@@ -500,27 +487,27 @@
         const isChecked = currentSelected.includes(opt.id);
         const optEl = document.createElement('label');
         
-        let borderStyle = "border-slate-700/70 bg-slate-900/40 hover:bg-slate-900/80 hover:border-indigo-500/50 text-slate-300";
+        let borderStyle = "border-slate-800/80 bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 text-slate-300";
         if (isChecked) {
-          borderStyle = "border-indigo-500 bg-indigo-500/10 text-white font-medium ring-1 ring-indigo-500/50";
+          borderStyle = "border-indigo-500/80 bg-indigo-500/10 text-white font-semibold ring-2 ring-indigo-500/20 shadow-lg shadow-indigo-500/10";
         }
 
         if (isAnswered) {
           const isCorrectOpt = q.correct.includes(opt.id);
           if (isCorrectOpt) {
-            borderStyle = "border-emerald-500/80 bg-emerald-500/10 text-emerald-300 font-semibold ring-1 ring-emerald-500/40";
+            borderStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-200 font-semibold ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/10";
           } else if (isChecked && !isCorrectOpt) {
-            borderStyle = "border-rose-500/80 bg-rose-500/10 text-rose-300 ring-1 ring-rose-500/40";
+            borderStyle = "border-rose-500 bg-rose-500/10 text-rose-300 ring-2 ring-rose-500/20";
           }
         }
 
-        optEl.className = `flex items-start gap-3.5 p-4 rounded-xl border text-sm cursor-pointer transition-all duration-200 ${borderStyle}`;
+        optEl.className = `flex items-start gap-4 p-4.5 rounded-2xl border text-sm cursor-pointer transition-all duration-200 ${borderStyle}`;
         
         const inputType = q.reqCount === 1 ? 'radio' : 'checkbox';
         optEl.innerHTML = `
           <input type="${inputType}" name="q-option" value="${opt.id}" ${isChecked ? 'checked' : ''} ${isAnswered ? 'disabled' : ''} 
-            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-500 focus:ring-indigo-500 rounded border-slate-700 bg-slate-900">
-          <span class="flex-1"><strong class="mr-2 text-indigo-400 font-bold">${opt.id}.</strong>${opt.text}</span>
+            onchange="toggleOption('${opt.id}')" class="mt-0.5 text-indigo-500 focus:ring-indigo-500/30 rounded border-slate-700 bg-slate-950">
+          <span class="flex-1 leading-relaxed"><strong class="mr-2 text-indigo-400 font-bold">${opt.id}.</strong>${opt.text}</span>
         `;
         container.appendChild(optEl);
       });
@@ -530,9 +517,9 @@
 
       if (isAnswered) {
         expCard.classList.remove('hidden');
-        submitBtn.innerText = "回答済み";
+        submitBtn.innerText = "✓ 回答済み";
         submitBtn.disabled = true;
-        submitBtn.className = "bg-slate-700/50 text-slate-500 font-semibold px-8 py-3 rounded-xl text-sm cursor-not-allowed border border-slate-700/50";
+        submitBtn.className = "bg-slate-800/50 text-slate-500 font-bold px-8 py-3.5 rounded-2xl text-sm cursor-not-allowed border border-slate-800/80";
 
         document.getElementById('overall-exp').innerText = q.exp;
         const optExpContainer = document.getElementById('option-explanations');
@@ -540,7 +527,7 @@
         q.options.forEach(opt => {
           const p = document.createElement('p');
           const isCorrect = q.correct.includes(opt.id);
-          p.className = isCorrect ? "text-emerald-400 font-medium" : "text-slate-400";
+          p.className = isCorrect ? "text-emerald-400 font-medium bg-emerald-500/5 p-2.5 rounded-xl border border-emerald-500/20" : "text-slate-400 p-1";
           p.innerHTML = `<strong class="text-indigo-300">${opt.id}:</strong> ${opt.exp}`;
           optExpContainer.appendChild(p);
         });
@@ -549,7 +536,7 @@
         expCard.classList.add('hidden');
         submitBtn.innerText = "回答を送信する";
         submitBtn.disabled = false;
-        submitBtn.className = "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg shadow-indigo-600/20 transition duration-200 text-sm";
+        submitBtn.className = "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:opacity-90 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-indigo-600/25 transition duration-200 text-sm active:scale-[0.98]";
       }
     }
 
@@ -618,16 +605,19 @@
       );
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-500 col-span-2">該当する用語が見つかりませんでした。</p>`;
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 py-4">該当する用語が見つかりませんでした。</p>`;
         return;
       }
 
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = "p-4 border border-slate-700/60 rounded-xl bg-slate-900/40 hover:bg-slate-900/80 hover:border-indigo-500/40 transition duration-200";
+        card.className = "p-5 border border-slate-800/80 rounded-2xl bg-slate-950/40 hover:bg-slate-900/80 hover:border-indigo-500/40 hover:-translate-y-0.5 transition duration-200 space-y-2";
         card.innerHTML = `
-          <h4 class="font-bold text-indigo-300 text-sm mb-1.5">${item.term}</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">${item.desc}</p>
+          <h4 class="font-extrabold text-indigo-300 text-sm tracking-wide flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+            ${item.term}
+          </h4>
+          <p class="text-xs text-slate-400 leading-relaxed font-normal">${item.desc}</p>
         `;
         container.appendChild(card);
       });
@@ -666,8 +656,8 @@
 
       choices.forEach((choice, i) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-4 border border-slate-700/60 rounded-xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 transition bg-slate-900/40 text-slate-300";
-        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400">${i + 1}.</span>${choice.desc}`;
+        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300";
+        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400 font-mono">[${i + 1}]</span>${choice.desc}`;
         btn.onclick = () => answerTermQuiz(choice.isCorrect, btn);
         optionsContainer.appendChild(btn);
       });
@@ -680,17 +670,17 @@
       allButtons.forEach(btn => btn.disabled = true);
 
       if (isCorrect) {
-        btnElement.className = "w-full text-left p-4 border border-emerald-500/80 bg-emerald-500/10 text-emerald-300 rounded-xl text-xs leading-relaxed font-semibold";
-        resultEl.innerText = "⭕ 正解です！";
+        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
+        resultEl.innerText = "⭕ 正解です！完璧な知識です。";
         resultEl.className = "text-sm font-bold text-emerald-400";
       } else {
-        btnElement.className = "w-full text-left p-4 border border-rose-500/80 bg-rose-500/10 text-rose-300 rounded-xl text-xs leading-relaxed";
+        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed";
         resultEl.innerText = "❌ 残念！不正解です。";
         resultEl.className = "text-sm font-bold text-rose-400";
 
         currentTermQuiz.choices.forEach((c, idx) => {
           if (c.isCorrect) {
-            allButtons[idx].className = "w-full text-left p-4 border border-emerald-500/80 bg-emerald-500/10 text-emerald-300 rounded-xl text-xs leading-relaxed font-semibold";
+            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
           }
         });
       }
