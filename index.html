@@ -91,6 +91,7 @@
             <option value="ネットワーク">ネットワーク/FastConnect</option>
             <option value="セキュリティ">セキュリティ/IAM/ZPR</option>
             <option value="データベース">データベース/Data Guard</option>
+            <option value="ストレージ/基盤">ストレージ/基盤</option>
             <option value="マイグレーション">マイグレーション/OCM</option>
           </select>
           <label class="flex items-center gap-2 text-slate-300 ml-2 cursor-pointer font-semibold">
@@ -118,7 +119,7 @@
         <div class="flex flex-wrap justify-between items-center gap-3 mb-6 pb-4 border-b border-slate-800/80">
           <div class="flex items-center gap-2.5 flex-wrap">
             <span id="q-number" class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
-              QUESTION 1 / 15
+              QUESTION 1 / 25
             </span>
             <span id="q-tag" class="text-xs font-bold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 rounded-full">
               DR/高可用性
@@ -173,7 +174,7 @@
           </span>
           <h2 class="text-2xl font-black text-white">本番想定 模擬試験スタジオ</h2>
           <p class="text-xs text-slate-400 leading-relaxed">
-            全15問をランダム出題し、制限時間（20分）内で回答します。提出後に総合点数と合否判定（合格ライン: 70%）を出力します。
+            全25問からランダム出題（15問）し、制限時間（20分）内で回答します。提出後に総合点数と合否判定（合格ライン: 70%）を出力します。
           </p>
         </div>
 
@@ -244,7 +245,7 @@
       </div>
     </section>
 
-    <!-- ================= 4. 用語クイズタブ ================= -->
+    <!-- ================= 4. 用語クイズタブ (一問一答) ================= -->
     <section id="tab-termquiz" class="hidden space-y-6">
       <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
@@ -261,9 +262,9 @@
 
         <div id="term-quiz-options" class="space-y-3.5"></div>
 
-        <div class="mt-8 pt-6 border-t border-slate-800/80 flex justify-between items-center">
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div id="term-quiz-result" class="text-sm font-bold"></div>
-          <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98]">
+          <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98] shrink-0">
             次の問題へ →
           </button>
         </div>
@@ -290,19 +291,19 @@
       }
     }
 
-    // 📚 Professional (1Z0-997) 高度問題データ (20問)
+    // 📚 Professional (1Z0-997) 高度問題データ (25問)
     const rawQuestions = [
       {
         id: 1, tag: "DR/高可用性", reqCount: 1,
         text: "ミッションクリティカルなデータベースでRPO（目標復旧時点）をゼロに保ちつつ、別リージョンへの災害復旧（DR）構成を設計する必要があります。最も適切なデータベース構成はどれですか？",
         options: [
           { id: "A", text: "Autonomous Recovery Service (RCV) を使用し、毎時クロスリージョン・バックアップを転送する。", exp: "【誤】バックアップ転送ではRPO=0を達成できません。" },
-          { id: "B", text: "Oracle Active Data Guard を同期モード（Maximum Protection）または最高可用性モード（Maximum Availability）で別リージョンに構成する。", exp: "【正】Active Data Guardの同期転送により、リージョン間でのリアルタイム同期とRPO=0を両立します。" },
-          { id: "C", text: "Object Storage のクロスリージョン・レプリケーションを1分間隔で実行する。", exp: "【誤】DBログの直接同期ではないため不整合が発生します。" },
+          { id: "B", text: "Oracle Active Data Guard (ADG) を同期モード（Maximum Protection または Maximum Availability）で別リージョンに構成する。", exp: "【正】Active Data Guardの同期転送により、リージョン間でのリアルタイム同期とRPO=0を両立します。" },
+          { id: "C", text: "オブジェクト・ストレージ のクロスリージョン・レプリケーションを1分間隔で実行する。", exp: "【誤】DBログの直接同期ではないため不整合が発生します。" },
           { id: "D", text: "GoldenGate の非同期双方向レプリケーション構成のみを適用する。", exp: "【誤】非同期レプリケーションではRPO=0の保証は困難です。" }
         ],
         correct: ["B"],
-        exp: "【プロフェッショナル解説】RPO=0（データ損失ゼロ）の要件には、Active Data Guardの同期（Maximum Protection / Maximum Availability）構成が必須です。"
+        exp: "【プロフェッショナル解説】RPO=0（データ損失ゼロ）の要件には、Active Data Guard (ADG) の同期（Maximum Protection / Maximum Availability）構成が必須です。"
       },
       {
         id: 2, tag: "ネットワーク", reqCount: 1,
@@ -330,18 +331,90 @@
       },
       {
         id: 4, tag: "DR/高可用性", reqCount: 1,
-        text: "2つのリージョン（東京・大阪）間での全自動フェイルオーバーを可能にするWebアプリケーションアーキテクチャを設計しています。RTO（復旧時間）を最小化するための構成として最も適切なものはどれですか？",
+        text: "単一アベイラビリティ・ドメイン（AD）内にミッションクリティカルなWebアプリケーションをデプロイし、ハードウェア故障や電源切断によるダウンタイムを回避する必要があります。適切な構成はどれですか？",
         options: [
-          { id: "A", text: "DNSトラフィック・マネジメントの「ヘルスチェック付きフェイルオーバー・ポリシー」を使用し、プライマリリージョンの障害時にセカンダリのPublic IPへ自動切り替えする。", exp: "【正】DNSヘルスチェック機能と連携した自動フェイルオーバーが最もRTOを小さく抑えます。" },
-          { id: "B", text: "Object StorageのCLIスクリプトをCronで定期実行し、障害時にDNS手動更新を行う。", exp: "【誤】手動運用が入りRTOが大きくなります。" },
-          { id: "C", text: "フレキシブル・ロードバランサをマルチリージョンに跨がせて単一IPで公開する。", exp: "【誤】OCI Load Balancerは単一リージョン内のリソースです。" },
-          { id: "D", text: "DRGピアリング（RPC）を経由して、クライアントのトラフィックを直接VCN内部IPに転送する。", exp: "【誤】インターネットからのパブリックアクセスの自動転送には適しません。" }
+          { id: "A", text: "複数の障害ドメイン（FD）にわたってインスタンスを分散配置する。", exp: "【正】同一AD内でも3つの障害ドメイン（FD）に分散配置することで、ラックや電源レベルのハードウェア単一障害点を回避できます。" },
+          { id: "B", text: "別リージョンにLPG（ローカル・ピアリング・ゲートウェイ）経由で同期する。", exp: "【誤】LPGは同一リージョン内でのVCN接続に使用します。" },
+          { id: "C", text: "すべてのインスタンスを同一のFD（障害ドメイン）に集中配置する。", exp: "【誤】単一障害点となり危険です。" },
+          { id: "D", text: "ブロック・ボリュームのパフォーマンスを最低レベルに変更する。", exp: "【誤】可用性の向上には寄与しません。" }
         ],
         correct: ["A"],
-        exp: "【プロフェッショナル解説】クロスリージョンの広域フェイルオーバーには、OCI Traffic Management Steering Policiesのヘルスチェック機能を利用したDNS自動切替がベストプラクティスです。"
+        exp: "【プロフェッショナル解説】AD（アベイラビリティ・ドメイン）内のハードウェア・電源障害を分離するためには、3つ存在する障害ドメイン（FD）への分散デプロイが基本設計となります。"
       },
       {
-        id: 5, tag: "データベース", reqCount: 1,
+        id: 5, tag: "ネットワーク", reqCount: 1,
+        text: "プライベート・サブネット内のコンピュート・インスタンスから、インターネットを経由させずにOCIのオブジェクト・ストレージへ大容量データを安全に転送したいと考えています。使用すべきゲートウェイはどれですか？",
+        options: [
+          { id: "A", text: "インターネット・ゲートウェイ（IGW）", exp: "【誤】IGWはパブリック通信用のゲートウェイです。" },
+          { id: "B", text: "NAT ゲートウェイ", exp: "【誤】NATゲートウェイはインターネット経由（パブリック通信）となります。" },
+          { id: "C", text: "サービス・ゲートウェイ", exp: "【正】サービス・ゲートウェイを使用することで、VCN内からインターネットを経由せずにOCIパブリック・サービス（Object Storage等）に直接暗号化プライベートアクセスできます。" },
+          { id: "D", text: "LPG（ローカル・ピアリング・ゲートウェイ）", exp: "【誤】LPGは別のVCN同士を接続するためのものです。" }
+        ],
+        correct: ["C"],
+        exp: "【プロフェッショナル解説】サービス・ゲートウェイは、インターネットを経由せずOCI内部バックボーンネットワークのみを通してObject StorageやLoggingサービス等に接続します。"
+      },
+      {
+        id: 6, tag: "ネットワーク", reqCount: 1,
+        text: "同一リージョン内に存在する「VCN A」と「VCN B」の2つの仮想ネットワーク間で、パブリックインターネットを経由せずに安全に通信（VCNピアリング）を行いたい。最も適切なゲートウェイ構成はどれですか？",
+        options: [
+          { id: "A", text: "双方のVCNに LPG（ローカル・ピアリング・ゲートウェイ）を作成し、ピアリング接続を確立する。", exp: "【正】同一リージョン内のVCN相互接続にはLPG（Local Peering Gateway）を使用します。" },
+          { id: "B", text: "RPC（リモート・ピアリング・コネクション）を双方のVCNに配置する。", exp: "【誤】RPCは別リージョン間のピアリング（Remote Peering）に使用します。" },
+          { id: "C", text: "双方のVCNに インターネット・ゲートウェイ（IGW）を配置して暗号化通信する。", exp: "【誤】パブリックインターネットを経由してしまいます。" },
+          { id: "D", text: "NAT ゲートウェイ同士を直接接続する。", exp: "【誤】NATゲートウェイ同士をピアリング接続することはできません。" }
+        ],
+        correct: ["A"],
+        exp: "【プロフェッショナル解説】VCNピアリングにおいて、同一リージョン間にはLPG（ローカル・ピアリング・ゲートウェイ）、異なるリージョン間にはDRG＋RPC（リモート・ピアリング・コネクション）を使用します。"
+      },
+      {
+        id: 7, tag: "セキュリティ", reqCount: 1,
+        text: "OCI Functions（サーバーレスコード）から、OCI VaultのシークレットAPIを呼び出してDBパスワードを取得させる設計をしています。セキュリティのベストプラクティスとして最も適切な認証・認可構成はどれですか？",
+        options: [
+          { id: "A", text: "Functionsコード内に認証トークン（Auth Token）を直接ハードコードする。", exp: "【誤】セキュリティ上の重大なアンチパターンです。" },
+          { id: "B", text: "動的グループ（Dynamic Group）を作成してFunctionsリソースを定義し、その動的グループに対してVaultアクセスのIAMポリシーを付与する。", exp: "【正】動的グループを使用することで、資格情報をコードに持つことなく、リソース自体に安全なIAMアクセス権限を与えることができます。" },
+          { id: "C", text: "コンパートメント全体のアクセス権限をパブリック公開する。", exp: "【誤】重大なセキュリティリスクとなります。" },
+          { id: "D", text: "APIキーを発行してFunctionsの環境変数に平文で保存する。", exp: "【誤】鍵の管理コストと漏洩リスクが生じます。" }
+        ],
+        correct: ["B"],
+        exp: "【プロフェッショナル解説】OCIリソース（コンピュートやFunctions）自身に他OCIサービスへの操作権限を付与する場合は、動的グループ（Dynamic Group）＋IAMポリシーの組み合わせが必須です。"
+      },
+      {
+        id: 8, tag: "ストレージ/基盤", reqCount: 1,
+        text: "データベースのバッチ処理時間帯のみ、接続しているブロック・ボリューム（Block Volume）の処理パフォーマンスを一時的に引き上げたいと考えています。最も適した設定アプローチはどれですか？",
+        options: [
+          { id: "A", text: "ブロック・ボリュームを一度削除し、より大きいサイズで再構築する。", exp: "【誤】データ損失と大きなダウンタイムが発生します。" },
+          { id: "B", text: "VPU（Block Volume Performance Units）の設定数値をオンラインで動的に変更（例: BalancedからUltra High Performanceへ）する。", exp: "【正】ブロック・ボリュームはVPU値を調整することで、インスタンスを停止することなくパフォーマンス（IOPS/スループレベル）を動的に伸縮可能です。" },
+          { id: "C", text: "オブジェクト・ストレージへデータを全コピーする。", exp: "【誤】ブロック・ストレージの代替にはなりません。" },
+          { id: "D", text: "ファイル・ストレージ（FSS）に切り替える。", exp: "【誤】共有ファイルシステムでありブロックパフォーマンスの向上策ではありません。" }
+        ],
+        correct: ["B"],
+        exp: "【プロフェッショナル解説】OCI Block VolumeはVPU（Performance Units）をスライダー変更するだけで、オンラインかつダウンタイムなしでパフォーマンスを調整できます。"
+      },
+      {
+        id: 9, tag: "ストレージ/基盤", reqCount: 1,
+        text: "複数のコンピュート・インスタンスから同時にマウントし、NFSv3プロトコルを介して共有ファイルを利用できるストレージサービスはどれですか？",
+        options: [
+          { id: "A", text: "ブロック・ボリューム", exp: "【誤】通常単一インスタンスに接続するブロックストレージです。" },
+          { id: "B", text: "オブジェクト・ストレージ", exp: "【誤】REST API経由でアクセスするオブジェクト形式のストレージです。" },
+          { id: "C", text: "ファイル・ストレージ（FSS）", exp: "【正】ファイル・ストレージ（FSS）はNFSv3に対応し、複数のインスタンスからの同時読み書き共有をサポートします。" },
+          { id: "D", text: "OCI Cache", exp: "【誤】インメモリキャッシュデータベースです。" }
+        ],
+        correct: ["C"],
+        exp: "【プロフェッショナル解説】NFS共有ファイルシステムを提供し、複数のノードから共有マウント可能なサービスは「ファイル・ストレージ（FSS）」です。"
+      },
+      {
+        id: 10, tag: "ストレージ/基盤", reqCount: 1,
+        text: "インフラ構築のコード化（IaC）を推進し、Terraformコードをクラウド上で安全に管理・自動実行するためのOCIマネージドサービスはどれですか？",
+        options: [
+          { id: "A", text: "Resource Manager", exp: "【正】Resource ManagerはTerraformをベースとしたOCIマネージドサービスで、状態（State）管理や自動プロビジョニングを提供します。" },
+          { id: "B", text: "コンパートメント・エクスプローラー", exp: "【誤】リソースの一覧・ツリー表示を行う視覚化ツールです。" },
+          { id: "C", text: "Service Connector Hub", exp: "【誤】ログやデータの転送パイプラインです。" },
+          { id: "D", text: "Cloud Guard", exp: "【誤】セキュリティ不備の監視・修復サービスです。" }
+        ],
+        correct: ["A"],
+        exp: "【プロフェッショナル解説】OCI上でTerraformを用いたInfrastructure as Code (IaC) を実行・管理する標準マネージドサービスは「Resource Manager」です。"
+      },
+      {
+        id: 11, tag: "データベース", reqCount: 1,
         text: "Autonomous Database (ADB) の「Auto Scaling（自動スケーリング）」機能に関して正しい説明はどれですか？",
         options: [
           { id: "A", text: "CPU要求の負荷に応じて、プロビジョニングされたCPUコア数の最大3倍まで自動的に拡張される。", exp: "【正】ADBのAuto Scalingは指定コア数の最大3倍まで即座に動的拡張されます。" },
@@ -353,19 +426,19 @@
         exp: "【プロフェッショナル解説】ADBのAuto ScalingはダウンタイムなしでCPU/IOリソースを基本プロビジョニング数の「最大3倍」まで自動拡張します。"
       },
       {
-        id: 6, tag: "マイグレーション", reqCount: 1,
+        id: 12, tag: "マイグレーション", reqCount: 1,
         text: "Oracle Cloud Migrations (OCM) を使用して、100台のオンプレミスVMware仮想マシンをOCIへ一括移行する計画を立てています。移行プロセス設計として正しい順序はどれですか？",
         options: [
           { id: "A", text: "アプライアンス配置 → 資産調査（Inventory/Discovery） → アセスメント（サイズ決定） → マイグレーション・計画（Migration Plan）作成 → 実行", exp: "【正】OCMの標準的・体系的な移行フローです。" },
           { id: "B", text: "マイグレーション・計画作成 → インスタンス起動 → アプライアンス配置 → 後から資産調査", exp: "【誤】資産調査が最初に行われる必要があります。" },
-          { id: "C", text: "VMwareの全VMを一度Object Storageへエクスポート → OCMで一括読み込み", exp: "【誤】OCMアプライアンスによるエージェントレス直接収集が標準です。" },
+          { id: "C", text: "VMwareの全VMを一度オブジェクト・ストレージへエクスポート → OCMで一括読み込み", exp: "【誤】OCMアプライアンスによるエージェントレス直接収集が標準です。" },
           { id: "D", text: "Terraformコードの手動記述 → 資産調査 → 移行実行", exp: "【誤】OCMがコード変換等を自動化します。" }
         ],
         correct: ["A"],
         exp: "【プロフェッショナル解説】OCMは「アプライアンス設置による資産の自動検出（Discovery）→ 適切なShape評価（Assessment）→ 移行計画（Migration Plan）→ レプリケーション・起動」の順で進めます。"
       },
       {
-        id: 7, tag: "セキュリティ", reqCount: 1,
+        id: 13, tag: "セキュリティ", reqCount: 1,
         text: "ZPR（Zero Trust Packet Routing）ポリシーを適用した環境で、AppサブネットからDBサブネットへの特定プロトコル通信のみを許可する場合の記述として適切なものはどれですか？",
         options: [
           { id: "A", text: "in VCN-Network allow App:Production endpoints to connect to DB:Production endpoints with protocol='tcp/1521'", exp: "【正】ZPRの基本構文 `in <context> allow <source> endpoints to connect to <target> endpoints with protocol='...'` に完全に合致しています。" },
@@ -377,7 +450,7 @@
         exp: "【プロフェッショナル解説】ZPRポリシー構文は `in <VCN-Context> allow <Source-Attribute> endpoints to connect to <Target-Attribute> endpoints with protocol='...'` 形式をとります。"
       },
       {
-        id: 8, tag: "ネットワーク", reqCount: 1,
+        id: 14, tag: "ネットワーク", reqCount: 1,
         text: "異なるテナンシーに存在するVCN AとVCN BをDRGを介してピアリング（クロス・テナンシー・ピアリング）接続するための必要条件として【誤っているもの】はどれですか？",
         options: [
           { id: "A", text: "両方のテナンシーでIAMポリシー（Define / Endorse / Admit）を設定し、相互接続を認可する。", exp: "【正】クロス・テナンシーアクセスには必須のIAMポリシーです。" },
@@ -389,31 +462,31 @@
         exp: "【プロフェッショナル解説】DRGを使用したピアリングは、リージョンが異なる場合（Remote Peering）でも問題なく構成可能です。"
       },
       {
-        id: 9, tag: "DR/高可用性", reqCount: 2,
+        id: 15, tag: "DR/高可用性", reqCount: 2,
         text: "複数リージョンでの「アクティブ/アクティブ」構成を検討する際、データの整合性とパフォーマンスに関する考慮事項として【正しいもの】を2つ選んでください。",
         options: [
           { id: "A", text: "遅延（Latency）が大きい広域ネットワーク（WAN）を挟む場合、強整合性（Synchronous）書き込みはアプリケーションのレスポンス時間を悪化させる要因となる。", exp: "【正】リージョン間遅延による書き込みレイテンシ増大の正当な理由です。" },
           { id: "B", text: "Active Data Guard は双方向同時書き込み（Active-Active Write）を完全にサポートする。", exp: "【誤】Data Guardはプライマリのみ書き込み可能（Read-Only可）な主系/副系構成です。" },
           { id: "C", text: "分散データベースやGoldenGateを用いた双方向レプリケーションでは、データの競合（Conflict）検出と解消のルール設計が必須である。", exp: "【正】マルチリージョンアクティブ/アクティブでの必須設計事項です。" },
-          { id: "D", text: "Object Storageのクロスリージョン・レプリケーションにより、ミリ秒単位の同期書き込みが保証される。", exp: "【誤】Object Storageのレプリケーションは非同期です。" }
+          { id: "D", text: "オブジェクト・ストレージのクロスリージョン・レプリケーションにより、ミリ秒単位の同期書き込みが保証される。", exp: "【誤】オブジェクト・ストレージのレプリケーションは非同期です。" }
         ],
         correct: ["A", "C"],
         exp: "【プロフェッショナル解説】マルチリージョンでのアクティブ/アクティブ書き込み設計では、通信遅延（レイテンシ）によるオーバーヘッドと、データ更新の競合解消（Conflict Resolution）設計が最大の論点となります。"
       },
       {
-        id: 10, tag: "データベース", reqCount: 2,
+        id: 16, tag: "データベース", reqCount: 2,
         text: "Exadata Database Service（ExaDB-D）のアーキテクチャ設計において正しい特徴を2つ選んでください。",
         options: [
           { id: "A", text: "Smart Scan（スマートスキャン）技術により、SQLのフィルタリング処理をストレージ・サーバー層にオフロードしてネットワーク負荷を激減させる。", exp: "【正】Exadataの核となる主要機能です。" },
           { id: "B", text: "パブリック・サブネット内にのみ配置可能である。", exp: "【誤】セキュリティ上、通常プライベート・サブネットに配置します。" },
           { id: "C", text: "OCPU（Compute）とストレージ（Storage）を独立して柔軟にオンライン拡張（スケール）可能である。", exp: "【正】Exadata Cloud Infrastructureの柔軟な動的拡張性です。" },
-          { id: "D", text: "バックアップはObject Storageに保存できず、ローカルディスクのみに限定される。", exp: "【誤】Object StorageやAutonomous Recovery Serviceへのバックアップがサポートされます。" }
+          { id: "D", text: "バックアップはオブジェクト・ストレージに保存できず、ローカルディスクのみに限定される。", exp: "【誤】オブジェクト・ストレージやAutonomous Recovery Serviceへのバックアップがサポートされます。" }
         ],
         correct: ["A", "C"],
         exp: "【プロフェッショナル解説】Exadata固有の「Smart Scanによるストレージオフロード」および「コンピュート/ストレージの独立したオンライン伸縮性」が大きな強みです。"
       },
       {
-        id: 11, tag: "セキュリティ", reqCount: 1,
+        id: 17, tag: "セキュリティ", reqCount: 1,
         text: "OCI Vaultの「マスター暗号化キー」の運用において、セキュリティ・ガバナンスを高めるためのベストプラクティスとして最も適切なものはどれですか？",
         options: [
           { id: "A", text: "自動鍵輪番（Auto Key Rotation）スケジュールを設定し、古いキーのバージョンを保持したまま定期的に新しいキーバッチを生成・利用する。", exp: "【正】安全性を確保しながら既存データの復号互換性を維持するベストプラクティスです。" },
@@ -425,7 +498,7 @@
         exp: "【プロフェッショナル解説】Vaultでは、過去データの暗号解除機能を損なわずにセキュリティ強度を維持するため、旧バージョンを保持した「自動鍵輪番（Key Rotation）」が推奨されます。"
       },
       {
-        id: 12, tag: "ネットワーク", reqCount: 2,
+        id: 18, tag: "ネットワーク", reqCount: 2,
         text: "OCI Web Application Firewall (WAF) の導入設計において適切なアプローチを2つ選んでください。",
         options: [
           { id: "A", text: "エッジ（DNS/CDN層）またはロードバランサ（ALB）の直接アタッチメントとしてWAFルールを適用できる。", exp: "【正】OCI WAFはFlexible LBへのアタッチおよびエッジでの導入に対応しています。" },
@@ -437,11 +510,11 @@
         exp: "【プロフェッショナル解説】OCI WAFはLayer 7で動作し、ALBへの直接アタッチやエッジ配信に対応、OWASPルール等でWeb脆弱性攻撃をブロックします。"
       },
       {
-        id: 13, tag: "DR/高可用性", reqCount: 1,
+        id: 19, tag: "DR/高可用性", reqCount: 1,
         text: "コンピュート・インスタンスの「自動修復（Auto-Healing）」を達成するために、Instance Pool（インスタンス・プール）と組み合わせて使用すべき機能はどれですか？",
         options: [
           { id: "A", text: "ロードバランサのヘルスチェック（Health Check）と連動したインスタンス・プールの自動置換ポリシー", exp: "【正】LBのヘルスチェック失敗時に不健全インスタンスを自動終了・新規再生成します。" },
-          { id: "B", text: "Object Storage のライフサイクル管理ルール", exp: "【誤】ストレージのデータ保持管理用です。" },
+          { id: "B", text: "オブジェクト・ストレージ のライフサイクル管理ルール", exp: "【誤】ストレージのデータ保持管理用です。" },
           { id: "C", text: "コンパートメント間の自動リソース移動機能", exp: "【誤】自動修復機能ではありません。" },
           { id: "D", text: "ブロック・ボリュームの自動クローン機能", exp: "【誤】ボリュームのバックアップ用です。" }
         ],
@@ -449,8 +522,8 @@
         exp: "【プロフェッショナル解説】LBのヘルスチェックとInstance Poolを連動させることで、障害発生ノードの自動切り離し・破棄・自動再作成（Auto-Healing）が実現します。"
       },
       {
-        id: 14, tag: "マイグレーション", reqCount: 1,
-        text: "テラバイト〜ペタバイト規模の大容量データをオンプレミスからOCI Object Storageへ最短かつネットワーク帯域を圧迫せずに移行する方法として最適なものはどれですか？",
+        id: 20, tag: "マイグレーション", reqCount: 1,
+        text: "テラバイト〜ペタバイト規模の大容量データをオンプレミスからOCI オブジェクト・ストレージへ最短かつネットワーク帯域を圧迫せずに移行する方法として最適なものはどれですか？",
         options: [
           { id: "A", text: "Data Transfer Appliance (DTA) を利用した物理転送サービス", exp: "【正】ペタバイト級の大規模データはDTAハードウェアの送付による物理移行が最速・最適です。" },
           { id: "B", text: "インターネット経由での標準OCI CLIマルチパートアップロード", exp: "【誤】回線帯域を枯渇させ時間がかかりすぎます。" },
@@ -461,7 +534,7 @@
         exp: "【プロフェッショナル解説】ネットワーク転送に膨大な時間を要するペタバイト規模のデータ移行には、物理暗号化アプライアンス（Data Transfer Appliance）のレンタル利用がベストプラクティスです。"
       },
       {
-        id: 15, tag: "セキュリティ", reqCount: 1,
+        id: 21, tag: "セキュリティ", reqCount: 1,
         text: "Cloud Guard の説明として最も適切なものはどれですか？",
         options: [
           { id: "A", text: "OCIテナンシー全体のセキュリティ構成の不備や疑わしいアクティビティを継続的に監視・検出・自動修復（Responder）するマネージドサービス。", exp: "【正】Cloud Guardの役割（DetectorとResponderによるガバナンス維持）です。" },
@@ -473,19 +546,7 @@
         exp: "【プロフェッショナル解説】Cloud Guardはテナンシー全域の構成エラー（パブリックBucket等）を検出し、設定されたResponder（レスポンダー）によって自動修復を行う強固なセキュリティ標準機能です。"
       },
       {
-        id: 16, tag: "ネットワーク", reqCount: 1,
-        text: "Kubernetes (OKE) 上のマイクロサービスに対して、マルチリージョンおよびマルチVCNに渡るサービス間通信の安全な暗号化（mTLS）とトラフィック制御を実現したいと考えています。最も適切なアーキテクチャ構成はどれですか？",
-        options: [
-          { id: "A", text: "各VCNのパブリック・サブネットに個別でNetwork Load Balancerを配置し、手動で証明書を配布する。", exp: "【誤】運用コストが高く、サービス間通信の動的な認証・暗号化に対応できません。" },
-          { id: "B", text: "OCI Service Mesh（またはIstio）を導入し、サイドカー・プロキシ経由で自動mTLS暗号化と高度なトラフィック管理を行う。", exp: "【正】Service Meshはマイクロサービス間の暗号化（mTLS）、可視化、トラフィック制御を自動化します。" },
-          { id: "C", text: "VCNセキュリティ・リストのルールで全ポートのTCP暗号化フラグを有効化する。", exp: "【誤】セキュリティ・リストはL3/L4のルール定義であり、mTLS処理は行えません。" },
-          { id: "D", text: "すべてのポッド（Pod）にパブリックIPアドレスを直接割り当てる。", exp: "【誤】セキュリティ上の重大なアンチパターンです。" }
-        ],
-        correct: ["B"],
-        exp: "【プロフェッショナル解説】OKE環境における高度なマイクロサービス間通信（mTLS暗号化、ルーティング、オブザーバビリティ）には、OCI Service Meshの活用が推奨されます。"
-      },
-      {
-        id: 17, tag: "セキュリティ", reqCount: 1,
+        id: 22, tag: "セキュリティ", reqCount: 1,
         text: "特定の「コンパートメント」に対して、運用者が誤って「パブリックIPを持つインスタンス」や「未暗号化のバケット」を作成できないように強制的に防止したいと考えています。最も適したOCI機能はどれですか？",
         options: [
           { id: "A", text: "Security Zones（セキュリティ・ゾーン）を有効化し、ゾーン・レシピでセキュリティ・ポリシーを適用する。", exp: "【正】Security Zonesはポリシーに反するリソース作成アクションを「事前防止（ブロック）」する強力なガバナンス機能です。" },
@@ -497,7 +558,7 @@
         exp: "【プロフェッショナル解説】事後検出のCloud Guardに対し、Security Zonesは厳格なセキュリティ・ポリシーに違反する構成変更やリソース作成を「事前ブロック」します。"
       },
       {
-        id: 18, tag: "データベース", reqCount: 1,
+        id: 23, tag: "データベース", reqCount: 1,
         text: "Autonomous Database (ADB) で「Cross-Region Autonomous Data Guard」を構成する際の正しい動作仕様はどれですか？",
         options: [
           { id: "A", text: "スタンバイDBへのデータ同期は完全同期（Synchronous）のみがサポートされる。", exp: "【誤】リージョン間（広域）では非同期（Asynchronous）転送が用いられます。" },
@@ -509,7 +570,7 @@
         exp: "【プロフェッショナル解説】ADBのAutonomous Data Guardは、別リージョンへの非同期レプリケーションと、簡単な操作での高速なフェイルオーバー/スイッチオーバーを実現します。"
       },
       {
-        id: 19, tag: "ネットワーク", reqCount: 2,
+        id: 24, tag: "ネットワーク", reqCount: 2,
         text: "オンプレミスとOCI間で「FastConnect（主回線）」と「IPsec VPN（バックアップ回線）」を組み合わせたハイブリッドネットワークを設計する際、適切なBGPおよびルーティング設計を2つ選んでください。",
         options: [
           { id: "A", text: "OCI側からのアウトバウンドトラフィックにおいて、FastConnect経由の経路（BGPルート）の「AS-Path Prepending」を短く設定し、優先経路とする。", exp: "【正】AS-Path長を短くすることでFastConnectを優先パスに指定できます。" },
@@ -521,10 +582,10 @@
         exp: "【プロフェッショナル解説】異種回線（FastConnect＋VPN）の主系/副系設計では、BGPの `AS-Path Prepending`（OCI側からの出力制御）と `Local Preference`（オンプレミス側からの出力制御）を正しく設計することが鉄則です。"
       },
       {
-        id: 20, tag: "DR/高可用性", reqCount: 1,
+        id: 25, tag: "DR/高可用性", reqCount: 1,
         text: "OCI Monitoring および Logging Analytics を使用して、複数リージョンにまたがる高度な監査・アラート基盤を構築する際のベストプラクティスはどれですか？",
         options: [
-          { id: "A", text: "Service Connector Hub を使用して各リージョンのログ（Audit/VCN Flow Logs）を集約し、単一リージョンのObject StorageやLogging Analyticsに集約分析する。", exp: "【正】Service Connector Hubによるログ集約パイプラインの構築が、マルチリージョン監視のベストプラクティスです。" },
+          { id: "A", text: "Service Connector Hub を使用して各リージョンのログ（Audit/VCN Flow Logs）を集約し、単一リージョンのオブジェクト・ストレージやLogging Analyticsに集約分析する。", exp: "【正】Service Connector Hubによるログ集約パイプラインの構築が、マルチリージョン監視のベストプラクティスです。" },
           { id: "B", text: "各インスタンス内で手動のShellスクリプトを実行し、SCPで単一サーバーへログを転送する。", exp: "【誤】運用負荷が高く非効率です。" },
           { id: "C", text: "リージョンごとに独立した監視ダッシュボードのみを参照し、統合集約は行わない。", exp: "【誤】統合的なガバナンス・セキュリティ分析が困難になります。" },
           { id: "D", text: "監査ログの保持期間をデフォルトの14日間に固定し、長期保存の設定を行わない。", exp: "【誤】コンプライアンス要件（通常1年以上）を満たせません。" }
@@ -534,14 +595,8 @@
       }
     ];
 
-    // 📖 プロフェッショナル必須 用語辞書 (30用語)
+    // 📖 プロフェッショナル必須 用語辞書
     const termDictionary = [
-      { term: "Active Data Guard (ADG)", desc: "Oracle DBの災害復旧技術。副系DBを読み取り専用（Read-Only）でオープンしたままリアルタイムで同期可能。RPO=0およびRTO数分の高度なDR構成を実現。" },
-      { term: "Maximum Availability / Protection", desc: "Active Data Guardの同期モード。主系でのトランザクションコミット時に副系へのログ到達を確認・保証することでデータ損失ゼロ（RPO=0）を担保する。" },
-      { term: "FastConnect (99.95% SLA)", desc: "オンプレミスとOCIを専用線で接続するサービス。多様な物理POPおよび2本の回線・2台のCPE構成をとることで99.95%の超高可用性SLAが適用される。" },
-      { term: "ZPR (Zero Trust Packet Routing)", desc: "ネットワークのIPアドレス指定に代わり、意図を表す「ZPR属性タグ（Key:Value）」を用いてサブネットやインスタンス間の通信を強制制御する次世代型ゼロトラスト機能。" },
-      { term: "IAM Verb (Inspect / Read / Use / Manage)", desc: "OCI IAMポリシーの4つの動詞レベル。Useはリソースの更新・起動・停止は可能だが、新規作成（Create）および削除（Delete）は許可されない。" },
-      { term: "Traffic Management Steering Policies", desc: "OCI DNSの高度なルーティング機能。ヘルスチェックと連動してユーザーのアクセス先を最適リージョンへ誘導、障害時にはDR先へ自動切替（Failover）を行う。" },
       { term: "AD（アベイラビリティ・ドメイン）", desc: "リージョン内に存在する、互いに独立した1つ以上のデータセンター。電源やネットワークが完全に隔離されており、障害耐性を高める配置に使用する。" },
       { term: "FD（障害ドメイン）", desc: "1つのAD内に存在するハードウェアや電源のグループ（各ADに3つ配置）。同一AD内での機器故障の影響を分散させるために利用する。" },
       { term: "VCN（仮想クラウド・ネットワーク）", desc: "OCI上に構築する自分専用のカスタマイズ可能な仮想ネットワーク。サブネット、ルート表、セキュリティ・リストなどで構成される。" },
@@ -559,6 +614,15 @@
       { term: "Block Volume Performance Units (VPUs)", desc: "ブロック・ボリュームのパフォーマンス帯域幅（IOPSやスループレベル）を1GB単位で柔軟に変更・設定するための評価指標指標。" },
       { term: "オブジェクト・ストレージ", desc: "非構造化データ（画像、バックアップ、ログなど）を無制限に保存できる拡張性に優れたストレージ（Standard/Archive/Infrequencyアクセス層がある）。" },
       { term: "ファイル・ストレージ（FSS）", desc: "NFSv3プロトコルをサポートし、複数のコンピュート・インスタンスから同時にマウントして共有できるファイルシステム。" },
+      { term: "インフラのコード化 (IaC)", desc: "手動操作ではなく、Terraformなどのコード記述によってインフラの作成・変更・廃棄を自動管理・再現可能にする手法。" },
+      { term: "Resource Manager", desc: "TerraformをベースとしたOCIのマネージドサービス。Infrastructure as Code (IaC) によりインフラ構築・変更を自動化する。" },
+      { term: "コンパートメント・エクスプローラー", desc: "テナンシー内の複数コンパートメントに分散配置されたすべてのOCIリソースを一覧・横断検索し、ガバナンスとツリー構造を可視化する管理機能。" },
+      { term: "Active Data Guard (ADG)", desc: "Oracle DBの災害復旧技術。副系DBを読み取り専用（Read-Only）でオープンしたままリアルタイムで同期可能。RPO=0およびRTO数分の高度なDR構成を実現。" },
+      { term: "Maximum Availability / Protection", desc: "Active Data Guardの同期モード。主系でのトランザクションコミット時に副系へのログ到達を確認・保証することでデータ損失ゼロ（RPO=0）を担保する。" },
+      { term: "FastConnect (99.95% SLA)", desc: "オンプレミスとOCIを専用線で接続するサービス。多様な物理POPおよび2本の回線・2台のCPE構成をとることで99.95%の超高可用性SLAが適用される。" },
+      { term: "ZPR (Zero Trust Packet Routing)", desc: "ネットワークのIPアドレス指定に代わり、意図を表す「ZPR属性タグ（Key:Value）」を用いてサブネットやインスタンス間の通信を強制制御する次世代型ゼロトラスト機能。" },
+      { term: "IAM Verb (Inspect / Read / Use / Manage)", desc: "OCI IAMポリシーの4つの動詞レベル。Useはリソースの更新・起動・停止は可能だが、新規作成（Create）および削除（Delete）は許可されない。" },
+      { term: "Traffic Management Steering Policies", desc: "OCI DNSの高度なルーティング機能。ヘルスチェックと連動してユーザーのアクセス先を最適リージョンへ誘導、障害時にはDR先へ自動切替（Failover）を行う。" },
       { term: "インスタンス構成（Instance Configuration）", desc: "コンピュート・インスタンスのひな型（OSイメージ、シェイプ、VNIC、ストレージなど）を定義した設定オブジェクト。Auto Scaling等で利用。" },
       { term: "インスタンス・プール（Instance Pool）", desc: "同一の「インスタンス構成」に基づいて複数のコンピュート・インスタンスを一括管理・プロビジョニングするグループ。" },
       { term: "Autonomous Database（ADB）", desc: "チューニング、パッチ適用、バックアップなどの運用管理がAI・機械学習により完全に自動化された自律型データベース（ATP/ADW）。" },
@@ -567,10 +631,8 @@
       { term: "NSG（ネットワーク・セキュリティ・グループ）", desc: "特定のVNIC（仮想NIC）単位で適用できる仮想ファイアウォール。VCN設計を変えずに柔軟なアクセス制御が可能。" },
       { term: "WAF（Web Application Firewall）", desc: "Webアプリケーションの手前に配置し、SQLインジェクションやXSSなどの悪意あるリクエストを検知・遮断するセキュリティ機能。" },
       { term: "OCI Vault", desc: "暗号化キー（マスター・キー）やデータ接続の認証情報（シークレット）を安全に中央管理・保管するサービス。" },
-      { term: "ZPR（Zero Trust Packet Routing）", desc: "ネットワークIPアドレスではなく「セキュリティ属性（タグ）」に基づいて通信の許可・不許可を制御するOCIのゼロトラストセキュリティ機能。" },
       { term: "ジオロケーション・ステアリング", desc: "OCI DNSの機能。アクセス元のユーザーの地理的ロケーションに基づいて、最も近いデータセンターのIPアドレスへ誘導するポリシー。" },
       { term: "認証トークン（Auth Token）", desc: "Docker CLIなどの外部ツールからOCI Container Registry（OCIR）へアクセス・ログインする際にパスワードとして使用する文字列。" },
-      { term: "Resource Manager", desc: "TerraformをベースとしたOCIのマネージドサービス。Infrastructure as Code (IaC) によりインフラ構築・変更を自動化する。" },
       { term: "サービス・コネクタ・ハブ", desc: "Loggingなどのソースから、Object StorageやFunctionsなどのターゲットへデータを自動転送・加工・連携するクラウドパイプライン。" },
       { term: "OCI Cache", desc: "RedisおよびValkeyと互換性のあるフルマネージドのインメモリキャッシュサービス。ミリ秒未満の高速レスポンスを実現する。" },
       { term: "OCI Search with OpenSearch", desc: "大規模なログ分析や全文検索を実現するフルマネージド検索エンジン。OpenSearch Dashboardsによる可視化にも対応。" },
@@ -579,27 +641,15 @@
       { term: "Data Transfer Appliance (DTA)", desc: "ペタバイト規模の大容量データを暗号化ハードウェア装置に格納して物理配送することで、ネットワーク帯域を使わず高速にOCIへ移行する物理サービス。" },
       { term: "Cloud Guard", desc: "OCIテナンシー全体の設定不備（例: 誤ったPublic Bucket公開）や異常アクティビティを検出（Detector）し、自動的に公開停止などの修復（Responder）を行うセキュリティ管理機能。" },
       { term: "Exadata Database Service (ExaDB-D)", desc: "専用Exadataインフラ上で動作する最高峰DBサービス。Smart Scanによるストレージオフロードと、コンピュート/ストレージの独立したオンライン拡張が特徴。" },
-      { term: "OCI WAF (Web Application Firewall)", desc: "Layer 7（HTTP/HTTPS）レベルでWebアプリケーションへの悪意あるリクエスト（SQLi, XSS等）を検知・遮断するセキュリティコンポーネント。" },
       { term: "Auto Scaling (ADB)", desc: "Autonomous DatabaseでCPU負荷に応じて基本設定コア数の「最大3倍」までダウンタイムなしで即座に動的拡張する自律スケーリング機能。" },
       { term: "Instance Pool & Auto-Healing", desc: "同構成のインスタンス群をグループ管理し、ロードバランサのヘルスチェックと連動して不健全ノードを自動再生成（置換）する高可用性パターン。" },
-      { term: "Oracle Cloud Migrations (OCM)", desc: "オンプレミスのVMware環境などの資産検出（Discovery）、最適Shape算出（Assessment）、移行実行までを一気通貫で自動化するマイグレーションサービス。" },
       { term: "Cross-Tenancy DRG Peering", desc: "異なるOCIテナンシー間のVCN同士をDRGおよび双方向IAMポリシー（Define / Endorse / Admit）を用いて安全にプライベートピアリング接続する構成。" },
       { term: "Auto Key Rotation (Vault)", desc: "OCI Vaultでマスター暗号化キーを過去の解読互換性を保ったまま一定周期で新バージョンに切り替え、暗号強度を高めるベストプラクティス。" },
-      { term: "Service Connector Hub", desc: "OCI上のログやイベントデータをターゲット（Object Storage, Functions, Streaming等）へ自動的に転送・加工するマネージドメッセージパイプライン。" },
       { term: "DRG Route Table", desc: "DRG内部に保持される高度な仮想ルーティングテーブル。複数VCNやFastConnect、IPsec VPN間でのトラフィックの相互集約・転送（Transit Routing）を制御。" },
       { term: "Security Zones", desc: "コンパートメントに対して厳格なセキュリティポリシーを事前定義・即時適用し、パブリックIPの付与や未暗号化ストレージの作成を強制遮断する領域。" },
-      { term: "Maximum Protection Mode", desc: "Data Guardにおいて、何らかの理由で副系（Standby）への同期ログ書き込みが失敗した場合、主系（Primary）のDB処理自体を停止させてデータ損失を絶対回避する極限保護モード。" },
-      { term: "Maximum Availability Mode", desc: "Data Guardにおいて、通常は同期モードで動作し、万一ネットワーク断が発生した場合は一時的に非同期へ自動切替して業務継続を最優先する高可用性モード。" },
-      { term: "Cross-Region Replication", desc: "Object StorageやBlock Volumeのデータを地理的に離れた別リージョンへ自動的に非同期複製し、広域災害に備えるDR機能。" },
-      { term: "Autonomous Recovery Service (RCV)", desc: "Oracle DB専用のリアルタイム保護サービス。チェンジログを連続転送（ZDLRA技術）することでRPOを1秒未満に抑えた高速リカバリを実現。" },
-      { term: "Network Firewall", desc: "Palo Alto Networksテクノロジーをベースとしたマネージド次世代ファイアウォール（NGFW）。VCN内のパケットのL7ディープインスペクションやURLフィルタリングを提供。" },
-      { term: "OCI Functions", desc: "Fn Projectをベースとしたサーバーレス実行基盤。イベント（Events）やService Connector Hubと連携し、特定イベント発生時にコードを自動実行。" },
-      { term: "Dynamic Group", desc: "OCIリソース（コンピュートインスタンス等）をマッチングルールで束ね、IAMポリシーを適用することで、インスタンス自体にOCI API実行権限を付与する仕組み。" },
-      { term: "Compartment Explorer", desc: "テナンシー内の複数コンパートメントに分散配置されたすべてのOCIリソースを一覧・横断検索し、ガバナンスとツリー構造を可視化する管理機能。" },
+      { term: "Cross-Region Replication", desc: "オブジェクト・ストレージやBlock Volumeのデータを地理的に離れた別リージョンへ自動的に非同期複製し、広域災害に備えるDR機能。" },
       { term: "BGP (Border Gateway Protocol)", desc: "FastConnectやIPsec VPN構成時にOCIとオンプレミス間で動的にルーティング情報を交換し、障害時の自動迂回（Failover）を実現するプロトコル。" },
-      { term: "AS-Path Prepending", desc: "BGPルーティングにおいて、冗長化されたFastConnect回線のプライマリ/セカンダリの経路優先度を明示的に制御するために用いるBGP技法。" },
-      { term: "OCI Search with OpenSearch", desc: "大量のログデータや非構造化テキストを分散インデックス化し、OpenSearch Dashboardsによりリアルタイムで高速可視化・分析する分析基盤。" },
-      { term: "MQL (Monitoring Query Language)", desc: "OCI Monitoringサービスで大量のインフラ・アプリケーションメトリックを集計・評価し、アラート（Alarm）条件を柔軟に記述するための専用問い合わせ言語。" }
+      { term: "AS-Path Prepending", desc: "BGPルーティングにおいて、冗長化されたFastConnect回線のプライマリ/セカンダリの経路優先度を明示的に制御するために用いるBGP技法。" }
     ];
 
     let currentFilteredQuestions = [...rawQuestions];
@@ -884,7 +934,7 @@
       });
     }
 
-    // ⚡ スピード一問一答
+    // ⚡ スピード一問一答（不正解理由の説明機能を追加）
     let currentTermQuiz = null;
 
     function generateTermQuiz() {
@@ -902,8 +952,8 @@
       }
 
       let choices = [
-        { desc: targetTerm.desc, isCorrect: true },
-        ...dummyIndices.map(idx => ({ desc: termDictionary[idx].desc, isCorrect: false }))
+        { termName: targetTerm.term, desc: targetTerm.desc, isCorrect: true },
+        ...dummyIndices.map(idx => ({ termName: termDictionary[idx].term, desc: termDictionary[idx].desc, isCorrect: false }))
       ];
       choices.sort(() => Math.random() - 0.5);
 
@@ -918,31 +968,44 @@
 
       choices.forEach((choice, i) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300";
-        btn.innerHTML = `<span class="font-bold mr-2 text-indigo-400 font-mono">[${i + 1}]</span>${choice.desc}`;
-        btn.onclick = () => answerTermQuiz(choice.isCorrect, btn);
+        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-indigo-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300 flex flex-col gap-2";
+        btn.innerHTML = `
+          <div><span class="font-bold mr-2 text-indigo-400 font-mono">[${i + 1}]</span>${choice.desc}</div>
+          <div class="wrong-explain hidden text-[11px] font-semibold text-rose-300 bg-rose-950/50 border border-rose-800/50 p-2.5 rounded-xl"></div>
+        `;
+        btn.onclick = () => answerTermQuiz(choice.isCorrect, btn, choice);
         optionsContainer.appendChild(btn);
       });
     }
 
-    function answerTermQuiz(isCorrect, btnElement) {
+    function answerTermQuiz(isCorrect, btnElement, selectedChoice) {
       const resultEl = document.getElementById('term-quiz-result');
-      const allButtons = document.getElementById('term-quiz-options').querySelectorAll('button');
+      const optionsContainer = document.getElementById('term-quiz-options');
+      const allButtons = optionsContainer.querySelectorAll('button');
 
       allButtons.forEach(btn => btn.disabled = true);
 
       if (isCorrect) {
-        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
+        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10 flex flex-col gap-2";
         resultEl.innerText = "⭕ 正解です！高度アーキテクチャ概念を完全把握しています。";
         resultEl.className = "text-sm font-bold text-emerald-400";
       } else {
-        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed";
-        resultEl.innerText = "❌ 残念！不正解です。用語集で再確認しましょう。";
+        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed flex flex-col gap-2";
+        
+        // 選択した不正解のボタンに「正しくは何の用語か」を表示
+        const expBox = btnElement.querySelector('.wrong-explain');
+        if (expBox) {
+          expBox.innerHTML = `⚠️ 誤り（これは「<strong class="text-white underline">${selectedChoice.termName}</strong>」の説明です）`;
+          expBox.classList.remove('hidden');
+        }
+
+        resultEl.innerText = "❌ 残念！不正解です。間違えた選択肢の説明を確認しましょう。";
         resultEl.className = "text-sm font-bold text-rose-400";
 
+        // 正解の選択肢をハイライト表示
         currentTermQuiz.choices.forEach((c, idx) => {
           if (c.isCorrect) {
-            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10";
+            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10 flex flex-col gap-2";
           }
         });
       }
@@ -959,8 +1022,8 @@
       document.getElementById('mock-result-screen').classList.add('hidden');
       document.getElementById('mock-active-screen').classList.remove('hidden');
 
-      // ランダムシャッフルして問題セットを作成
-      mockQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
+      // 25問から15問をランダム抽出してセット作成
+      mockQuestions = [...rawQuestions].sort(() => Math.random() - 0.5).slice(0, 15);
       mockAnswers = {};
       mockTimeRemaining = 1200;
 
