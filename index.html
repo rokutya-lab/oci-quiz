@@ -66,7 +66,7 @@
           ⏱️ 模擬試験
         </button>
         <button id="tab-dict-btn" onclick="switchTab('dict')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
-          📖 プロ用語集
+          📖 用語集
         </button>
         <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
           ⚡ 一問一答
@@ -987,7 +987,7 @@
 
       if (isCorrect) {
         btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10 flex flex-col gap-2";
-        resultEl.innerText = "⭕ 正解です！高度アーキテクチャ概念を完全把握しています。";
+        resultEl.innerText = "⭕ 正解です！";
         resultEl.className = "text-sm font-bold text-emerald-400";
       } else {
         btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed flex flex-col gap-2";
