@@ -71,6 +71,9 @@
         <button id="tab-termquiz-btn" onclick="switchTab('termquiz')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
           ⚡ 一問一答
         </button>
+        <button id="tab-revtermquiz-btn" onclick="switchTab('revtermquiz')" class="px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+          🔄 逆引き一問一答
+        </button>
       </nav>
     </div>
   </header>
@@ -250,9 +253,9 @@
       <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
           <span class="text-xs font-extrabold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
-            SPEED QUIZ
+            SPEED QUIZ (単語 ➔ 説明文)
           </span>
-          <span class="text-xs text-slate-400 font-medium">該当する正確な高度アーキテクチャ概念を選択してください</span>
+          <span class="text-xs text-slate-400 font-medium">提示された用語に対応する正解の説明を選択してください</span>
         </div>
         
         <div class="text-center my-8 bg-slate-950/40 border border-slate-800/60 p-6 rounded-2xl">
@@ -265,6 +268,32 @@
         <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div id="term-quiz-result" class="text-sm font-bold"></div>
           <button onclick="generateTermQuiz()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-indigo-600/25 transition active:scale-[0.98] shrink-0">
+            次の問題へ →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. 逆引き用語クイズタブ (説明文 ➔ 単語) ================= -->
+    <section id="tab-revtermquiz" class="hidden space-y-6">
+      <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 sm:p-9 shadow-2xl backdrop-blur-xl">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/80">
+          <span class="text-xs font-extrabold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3.5 py-1.5 rounded-full tracking-wide">
+            REVERSE QUIZ (説明文 ➔ 単語)
+          </span>
+          <span class="text-xs text-slate-400 font-medium">提示された説明文に対応する正解の専門用語を選択してください</span>
+        </div>
+        
+        <div class="my-8 bg-slate-950/40 border border-slate-800/60 p-6 rounded-2xl">
+          <span class="text-[10px] font-extrabold text-purple-400 uppercase tracking-widest block mb-2">Description</span>
+          <p id="rev-term-quiz-desc" class="text-base sm:text-lg font-semibold text-slate-200 leading-relaxed tracking-wide"></p>
+        </div>
+
+        <div id="rev-term-quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+
+        <div class="mt-8 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div id="rev-term-quiz-result" class="text-sm font-bold"></div>
+          <button onclick="generateRevTermQuiz()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white text-xs font-bold px-7 py-3 rounded-2xl shadow-lg shadow-purple-600/25 transition active:scale-[0.98] shrink-0">
             次の問題へ →
           </button>
         </div>
@@ -667,6 +696,7 @@
       filterQuestions();
       renderDictionary();
       generateTermQuiz();
+      generateRevTermQuiz();
     });
 
     function saveState() {
@@ -721,13 +751,15 @@
       document.getElementById('tab-mock').classList.add('hidden');
       document.getElementById('tab-dict').classList.add('hidden');
       document.getElementById('tab-termquiz').classList.add('hidden');
+      document.getElementById('tab-revtermquiz').classList.add('hidden');
 
       const btnQuiz = document.getElementById('tab-quiz-btn');
       const btnMock = document.getElementById('tab-mock-btn');
       const btnDict = document.getElementById('tab-dict-btn');
       const btnTermQuiz = document.getElementById('tab-termquiz-btn');
+      const btnRevTermQuiz = document.getElementById('tab-revtermquiz-btn');
 
-      [btnQuiz, btnMock, btnDict, btnTermQuiz].forEach(btn => {
+      [btnQuiz, btnMock, btnDict, btnTermQuiz, btnRevTermQuiz].forEach(btn => {
         btn.className = "px-4 py-2 rounded-xl transition-all duration-200 font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
       });
 
@@ -743,6 +775,9 @@
       } else if (tabName === 'termquiz') {
         document.getElementById('tab-termquiz').classList.remove('hidden');
         btnTermQuiz.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/30";
+      } else if (tabName === 'revtermquiz') {
+        document.getElementById('tab-revtermquiz').classList.remove('hidden');
+        btnRevTermQuiz.className = "px-4 py-2 rounded-xl transition-all duration-200 font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-600/30";
       }
     }
 
@@ -934,7 +969,7 @@
       });
     }
 
-    // ⚡ スピード一問一答（不正解理由の説明機能を追加）
+    // ⚡ スピード一問一答（単語 ➔ 説明文）
     let currentTermQuiz = null;
 
     function generateTermQuiz() {
@@ -1011,6 +1046,84 @@
       }
     }
 
+    // 🔄 逆引き一問一答（説明文 ➔ 単語）
+    let currentRevTermQuiz = null;
+
+    function generateRevTermQuiz() {
+      document.getElementById('rev-term-quiz-result').innerText = '';
+      
+      const correctIndex = Math.floor(Math.random() * termDictionary.length);
+      const targetTerm = termDictionary[correctIndex];
+
+      let dummyIndices = [];
+      while (dummyIndices.length < 3) {
+        let rand = Math.floor(Math.random() * termDictionary.length);
+        if (rand !== correctIndex && !dummyIndices.includes(rand)) {
+          dummyIndices.push(rand);
+        }
+      }
+
+      let choices = [
+        { termName: targetTerm.term, desc: targetTerm.desc, isCorrect: true },
+        ...dummyIndices.map(idx => ({ termName: termDictionary[idx].term, desc: termDictionary[idx].desc, isCorrect: false }))
+      ];
+      choices.sort(() => Math.random() - 0.5);
+
+      currentRevTermQuiz = {
+        desc: targetTerm.desc,
+        correctTerm: targetTerm.term,
+        choices: choices
+      };
+
+      document.getElementById('rev-term-quiz-desc').innerText = targetTerm.desc;
+      const optionsContainer = document.getElementById('rev-term-quiz-options');
+      optionsContainer.innerHTML = '';
+
+      choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4.5 border border-slate-800/80 rounded-2xl text-xs leading-relaxed hover:border-purple-500/50 hover:bg-slate-900/80 hover:-translate-y-0.5 transition bg-slate-950/40 text-slate-300 flex flex-col gap-2 justify-between";
+        btn.innerHTML = `
+          <div class="font-extrabold text-sm text-purple-300"><span class="font-mono font-bold mr-2 text-purple-400">[${i + 1}]</span>${choice.termName}</div>
+          <div class="wrong-explain hidden text-[11px] font-semibold text-rose-300 bg-rose-950/50 border border-rose-800/50 p-2.5 rounded-xl mt-1"></div>
+        `;
+        btn.onclick = () => answerRevTermQuiz(choice.isCorrect, btn, choice);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function answerRevTermQuiz(isCorrect, btnElement, selectedChoice) {
+      const resultEl = document.getElementById('rev-term-quiz-result');
+      const optionsContainer = document.getElementById('rev-term-quiz-options');
+      const allButtons = optionsContainer.querySelectorAll('button');
+
+      allButtons.forEach(btn => btn.disabled = true);
+
+      if (isCorrect) {
+        btnElement.className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10 flex flex-col gap-2 justify-between";
+        resultEl.innerText = "⭕ 正解です！";
+        resultEl.className = "text-sm font-bold text-emerald-400";
+      } else {
+        btnElement.className = "w-full text-left p-4.5 border border-rose-500 bg-rose-500/10 text-rose-300 rounded-2xl text-xs leading-relaxed flex flex-col gap-2 justify-between";
+        
+        // 不正解の用語の説明をフィードバック表示
+        const expBox = btnElement.querySelector('.wrong-explain');
+        if (expBox) {
+          expBox.innerHTML = `⚠️ 誤り（「${selectedChoice.termName}」とは: ${selectedChoice.desc}）`;
+          expBox.classList.remove('hidden');
+        }
+
+        resultEl.innerText = "❌ 残念！不正解です。選択した用語の解説を確認しましょう。";
+        resultEl.className = "text-sm font-bold text-rose-400";
+
+        // 正解の選択肢をハイライト表示
+        currentRevTermQuiz.choices.forEach((c, idx) => {
+          if (c.isCorrect) {
+            allButtons[idx].className = "w-full text-left p-4.5 border border-emerald-500 bg-emerald-500/10 text-emerald-200 rounded-2xl text-xs leading-relaxed font-semibold shadow-lg shadow-emerald-500/10 flex flex-col gap-2 justify-between";
+          }
+        });
+      }
+    }
+
     // ⏱️ 模擬試験モード ロジック
     let mockQuestions = [];
     let mockAnswers = {};
@@ -1071,37 +1184,38 @@
             <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full">問 ${idx + 1} / ${q.reqCount}つ選択</span>
             <span class="text-xs text-slate-500 font-bold">[${q.tag}]</span>
           </div>
-          <p class="text-sm font-semibold text-slate-100">${q.text}</p>
-          <div class="space-y-2.5">${optionsHtml}</div>
+          <p class="text-sm font-semibold text-slate-200">${q.text}</p>
+          <div class="space-y-2">${optionsHtml}</div>
         `;
         container.appendChild(qCard);
       });
-      updateMockProgress();
     }
 
     function selectMockOption(qId, optId, reqCount) {
-      let current = mockAnswers[qId] || [];
+      if (!mockAnswers[qId]) mockAnswers[qId] = [];
+
       if (reqCount === 1) {
-        current = [optId];
+        mockAnswers[qId] = [optId];
       } else {
-        if (current.includes(optId)) {
-          current = current.filter(id => id !== optId);
+        if (mockAnswers[qId].includes(optId)) {
+          mockAnswers[qId] = mockAnswers[qId].filter(id => id !== optId);
         } else {
-          current.push(optId);
+          if (mockAnswers[qId].length < reqCount) {
+            mockAnswers[qId].push(optId);
+          } else {
+            mockAnswers[qId].shift();
+            mockAnswers[qId].push(optId);
+          }
         }
       }
-      mockAnswers[qId] = current;
-      updateMockProgress();
-    }
 
-    function updateMockProgress() {
       const answeredCount = Object.keys(mockAnswers).filter(k => mockAnswers[k].length > 0).length;
-      document.getElementById('mock-progress-text').innerText = `解答状況: ${answeredCount} / ${mockQuestions.length}`;
+      document.getElementById('mock-progress-text').innerText = `解答状況: ${answeredCount} / 15`;
     }
 
     function finishMockExam() {
       clearInterval(mockTimerInterval);
-
+      
       let correctCount = 0;
       mockQuestions.forEach(q => {
         const userAns = mockAnswers[q.id] || [];
@@ -1109,29 +1223,26 @@
         if (isCorrect) correctCount++;
       });
 
-      const scorePercent = Math.round((correctCount / mockQuestions.length) * 100);
-      const isPassed = scorePercent >= 70;
+      const percentage = Math.round((correctCount / 15) * 100);
+      const passed = percentage >= 70;
 
       document.getElementById('mock-active-screen').classList.add('hidden');
       document.getElementById('mock-result-screen').classList.remove('hidden');
 
       const badge = document.getElementById('mock-badge');
-      const title = document.getElementById('mock-score-title');
-      const sub = document.getElementById('mock-score-sub');
-
-      if (isPassed) {
-        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+      if (passed) {
+        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400";
         badge.innerText = "🎉";
-        title.innerText = `合格判定 (${scorePercent}点)`;
-        title.className = "text-3xl font-black text-emerald-400";
-        sub.innerText = `正解数: ${correctCount} / ${mockQuestions.length} 問。1Z0-997 の本番合格レベルに到達しています！`;
+        document.getElementById('mock-score-title').innerText = `合格！ (${percentage}%)`;
+        document.getElementById('mock-score-title').className = "text-3xl font-black text-emerald-400";
       } else {
-        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-rose-500/20 text-rose-400 border border-rose-500/40";
+        badge.className = "w-24 h-24 rounded-3xl mx-auto flex items-center justify-center text-4xl shadow-2xl bg-rose-500/20 border border-rose-500/40 text-rose-400";
         badge.innerText = "⚠️";
-        title.innerText = `不合格判定 (${scorePercent}点)`;
-        title.className = "text-3xl font-black text-rose-400";
-        sub.innerText = `正解数: ${correctCount} / ${mockQuestions.length} 問（合格ライン 70%）。弱点問題を見直して再挑戦しましょう。`;
+        document.getElementById('mock-score-title').innerText = `不合格 (${percentage}%)`;
+        document.getElementById('mock-score-title').className = "text-3xl font-black text-rose-400";
       }
+
+      document.getElementById('mock-score-sub').innerText = `正解数: ${correctCount} / 15問 (ボーダー 70%)`;
     }
   </script>
 </body>
